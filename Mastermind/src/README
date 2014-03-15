@@ -1,0 +1,21 @@
+assafm04
+Assaf Mor
+036539096
+
+Files included:
+    1. Mastermind.java
+    2. README
+
+File discription:
+
+1. Mastermind - supplies algorithm for code breaking game, user VS. comp. The computer will
+   always play the side of the codemaker while the user will play the codebreaker. 
+   for more info on the game goto: http://en.wikipedia.org/wiki/Mastermind.
+       
+Activation:
+
+1. Extract Mastermind.java
+2. Compile Mastermind .java in shell by the nest command: javac Mastermind.java
+3. Run Mastermind in shell by the next command: java Mastermind
+4. Follow the instructions of the game.
+5. Have fun!
