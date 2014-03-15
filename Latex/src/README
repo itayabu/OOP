@@ -27,15 +27,19 @@ File description:
 5. SimpleOpMathTerm - This class represents a simple operation between two other 
 					  terms. For example, "a+b", "c*d" or "c=d".
 6. BracketsMathTerm - This class represents a math term between brackets.
-7.SumMathTern - This class represents a mathematical sum. 
+7. SumMathTern - This class represents a mathematical sum. 
 				It comprised of 3 MathTerms: 
  				- Term beneath the sigma sign.
 				- Term above the sigma sign. 
 				- Term being summed.
        
-Design:
+Design: 
+
+
 
 Implementation issues:
+
+
 
 Answers to questions:
 
