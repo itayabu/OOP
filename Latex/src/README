@@ -1,0 +1,48 @@
+assafm04
+
+Files included:
+    1. MathTerm.java
+    2. BinaryMathTerm.java
+    3. FractionMathTerm.java
+    4. SimpleMathTerm.java
+    5. SimpleOpMathTerm.java
+    6. BracketsMathTerm.java
+    7. SumMathTerm.java
+    8. README
+
+File description:
+
+1. MathTerm - a class which represents the base class for all other sub classes
+			   it also evaluates the latex representation in the following 
+			   order: exponent, bar and then negation.
+2. BinaryMathTerm - This class represents a term composed of exactly two 
+			        independent math terms.
+3. FractionMathTerm - This class represents a special case of binary math term. 
+					  It rendered to be  as a fraction ("kav shever" in hebrew).
+4. SimpleMathTerm - This class represents a math term which is either a 
+					single letter variable (x,y,a,b,etc..)  or a number 
+					(may be a floating point number).in case this term 
+					represents a number, the class will allow to user 
+					to control the precision of its latex representation.
+5. SimpleOpMathTerm - This class represents a simple operation between two other 
+					  terms. For example, "a+b", "c*d" or "c=d".
+6. BracketsMathTerm - This class represents a math term between brackets.
+7.SumMathTern - This class represents a mathematical sum. 
+				It comprised of 3 MathTerms: 
+ 				- Term beneath the sigma sign.
+				- Term above the sigma sign. 
+				- Term being summed.
+       
+Design:
+
+Implementation issues:
+
+Answers to questions:
+
+1. say i wish to add new term :an integral term - i would probably derive it
+   from the sum class since they share common structure: sub term, super term 
+   and the integral term. 
+
+ 
+
+

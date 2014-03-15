@@ -1,5 +1,6 @@
 /**
- * This class represents a mathematical sum. It comprised of 3 MathTerms: - Term beneath the sigma sign.
+ * This class represents a mathematical sum. It comprised of 3 MathTerms: 
+ * - Term beneath the sigma sign. 
  * - Term above the sigma sign. - Term being summed. Use the \sum latex command,
  * to generate the latex representation of this MathTerm.
  * @author AM
@@ -26,6 +27,7 @@ public class SumMathTerm extends MathTerm{
 	 * latex representation using the \sum command.
 	 */
 	public java.lang.String toLatex(){
-		return "\\sum_{ "+this.subTerm.toLatex()+" }^{ "+this.superTerm.toLatex()+" }{ "+this.sumTerm.toLatex()+" }";
+		return "\\sum_{ "+this.subTerm.toLatex()+" }^{ "
+				+this.superTerm.toLatex()+" }{ "+this.sumTerm.toLatex()+" }";
 	}
 }

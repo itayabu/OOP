@@ -1,12 +1,14 @@
 /**
- * This class represents a math term between brackets (See latex's \right( and \left)).
+ * This class represents a math term between brackets 
+ * (See latex's \right( and \left)).
  * @author AM
  *
  */
 public class BracketsMathTerm extends MathTerm {
 	protected MathTerm internalTerm;
 	/**
-	 * The constructor receives the MathTerm they will be rendered as the term inside the brackets.
+	 * The constructor receives the MathTerm they will be rendered as the 
+	 * term inside the brackets.
 	 * @param internalTerm - The term that resides within the brackets.
 	 */
 	public BracketsMathTerm(MathTerm internalTerm){
