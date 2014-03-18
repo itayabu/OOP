@@ -1,3 +1,6 @@
+//alex kazakov
+
+
 /**
  * This class represents a term composed of exactly two independent math terms. 
  * Like MathTerm, this class functions as a base class and shouldn't be 
