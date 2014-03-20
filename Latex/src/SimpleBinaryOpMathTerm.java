@@ -23,9 +23,6 @@ public class SimpleBinaryOpMathTerm extends BinaryMathTerm {
 									char sign){
 		
 		super (firstTerm,secondTerm);
-		this.sign = sign;
-		this.firstTerm = firstTerm;
-		this.secondTerm = secondTerm;
 	}
 	/**
 	 * Generates the latex representation of this arithmetic operation math term. 
