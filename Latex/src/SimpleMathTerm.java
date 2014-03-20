@@ -8,7 +8,7 @@
  * @author AM
  */
 public class SimpleMathTerm extends MathTerm {
-	protected String termName;
+	private String termName;
 	
 	/**
 	 * Constructs a new instance given a simple term "name" 

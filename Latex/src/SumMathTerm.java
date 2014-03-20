@@ -7,9 +7,9 @@
  *
  */
 public class SumMathTerm extends MathTerm{
-	protected MathTerm subTerm;
-	protected MathTerm superTerm;
-	protected MathTerm sumTerm;
+	private MathTerm subTerm;
+	private MathTerm superTerm;
+	private MathTerm sumTerm;
 
 	/**
 	 * The constructor receives the 3 MathTerm that comprises the sum math term.

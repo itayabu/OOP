@@ -5,7 +5,7 @@
  *
  */
 public class BracketsMathTerm extends MathTerm {
-	protected MathTerm internalTerm;
+	private MathTerm internalTerm;
 	/**
 	 * The constructor receives the MathTerm they will be rendered as the 
 	 * term inside the brackets.

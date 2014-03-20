@@ -16,8 +16,6 @@ public class FractionMathTerm extends BinaryMathTerm {
 
 	public FractionMathTerm(MathTerm firstTerm, MathTerm secondTerm) {
 		super(firstTerm,secondTerm);
-		this.firstTerm = firstTerm;
-		this.secondTerm = secondTerm;
 	}
 
 	/**

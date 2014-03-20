@@ -5,7 +5,7 @@
  *
  */
 public class SimpleBinaryOpMathTerm extends BinaryMathTerm {
-	protected char sign;
+	private char sign;
 
 	/**
 	 * Instantiate a new SimpleBinaryOpMathTerm. Keep in mind that since this 
@@ -23,6 +23,7 @@ public class SimpleBinaryOpMathTerm extends BinaryMathTerm {
 									char sign){
 		
 		super (firstTerm,secondTerm);
+		this.sign = sign;
 	}
 	/**
 	 * Generates the latex representation of this arithmetic operation math term. 

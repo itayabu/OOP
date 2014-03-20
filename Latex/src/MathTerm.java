@@ -19,12 +19,12 @@
  * bar and then negation.
  * @author AM
  */
-public class MathTerm extends java.lang.Object {
+public abstract class MathTerm {
 	//creating class fields
-	protected MathTerm exponentTerm;
-	protected boolean exponent;
-	protected boolean isBarred;
-	protected boolean isNegated;
+	private MathTerm exponentTerm;
+	private boolean exponent;
+	private boolean isBarred;
+	private boolean isNegated;
 
 	/**
 	 * This method gets a math term to be placed as an exponent for the current 

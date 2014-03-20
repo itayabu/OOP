@@ -35,6 +35,8 @@ File description:
        
 Design: 
 
+the MathTerm is set to be an abstract class because some classes
+extend it, that would be a more natural design.
 
 
 Implementation issues:
@@ -45,8 +47,15 @@ Answers to questions:
 
 1. say i wish to add new term :an integral term - i would probably derive it
    from the sum class since they share common structure: sub term, super term 
-   and the integral term. 
+   and the sum/integral term. 
+   i can always change the program so that would be an abstract class for all the 
+   MathTerms that uses "super term", "sub term" and the "term" itself, so they
+   can extend that one
 
- 
+2. i didn't want to implement methods again and again, that would be using an
+   interface, i wanted to keep this specific program as simple as possible,
+   when using an abstract class i can choose which methods i want to extend 
+   and which are not necessary to other classes, there for by 
+   choosing an interface would be choosing a disadvantaged form.
 
 
