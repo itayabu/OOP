@@ -1,12 +1,9 @@
 import oop.ex3.*;
 /**
- * FILE : BassherShip.java
- * EXERCISE : Intro2cs Ex9: Space Wars
- * DESCRIPTION:
- * 		    This ship attempts to collide with other ships. It will always
- *			accelerate, and turn towards the closest ship. If it gets within a distance
- *			of 0.2 units from another ship, it will turn on its shield.
- * @authors avioren & ohadcn
+ * This ship attempts to collide with other ships. It will always
+ * accelerate, and turn towards the closest ship. If it gets within a distance
+ * of 0.2 units from another ship, it will turn on its shield.
+ * @authors Assaf
  *
  */
 public class BasherShip extends AIShip {
@@ -30,7 +27,8 @@ public class BasherShip extends AIShip {
 	public void doAction(SpaceWars game) {
 		SpaceShipPhysics nearest = game.getClosestShipTo(this).getPhysics();
 		//activate shield when getting close to the opponent, unless it is already active
-		if(( nearest.distanceFrom(this.getPhysics()) < SHIELD_DISTANCE)^getShieldStatus()){
+		if(( nearest.distanceFrom(this.getPhysics())<
+			SHIELD_DISTANCE)^getShieldStatus()){
 			turnOnShield();
 		}
 		

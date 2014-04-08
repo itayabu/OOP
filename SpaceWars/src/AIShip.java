@@ -16,7 +16,7 @@ public abstract class AIShip extends SpaceShip {
 	public Image getImage() {
 		return (getShieldStatus()?
 				GameGUI.ENEMY_SPACESHIP_IMAGE_SHIELD:
-					GameGUI.ENEMY_SPACESHIP_IMAGE);
+				GameGUI.ENEMY_SPACESHIP_IMAGE);
 	}
 
 

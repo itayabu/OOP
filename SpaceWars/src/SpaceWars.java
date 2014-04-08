@@ -2,10 +2,7 @@ import java.util.ArrayList;
 import oop.ex3.*;
 
 /**
- * This class acts as the driver for the Space Wars game. It is part of Ex57
- * (see the exercise description for more details).
- * 
- * @author oop
+ * This class acts as the driver for the Space Wars game.
  */
 public class SpaceWars{
     

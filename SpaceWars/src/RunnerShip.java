@@ -1,16 +1,13 @@
 import oop.ex3.*;
 
 /**
- * FILE : RunnerShip.java
- * EXERCISE : Intro2cs Ex9: Space Wars
- * DESCRIPTION:
- * 			This spaceship attempts to run away from the fight. It will
- *			constantly accelerate,and turn away from the ship that is closest. The
- *			runner has the spying ability and will attempt spying on each round. It
- *			will try to get the nearest ship cannon angle from himself. if that angle
- *			is smaller than 0.2 radians (in any direction) and the distance from the
- *			nearest ship is smaller than 0.2 units, the runner will try to teleport.
- * @authors avioren & ohadcn
+ * This spaceship attempts to run away from the fight. It will
+ * constantly accelerate,and turn away from the ship that is closest. The
+ * runner has the spying ability and will attempt spying on each round. It
+ * ill try to get the nearest ship cannon angle from himself. if that angle
+ * is smaller than 0.2 radians (in any direction) and the distance from the
+ * nearest ship is smaller than 0.2 units, the runner will try to teleport.
+ * @authors Assaf
  *
  */
 public class RunnerShip extends AIShip {

@@ -1,13 +1,8 @@
-import oop.ex3.*;
-
 /**
- * FILE : SpecialShip.java
- * EXERCISE : Intro2cs Ex9: Space Wars
- * DESCRIPTION:
- * 		SpecialShip is a crazy kind of aggressiveShips
- * 		At first, it behaves like an aggressive, and after it was killed
- * 		it freaks out, coming after the closest ship and shoots without any limitations!
- * @authors avioren & ohadcn
+ * SpecialShip is a crazy kind of aggressiveShips
+ * At first, it behaves like an aggressive, and after it was killed
+ * it freaks out, coming after the closest ship and shoots without any limitations!
+ * @authors Assaf
  *
  */
 public class SpecialShip extends AggressiveShip {
@@ -24,7 +19,8 @@ public class SpecialShip extends AggressiveShip {
 
     /**
      * this method is called each time the SpaceShip is shooting.
-     * this special spaceShip never runs out of energy and have no restrictions for shooting
+     * this special spaceShip never runs out of energy and have no 
+     * restrictions for shooting
      * @param game the game object to which this SpecialShip belongs.
      * @return true if the shooting succeeded, false otherwise
      */

@@ -1,13 +1,11 @@
 import oop.ex3.*;
+
 import java.awt.Image;
 /**
- * FILE : SpaceShip.java
- * EXERCISE : Intro2cs Ex9: Space Wars
- * DESCRIPTION:
- * 		This abstract class is a container for all spaceships.
- * 		this class contains the API spaceships need to implement for the SpaceWars game.
- * 		and implements some method used repeatedly in spaceships. 
- * @authors avioren & ohadcn
+ * This abstract class is a container for all spaceships.
+ * this class contains the API spaceships need to implement for the SpaceWars game.
+ * and implements some method used repeatedly in spaceships. 
+ * @authors Assaf
  *
  */
 public abstract class SpaceShip{
@@ -18,22 +16,23 @@ public abstract class SpaceShip{
 	private SpaceShipPhysics pos;
 
 	//constant values used in the  game
-	private static final int STARTING_HEALTH = 10;
-	private static final int MAX_ENERGY = 200;
-	private static final int STARTING_ENERGY = MAX_ENERGY;
+	private static final int ENERGY_UP = 20 ;
+	private static final int ENERGY_DOWN = 10;
+	private static final int STARTING_HEALTH = 20;
+	private static final int STARTING_ENERGY = 200;
 	private static final int SHOOTING_ENERGY = 25;
-	private static final int TELEPORTING_ENERGY = 3;
+	private static final int TELEPORTING_ENERGY = 150;
 	private static final int SHOOTING_TIME = 8;
 	private static final int SHIELD_ENERGY = 3;
 
 	/**
-	 * the health of the ship
+	 * ship health
 	 */
 	private int health;
 	
 	/**
-	 * the energy of the ship
-	 * the energy is used to shoot, teleport or activating shield and is increased by 1 each turn
+	 * the energy of the ship is used to shoot, teleport or activating shield 
+	 * and is increased by 1 each turn
 	 */
 	private int energy;
 	
@@ -43,14 +42,18 @@ public abstract class SpaceShip{
 	private int firingTurns;
 	
 	/**
-	 * a boolean field mean if the shield of the ship is active or not
+	 * is ship's shield activated
 	 */
 	private boolean shieldStatus;
 
-
 	/**
-	 *  Does the actions of this ship for this round. 
-	 *  This is called once per round by the SpaceWars game driver.
+	 * the maximum energy of the ship at a given time
+	 */
+	private int maxEnergy;
+	
+	/**
+	 * Does the actions of this ship for this round. 
+	 * This is called once per round by the SpaceWars game driver.
 	 * @param game the game object to which this ship belongs.
 	 */
 	public abstract void doAction(SpaceWars game);
@@ -75,11 +78,18 @@ public abstract class SpaceShip{
 
 	/**
 	 *  This method is called every time a collision with this ship occurs.
-	 *  if shield is on, no harm done...
+	 *  if shield is on, max energy and energy go up by 20
+	 *  otherwise max energy levels go down by 10 as well as health levels by 1
 	 */
 	public void collidedWithAnotherShip() {
-		if(!shieldStatus)
+		if(!shieldStatus){
 			health--;
+			maxEnergy -= ENERGY_DOWN;
+		}
+		if(shieldStatus){
+			maxEnergy += ENERGY_UP;
+			energy += ENERGY_UP;
+		}	
 	}
 
 	/**
@@ -104,8 +114,8 @@ public abstract class SpaceShip{
 		}
 		//add energy
 		energy ++;
-		if (energy > MAX_ENERGY){
-			energy = MAX_ENERGY;
+		if (energy > maxEnergy){
+			energy = maxEnergy;
 		}
 	}
 
@@ -143,6 +153,7 @@ public abstract class SpaceShip{
 	public void reset() {
 		pos = new SpaceShipPhysics();
 		health = STARTING_HEALTH;
+		maxEnergy = STARTING_ENERGY;
 		energy = STARTING_ENERGY;
 		shieldStatus = false;
 		firingTurns = 0;
@@ -184,7 +195,7 @@ public abstract class SpaceShip{
 			shieldStatus = false;
 		}
 		else{
-			if (energy > SHIELD_ENERGY){	//shield is off, and possible to turn on
+			if (energy > SHIELD_ENERGY){//shield is off, and possible to turn on
 				shieldStatus = true;
 			}
 		}

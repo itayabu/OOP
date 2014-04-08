@@ -3,14 +3,11 @@ import oop.ex3.*;
 import java.awt.Image;
 
 /**
- * FILE : HumanShip.java
- * EXERCISE : Intro2cs Ex9: Space Wars
- * DESCRIPTION:
- * 		This spaceship is controlled by the user. The keys
- * 		used to control the spaceship are: left-arrow, right-arrow, up-arrow to turn
- * 		left,right and accelerate. "s" to fire a shot. "d" to turn on the shield. "t" to
- * 		teleport.
- * @authors avioren & ohadcn
+ * This spaceship is controlled by the user. The keys
+ * used to control the spaceship are: left-arrow, right-arrow, up-arrow to turn
+ * left,right and accelerate. "s" to fire a shot. "d" to turn on the shield.
+ * "t" to teleport.
+ * @authors Assaf
  *
  */
 public class HumanShip extends SpaceShip {
@@ -74,7 +71,8 @@ public class HumanShip extends SpaceShip {
 	 * @return the image of the ship.
 	 */
 	public Image getImage() {
-		return (getShieldStatus()) ? GameGUI.SPACESHIP_IMAGE_SHIELD : GameGUI.SPACESHIP_IMAGE;
+		return (getShieldStatus()) ? GameGUI.SPACESHIP_IMAGE_SHIELD : 
+				GameGUI.SPACESHIP_IMAGE;
 	}
 	
 }
