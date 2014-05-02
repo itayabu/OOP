@@ -86,7 +86,7 @@ public class ChainedHashSet extends SimpleHashSet {
 		MyLinkedListFadaceA [] oldTable= hashTable;
 		int oldCap = capacity();
 		size=0;
-		setCapacity (capacity() * doubleFactor);
+		capacity *= doubleFactor;
 		hashTable = new MyLinkedListFadaceA[capacity];
 		nullify(hashTable, capacity);
 		for (int i = 0; i < oldCap; i++){

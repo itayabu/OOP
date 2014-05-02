@@ -115,7 +115,7 @@ public class OpenHashSet extends SimpleHashSet {
 		String [] oldTable= hashTable;
 		int oldCap = capacity();
 		size=0;
-		setCapacity (capacity() * doubleFactor);
+		capacity *= doubleFactor;
 		hashTable = new String [capacity()];
 		for (int i = 0; i < oldCap; i++){
 			if ((oldTable[i] != null) && (oldTable[i] != nulled)){
@@ -134,7 +134,7 @@ public class OpenHashSet extends SimpleHashSet {
 		String [] oldTable= hashTable;
 		int oldCap = capacity();
 		size=0;
-		setCapacity (capacity()/ divFactor);
+		capacity = (capacity()/ divFactor);
 		hashTable = new String [capacity()];
 		for (int i = 0; i < oldCap; i++){
 			if ((oldTable[i] != null) && (oldTable[i] != nulled)){

@@ -42,9 +42,9 @@ public abstract class SimpleHashSet implements SimpleSet {
 	
 	public abstract int capacity();
 	
-	protected void setCapacity(int newCapacity){
-		capacity = newCapacity;
-	}
+//	protected void setCapacity(int newCapacity){
+//		capacity = newCapacity;
+//	}
 	
 	protected boolean toExpand(){
 		float check = (float) ((float) size / (float) capacity);
