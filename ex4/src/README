@@ -1,0 +1,57 @@
+itayabu
+
+30303033286 
+
+=======================
+=  File Description: = 
+=======================
+MathTerm- root class (abstract class) defining terms for use in Latex.
+	class hold private fields and protected methods for use of the subclasses.
+BinariMathTerm- another abstract class, hold two terms
+BracketsMathTerm- represents a math term between brackets.
+FractionMathTerm- represents a special case of binary math term- fraction.
+SimpleBinariOpMathTerm-represents a simple operation between two other terms.
+SumMathTerm-This class represents a mathematical sum.
+SimpleMathTerm-This class represents a math term which is either a single
+	letter variable (x,y,a,b,etc..), or a number. 
+	
+============
+=  Design: = 
+============
+except for abstracting the MathTerm class (see Q&A), I had no design questions.
+
+
+=============================
+=  Questions and answers: =
+=============================
+
+Q: Say you want to add a new term: an integral term. Describe in few words 
+how you would implement it. Which class will it derive from? You can propose
+modifications to the class hierarchy.
+
+A: one way will be to inherit the SumMathTerm, and override the "toLatex" 
+method so instead of \sum it will print \int.
+another way is to build another abstract class- MultiMathTerm that inherit
+MathTerm and let SumMathTerm and Integral inherit MultiMathTerm. this way,
+in the future if someone would like to multiply or sqare many terms he can
+inherit straight from this class.
+
+Q:If there was any implementation difficulty, or challenge.
+Please mention and discuss it.
+
+A: The choise between abstract class and interface was not easy.
+on one hand, a class that extends abstract class cannot extend other classes
+(witch is a drawback), on the other hand, I had some methods I wanted to 
+implement at the root class so there will be no need to repeat code 
+and get confused.
+=======================
+=  source files: = 
+=======================
+this file		README
+java file		MathTerm
+java file		BinariMathTerm
+java file		BracketsMathTerm
+java file		FractionMathTerm
+java file		SimpleBinariOpMathTerm
+java file		SumMathTerm
+java file		SimpleMathTerm
