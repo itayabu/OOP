@@ -3,16 +3,36 @@ import java.util.LinkedList;
 public class ChainedHashSet extends SimpleHashSet {
 
 	private final int divFactor=2, doubleFactor=2;
-	MyLinkedListFadaceA [] hashTable;
+	private MyLinkedListFadace [] hashTable;
+
+	/**
+	 * A default constructor.
+	 * Constructs a new, empty table with default initial capacity (16), 
+	 * upper load factor (0.75) and lower load factor (0.25).
+	 */
 	public ChainedHashSet(){
 		super ();
 		buildHashSet();
 	}
 
+	/**
+	 * ChainedHashTable constructor
+	 * Constructs a new, empty table with the specified load factors,
+	 * and the default initial capacity (16).
+	 * @param upperLoadFactor
+	 * @param lowerLoadFactor
+	 */
 	public ChainedHashSet(float upperLoadFactor, float lowerLoadFactor){
 		super (upperLoadFactor, lowerLoadFactor);
 		buildHashSet();
 	}
+
+	/**
+	 * Data constructor - builds the hash set by adding the elements one by one. 
+	 * The new table has the default values of initial capacity (16), 
+	 * upper load factor (0.75), and lower load factor (0.25).
+	 * @param data
+	 */
 	public ChainedHashSet(String[] data){
 		super ();
 		buildHashSet();
@@ -20,10 +40,13 @@ public class ChainedHashSet extends SimpleHashSet {
 			add(data[i]);
 		}
 	}
-	
+
+	/**
+	 * construct a new hash table
+	 */
 	private void buildHashSet(){
-		hashTable = new MyLinkedListFadaceA[capacity];
-		nullify(hashTable, capacity);
+		hashTable = new MyLinkedListFadace[capacity];
+		nullify(hashTable);
 	}
 
 	@Override
@@ -57,72 +80,114 @@ public class ChainedHashSet extends SimpleHashSet {
 			}
 			return true;
 		}
-//		System.out.println("oh bummer, something happend");
+		//		System.out.println("oh bummer, something happend");
 		return false;
 	}
+
+	/**
+	 * hash function for strings
+	 * @param value- a string to be hashed
+	 * @return the hashed value.
+	 */
 	private int hash(String value){
 		return value.hashCode()&(capacity()-1);
 	}
 
-	private void nullify( MyLinkedListFadaceA[] Table, int sizeOfTable){
-		for (int i = 0; i < sizeOfTable; i++){
-			Table[i]=new MyLinkedListFadaceA();
+	/**
+	 * initialize the hash table
+	 * @param Table to be initialized
+	 */
+	private void nullify( MyLinkedListFadace[] table){
+		for (int i = 0; i < table.length; i++){
+			table[i]=new MyLinkedListFadace();
 		}
 	}
+
+	/**
+	 * shrink table capacity by 2
+	 */
 	private void shrink(){
-//		System.out.println("-------------shrinking");
-		MyLinkedListFadaceA[] oldTable= hashTable;
+
+		// save the old table stats and build a new table
+		MyLinkedListFadace[] oldTable= hashTable;
 		int oldCap = capacity;
 		size=0;
 		capacity = (capacity/ divFactor);
-		hashTable = new MyLinkedListFadaceA[capacity];
-		nullify(hashTable, capacity);
+		hashTable = new MyLinkedListFadace[capacity];
+		nullify(hashTable);
+		// copy values from the old table to the new
 		for (int i = 0; i < oldCap; i++){
 			reHashList(oldTable[i]);
 		}
 	}
+
+	/**
+	 * expand the table by 2
+	 */
 	private void expand(){
-//		System.out.println("------expanding");
-		MyLinkedListFadaceA [] oldTable= hashTable;
+
+		// save the old table stats and build a new table
+		MyLinkedListFadace [] oldTable= hashTable;
 		int oldCap = capacity();
 		size=0;
 		capacity *= doubleFactor;
-		hashTable = new MyLinkedListFadaceA[capacity];
-		nullify(hashTable, capacity);
+		hashTable = new MyLinkedListFadace[capacity];
+		nullify(hashTable);
+		// copy values from the old table to the new
 		for (int i = 0; i < oldCap; i++){
 			reHashList(oldTable[i]);
 		}
 	}
-	private void reHashList(MyLinkedListFadaceA list){
+
+	/**
+	 * hash all elements from a list to the hashTable
+	 * @param list MyLinkedListFadace type from witch poll values to the hashTable
+	 */
+	private void reHashList(MyLinkedListFadace list){
 		while (! list.isEmpty()){
 			add(list.pollString());
 		}
 	}
-	public void printAllLeft(){
-		for (int i=0; i<capacity; i++){
-			if (!hashTable[i].isEmpty()){
-//				while(!hashTable[i].isEmpty())
-//					System.out.println("a"  +hashTable[i].pollString());
-			}
-		}
+	
+	@Override
+	public int capacity() {
+		return capacity;
 	}
 
-	private class MyLinkedListFadaceA{
+	/**
+	 * easy wrap for linkedList
+	 * similar to CollectionFacade but include more options
+	 * @author Itay
+	 *
+	 */
+	private class MyLinkedListFadace{
+
 		private LinkedList<String> list;
-		
-		private MyLinkedListFadaceA() {
+
+		/**
+		 * default constructor, initiate a linkedList
+		 */
+		private MyLinkedListFadace() {
 			list = new LinkedList<String>();
 		}
 
-		private boolean add(String newValue) {
-			if ( !this.contains(newValue)){
-				list.add(newValue);
-				return true;
-			}
-//			System.out.println("didnt add " + newValue);
-			return false;
+		/**
+		 * Add a specified element to the set.
+		 * @param newValue New value to add to the set
+		 */
+		private void add(String newValue) {
+			//			if ( !this.contains(newValue)){
+			list.add(newValue);
+			//				return true;
+			//			}
+			//			return false;
 		}
 
+		/**
+		 * Look for a specified value in the list
+		 * @param searchVal 
+		 * @return true if element exist in list
+		 */
 		private boolean contains(String searchVal) {
 			if ((!list.isEmpty()) && (list.contains(searchVal))){
 				return true;
@@ -130,24 +195,35 @@ public class ChainedHashSet extends SimpleHashSet {
 			return false;
 		}
 
-		private boolean delete(String toDelete) {
-			if (this.contains(toDelete)){
-				this.list.remove(toDelete);
-				return true;
-			}
-			return false;
+		/**
+		 * delete an element from list
+		 * @param toDelete
+		 * @return
+		 */
+		private void delete(String toDelete) {
+			//			if (this.contains(toDelete)){
+			this.list.remove(toDelete);
+			//				return true;
+			//			}
+			//			return false;
 		}
+
+		/**
+		 * delete and return the first string in list
+		 * @return the first string in list
+		 */
 		private String pollString(){
 			return list.pollFirst();
 		}
 
+		/**
+		 * check if list is empty
+		 * @return true if list is empty, false else
+		 */
 		private boolean isEmpty(){
 			return list.isEmpty();
 		}
 	}
 
-	@Override
-	public int capacity() {
-		return capacity;
-	}
 }
+

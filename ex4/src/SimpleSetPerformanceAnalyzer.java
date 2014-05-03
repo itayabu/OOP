@@ -1,8 +1,14 @@
 import java.util.*;
+/**
+ * time checking class for data structors
+ * @author Itay
+ *
+ */
 public class SimpleSetPerformanceAnalyzer {
 	
 	static TimeCounts [] times;
 	static String[] dataListOne, dataListTow;
+	
 	
 	public static void main(String[] args) {
 		
@@ -19,13 +25,13 @@ public class SimpleSetPerformanceAnalyzer {
 				timeBefore= new Date().getTime();
 				times[i].set = new OpenHashSet(dataListOne);
 				timeAfter= new Date().getTime();
-				times[i].data1Time = timeAfter-timeBefore;
+				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				//data2 related
 				timeBefore= new Date().getTime();
 				times[i].set = new OpenHashSet(dataListTow);
 				timeAfter= new Date().getTime();
-				times[i].data2Time = timeAfter-timeBefore;
+				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
@@ -36,14 +42,14 @@ public class SimpleSetPerformanceAnalyzer {
 				timeBefore= new Date().getTime();
 				times[i].set = new ChainedHashSet(dataListOne);
 				timeAfter= new Date().getTime();
-				times[i].data1Time = timeAfter-timeBefore;
+				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				
 				//data2 related
 				timeBefore= new Date().getTime();
 				times[i].set = new ChainedHashSet(dataListTow);
 				timeAfter= new Date().getTime();
-				times[i].data2Time = timeAfter-timeBefore;
+				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
@@ -57,7 +63,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data1Time = timeAfter-timeBefore;
+				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				
 				//data2 related
@@ -67,7 +73,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data2Time = timeAfter-timeBefore;
+				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
@@ -81,7 +87,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data1Time = timeAfter-timeBefore;
+				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				
 				//data2 related
@@ -91,7 +97,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data2Time = timeAfter-timeBefore;
+				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
@@ -105,7 +111,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data1Time = timeAfter-timeBefore;
+				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				
 				//data2 related
@@ -115,7 +121,7 @@ public class SimpleSetPerformanceAnalyzer {
 					times[i].set.add(dataListOne[i]);
 				}
 				timeAfter= new Date().getTime();
-				times[i].data2Time = timeAfter-timeBefore;
+				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
@@ -134,12 +140,12 @@ public class SimpleSetPerformanceAnalyzer {
 		timeBefore= new Date().getTime();
 		curr.set.contains("Hi");
 		timeAfter= new Date().getTime();
-		curr.d1ContainHi = timeAfter-timeBefore;
+		curr.dOneContainHi = timeAfter-timeBefore;
 		timeBefore= new Date().getTime();
 		curr.set.contains("-13170890158");
 		timeAfter= new Date().getTime();
-		curr.d1ContainNum = timeAfter-timeBefore;
-		curr.d1ContainCompareTime = curr.d1ContainNum - curr.d1ContainHi;
+		curr.dOneContainNum = timeAfter-timeBefore;
+		curr.dOneContainCompareTime = curr.dOneContainNum - curr.dOneContainHi;
 	}
 
 	/**
@@ -151,12 +157,12 @@ public class SimpleSetPerformanceAnalyzer {
 		timeBefore= new Date().getTime();
 		curr.set.contains("hi");
 		timeAfter= new Date().getTime();
-		curr.d2ContainHi = timeAfter-timeBefore;
+		curr.dTowContainHi = timeAfter-timeBefore;
 		timeBefore= new Date().getTime();
 		curr.set.contains("23");
 		timeAfter= new Date().getTime();
-		curr.d2ContainNum = timeAfter-timeBefore;
-		curr.d2CompareContainTime = curr.d2ContainNum - curr.d2ContainHi;
+		curr.dTowContainNum = timeAfter-timeBefore;
+		curr.dTowCompareContainTime = curr.dTowContainNum - curr.dTowContainHi;
 	}
 
 	/**
@@ -183,10 +189,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time it took each structure to initialize:");
 		for(int i = 0; i < 5; i++){
-			if (times[i].data1Time < times[j].data1Time){
+			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].data1Time);
+			System.out.println(times[i].name + " " + times[i].dataOneTime);
 		}
 		System.out.println("quickest structure: "+ times[j].name);
 	}
@@ -198,10 +204,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time took structures to return contains hi");
 		for(int i = 0; i < 5; i++){
-			if (times[i].d1ContainHi < times[j].d1ContainHi){
+			if (times[i].dOneContainHi < times[j].dOneContainHi){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].d1ContainHi);
+			System.out.println(times[i].name + " " + times[i].dOneContainHi);
 		}
 		System.out.println("best time: " + times[j].name);
 	}
@@ -213,10 +219,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time took structures to return contains number");
 		for(int i = 0; i < 5; i++){
-			if (times[i].d1ContainNum < times[j].d1ContainNum){
+			if (times[i].dOneContainNum < times[j].dOneContainNum){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].d1ContainNum);
+			System.out.println(times[i].name + " " + times[i].dOneContainNum);
 		}
 		System.out.println("best time: " + times[j].name);
 	}
@@ -228,7 +234,7 @@ public class SimpleSetPerformanceAnalyzer {
 		System.out.println("for data1");
 		for(int i = 0; i < 5; i++){
 			System.out.println(times[i].name + " finding the number took " + 
-		(times[i].d1ContainNum - times[i].d1ContainHi) + " longer than Hi");
+		(times[i].dOneContainNum - times[i].dOneContainHi) + " longer than Hi");
 		}
 	}
 
@@ -239,10 +245,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time it took each structure to initialize:");
 		for(int i = 0; i < 5; i++){
-			if (times[i].data1Time < times[j].data1Time){
+			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].data2Time);
+			System.out.println(times[i].name + " " + times[i].dataTowTime);
 		}
 		System.out.println("quickest structure: "+ times[j].name);
 	}
@@ -254,10 +260,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time took structures to return contains hi");
 		for(int i = 0; i < 5; i++){
-			if (times[i].d2ContainHi < times[j].d2ContainHi){
+			if (times[i].dTowContainHi < times[j].dTowContainHi){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].d2ContainHi);
+			System.out.println(times[i].name + " " + times[i].dTowContainHi);
 		}
 		System.out.println("best time: " + times[j].name);
 	}
@@ -269,10 +275,10 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time took structures to return contains number");
 		for(int i = 0; i < 5; i++){
-			if (times[i].d1ContainNum < times[j].d2ContainNum){
+			if (times[i].dOneContainNum < times[j].dTowContainNum){
 				j=i;
 			}
-			System.out.println(times[i].name + " " + times[i].d2ContainNum);
+			System.out.println(times[i].name + " " + times[i].dTowContainNum);
 		}
 		System.out.println("best time: " + times[j].name);
 	}
@@ -283,8 +289,8 @@ public class SimpleSetPerformanceAnalyzer {
 	private static void compareDataTowContain(){
 		System.out.println("for data2");
 		for(int i = 0; i < 5; i++){
-			System.out.println(times[i].name + " finding the number took " + 
-		(times[i].d2ContainNum - times[i].d2ContainHi) + " longer than Hi");
+			System.out.println(times[i].name + " finding hi took " + 
+		(times[i].dTowContainHi - times[i].dTowContainNum) + " longer than the number");
 		}
 	}
 
@@ -293,8 +299,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void printCompareInitTimes(){
 		for(int i = 0; i < 5; i++){
-			System.out.println("for " + times[i].name + "data1 initialize was" + 
-					times[i].initCompareTime + "longer than data2");
+			System.out.println("for " + times[i].name + "data1 initialize was " + 
+					times[i].initCompareTime + " longer than data2");
 		}
 	}
 
@@ -303,14 +309,24 @@ public class SimpleSetPerformanceAnalyzer {
 	 * @param num- the number of structure so compare
 	 */
 	private static void compareInitializeTimes(int num){
-		times[num].initCompareTime = (times[num].data1Time - times[num].data2Time);
+		times[num].initCompareTime = (times[num].dataOneTime - times[num].dataTowTime);
 	}
 
+	/**
+	 * private class to represent all the fields needed for the analyzer.
+	 * class hold name, SimpleSet to work with and many long numbers to check for time analysts
+	 * @author Itay
+	 */
 	static class TimeCounts{
 		String name;
 		SimpleSet set;
-		long data1Time, data2Time, d1ContainHi, d2ContainHi, d1ContainNum, d2ContainNum,
-		initCompareTime, d1ContainCompareTime, d2CompareContainTime;
+		long dataOneTime, dataTowTime, dOneContainHi, dTowContainHi, dOneContainNum, dTowContainNum,
+		initCompareTime, dOneContainCompareTime, dTowCompareContainTime;
+		
+		/**
+		 * inialize a new TimeCounts
+		 * @param name
+		 */
 		private TimeCounts(String name){
 			this.name = name;
 		}
