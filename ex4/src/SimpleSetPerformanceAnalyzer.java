@@ -8,6 +8,8 @@ public class SimpleSetPerformanceAnalyzer {
 	
 	static TimeCounts [] times;
 	static String[] dataListOne, dataListTow;
+	static final int OPEN_HASH_SET=0, CHAINED_HASH_SET=1, 
+			LINKED_LIST=2, TREE_SET=3, HASH_SET=4, NUM_OF_SETS=5;
 	
 	
 	public static void main(String[] args) {
@@ -15,50 +17,62 @@ public class SimpleSetPerformanceAnalyzer {
 		long timeBefore, timeAfter;
 		dataListOne = Ex4Utils.file2array("src/data1.txt");
 		dataListTow = Ex4Utils.file2array("src/data2.txt");
-		times = new TimeCounts[5];
+		times = new TimeCounts[NUM_OF_SETS];
 
 		for (int i = 0; i<5; i++){
 			switch(i){
-			case 0:
+			case OPEN_HASH_SET:
 				//data1 related
 				times[i]= new TimeCounts("OpenHashCell");
 				timeBefore= new Date().getTime();
-				times[i].set = new OpenHashSet(dataListOne);
+				times[i].set = new OpenHashSet();
+				for (int j=0; j<dataListOne.length; j++){
+					times[i].set.add(dataListOne[j]);
+				}
 				timeAfter= new Date().getTime();
 				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
 				//data2 related
 				timeBefore= new Date().getTime();
 				times[i].set = new OpenHashSet(dataListTow);
+				for (int j=0; j<dataListTow.length; j++){
+					times[i].set.add(dataListTow[j]);
+				}
 				timeAfter= new Date().getTime();
 				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
 				break;
-			case 1:
+			case CHAINED_HASH_SET:
 				//data1 related
 				times[i]= new TimeCounts("ChainedHashSet");
 				timeBefore= new Date().getTime();
 				times[i].set = new ChainedHashSet(dataListOne);
+				for (int j=0; j<dataListOne.length; j++){
+					times[i].set.add(dataListOne[j]);
+				}
 				timeAfter= new Date().getTime();
 				times[i].dataOneTime = timeAfter-timeBefore;
 				fillTimesDataOne(times[i]);
-				
 				//data2 related
 				timeBefore= new Date().getTime();
 				times[i].set = new ChainedHashSet(dataListTow);
+				for (int j=0; j<dataListTow.length; j++){
+					times[i].set.add(dataListTow[j]);
+				}
 				timeAfter= new Date().getTime();
 				times[i].dataTowTime = timeAfter-timeBefore;
 				fillTimesDataTow(times[i]);
 				compareInitializeTimes(i);
 
 				break;
-			case 2:
+			case LINKED_LIST:
 				//data1 related
 				times[i]= new TimeCounts("LinkedList");
 				timeBefore= new Date().getTime();
-				times[i].set = new CollectionFacadeSet(new LinkedList<String>());
+				times[i].set = 
+						new CollectionFacadeSet(new LinkedList<String>());
 				for (int j=1; j< dataListOne.length; j++){
 					times[i].set.add(dataListOne[i]);
 				}
@@ -68,7 +82,8 @@ public class SimpleSetPerformanceAnalyzer {
 				
 				//data2 related
 				timeBefore= new Date().getTime();
-				times[i].set = new CollectionFacadeSet(new LinkedList<String>());
+				times[i].set = 
+						new CollectionFacadeSet(new LinkedList<String>());
 				for (int j=1; j< dataListOne.length; j++){
 					times[i].set.add(dataListOne[i]);
 				}
@@ -78,11 +93,12 @@ public class SimpleSetPerformanceAnalyzer {
 				compareInitializeTimes(i);
 
 				break;
-			case 3:
+			case TREE_SET:
 				//data1 related
 				times[i]= new TimeCounts("TreeSet");
 				timeBefore= new Date().getTime();
-				times[i].set = new CollectionFacadeSet(new TreeSet<String>());
+				times[i].set = 
+						new CollectionFacadeSet(new TreeSet<String>());
 				for (int j=1; j< dataListOne.length; j++){
 					times[i].set.add(dataListOne[i]);
 				}
@@ -102,7 +118,7 @@ public class SimpleSetPerformanceAnalyzer {
 				compareInitializeTimes(i);
 
 				break;
-			case 4:
+			case HASH_SET:
 				//data1 related
 				times[i]= new TimeCounts("HashSet");
 				timeBefore= new Date().getTime();
@@ -187,7 +203,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void compareSetsDataOne(){
 		int j=0;
-		System.out.println("for data1.txt, the time it took each structure to initialize:");
+		System.out.println("for data1.txt, the time it took each" +
+				" structure to initialize:");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
@@ -202,7 +219,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void dataOneContainHi(){
 		int j=0;
-		System.out.println("for data1.txt, the time took structures to return contains hi");
+		System.out.println("for data1.txt, the time took structures to " +
+				"return contains hi");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dOneContainHi < times[j].dOneContainHi){
 				j=i;
@@ -217,7 +235,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void dataOneContainNum(){
 		int j=0;
-		System.out.println("for data1.txt, the time took structures to return contains number");
+		System.out.println("for data1.txt, the time took structures to " +
+				"return contains number");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dOneContainNum < times[j].dOneContainNum){
 				j=i;
@@ -234,7 +253,7 @@ public class SimpleSetPerformanceAnalyzer {
 		System.out.println("for data1");
 		for(int i = 0; i < 5; i++){
 			System.out.println(times[i].name + " finding the number took " + 
-		(times[i].dOneContainNum - times[i].dOneContainHi) + " longer than Hi");
+		(times[i].dOneContainNum- times[i].dOneContainHi) + " longer than Hi");
 		}
 	}
 
@@ -243,7 +262,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void compareSetsDataTow(){
 		int j=0;
-		System.out.println("for data2.txt, the time it took each structure to initialize:");
+		System.out.println("for data2.txt, the time it took each " +
+				"structure to initialize:");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
@@ -258,7 +278,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void dataTowContainHi(){
 		int j=0;
-		System.out.println("for data2.txt, the time took structures to return contains hi");
+		System.out.println("for data2.txt, the time took structures to" +
+				" return contains hi");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dTowContainHi < times[j].dTowContainHi){
 				j=i;
@@ -273,7 +294,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void dataTowContainNum(){
 		int j=0;
-		System.out.println("for data2.txt, the time took structures to return contains number");
+		System.out.println("for data2.txt, the time took structures to " +
+				"return contains number");
 		for(int i = 0; i < 5; i++){
 			if (times[i].dOneContainNum < times[j].dTowContainNum){
 				j=i;
@@ -290,7 +312,8 @@ public class SimpleSetPerformanceAnalyzer {
 		System.out.println("for data2");
 		for(int i = 0; i < 5; i++){
 			System.out.println(times[i].name + " finding hi took " + 
-		(times[i].dTowContainHi - times[i].dTowContainNum) + " longer than the number");
+		(times[i].dTowContainHi - times[i].dTowContainNum) + 
+					" longer than the number");
 		}
 	}
 
@@ -299,8 +322,8 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void printCompareInitTimes(){
 		for(int i = 0; i < 5; i++){
-			System.out.println("for " + times[i].name + "data1 initialize was " + 
-					times[i].initCompareTime + " longer than data2");
+			System.out.println("for " + times[i].name + "data1 initialize " +
+					"was " + times[i].initCompareTime + " longer than data2");
 		}
 	}
 
@@ -309,12 +332,14 @@ public class SimpleSetPerformanceAnalyzer {
 	 * @param num- the number of structure so compare
 	 */
 	private static void compareInitializeTimes(int num){
-		times[num].initCompareTime = (times[num].dataOneTime - times[num].dataTowTime);
+		times[num].initCompareTime = 
+				(times[num].dataOneTime - times[num].dataTowTime);
 	}
 
 	/**
 	 * private class to represent all the fields needed for the analyzer.
-	 * class hold name, SimpleSet to work with and many long numbers to check for time analysts
+	 * class hold name, SimpleSet to work with and many long numbers to check 
+	 * for time analysts
 	 * @author Itay
 	 */
 	static class TimeCounts{

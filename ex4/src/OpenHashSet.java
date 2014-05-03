@@ -109,7 +109,8 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @return
 	 */
 	private int reHash(int oldVal, int hashFactor){
-		return (oldVal + ((hashFactor * hashFactor + hashFactor)/DIV_FACTOR)) & (capacity()-1) ;
+		return (oldVal + ((hashFactor * hashFactor +
+				hashFactor)/DIV_FACTOR)) & (capacity()-1) ;
 	}
 
 	/**

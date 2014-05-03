@@ -7,7 +7,8 @@ public abstract class SimpleHashSet implements SimpleSet {
 	protected int capacity,size;
 	private final int DIF_CAPACITY = 16;
 	private float upperLoadFactor, lowerLoadFactor;
-	private final float DEFULT_UPPER_LF = (float) 0.75, DEFULT_LOWER_LF= (float) 0.25; 
+	private final float DEFULT_UPPER_LF = (float) 0.75, 
+			DEFULT_LOWER_LF= (float) 0.25; 
 	
 	/**
 	 * default constructor
@@ -19,7 +20,8 @@ public abstract class SimpleHashSet implements SimpleSet {
 	}
 	
 	/**
-	 * constructor receive upper and lower percentage of numbers in array bounds
+	 * bound percentage constructor.
+	 *  receive upper and lower percentage of numbers in array bounds
 	 * @param upperLoadFactor- the upper bound of numbers
 	 * @param lowerLoadFactor- the lower bound of numbers
 	 */

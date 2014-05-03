@@ -28,7 +28,7 @@ public class ChainedHashSet extends SimpleHashSet {
 	}
 
 	/**
-	 * Data constructor - builds the hash set by adding the elements one by one. 
+	 * Data constructor. builds the hash set by adding the elements one by one. 
 	 * The new table has the default values of initial capacity (16), 
 	 * upper load factor (0.75), and lower load factor (0.25).
 	 * @param data
@@ -141,7 +141,8 @@ public class ChainedHashSet extends SimpleHashSet {
 
 	/**
 	 * hash all elements from a list to the hashTable
-	 * @param list MyLinkedListFadace type from witch poll values to the hashTable
+	 * @param list MyLinkedListFadace type from witch poll values 
+	 * 			to the hashTable
 	 */
 	private void reHashList(MyLinkedListFadace list){
 		while (! list.isEmpty()){
