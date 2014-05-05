@@ -1,10 +1,10 @@
 public class OpenHashSet extends SimpleHashSet {
 
 	private final int DIV_FACTOR=2, DOUBLE_FACTOR=2;
-	
+
 	String [] hashTable;
 	String nulled = "nothing here";
-	
+
 	/**
 	 * A default constructor.
 	 * Constructs a new, empty table with default initial capacity (16), 
@@ -12,7 +12,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(){
 		super ();
-		 buildHashSet();
+		buildHashSet();
 	}
 
 	/**
@@ -24,9 +24,9 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(float upperLoadFactor, float lowerLoadFactor){
 		super (upperLoadFactor, lowerLoadFactor);
-		 buildHashSet();
+		buildHashSet();
 	}
-	
+
 	/**
 	 * Data constructor - builds the hash set by adding the elements one by one. 
 	 * The new table has the default values of initial capacity (16), 
@@ -35,12 +35,12 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(String[] data){
 		super ();
-		 buildHashSet();
+		buildHashSet();
 		for (int i = 0; i < data.length; i++){
 			this.add(data[i]);
 		}
 	}
-	
+
 	/**
 	 * construct a new hash table
 	 */
@@ -48,14 +48,29 @@ public class OpenHashSet extends SimpleHashSet {
 		hashTable = new String[capacity];
 		nullify(hashTable, capacity);
 	}
-	
+
 	@Override
 	public boolean add(String newValue) {
-		int val = hash(newValue);
 		if (this.contains(newValue)){
 			return false;
 		}
+		quickAdd (newValue);
+		if (toExpand()){
+			expand();
+		}
+		return true;
+	}
+	
+	/**
+	 * add String to table without checking it.
+	 * @param newValue to add
+	 */
+	private void quickAdd(String newValue){
+		int val= hash(newValue);
 		int i = 0;
+		
+		// this is not an endless loop: according to excersice's guideline,
+		// rehashing will find an empty slot at some point. 
 		while (true){
 			val = reHash(val, i);
 			if ((hashTable[val] == null) || (hashTable[val] == nulled)){
@@ -64,10 +79,10 @@ public class OpenHashSet extends SimpleHashSet {
 				if (toExpand()){
 					expand();
 				}
-				return true;
+				return;
 			}
 			i++;
-	}
+		}
 	}
 
 	@Override
@@ -89,10 +104,10 @@ public class OpenHashSet extends SimpleHashSet {
 			}
 			return true;
 		}
-//		System.out.println("didnt delete " + toDelete);
+		//		System.out.println("didnt delete " + toDelete);
 		return false;
 	}
-	
+
 	/**
 	 * hash function for strings
 	 * @param value- a string to be hashed
@@ -159,11 +174,11 @@ public class OpenHashSet extends SimpleHashSet {
 		// copy values from the old table to the new
 		for (int i = 0; i < oldCap; i++){
 			if ((oldTable[i] != null) && (oldTable[i] != nulled)){
-				add(oldTable[i]);
+				quickAdd(oldTable[i]);
 			}
 		}
 	}
-	
+
 	/**
 	 * shrink table capacity by 2
 	 */
@@ -177,7 +192,7 @@ public class OpenHashSet extends SimpleHashSet {
 		// copy values from the old table to the new
 		for (int i = 0; i < oldCap; i++){
 			if ((oldTable[i] != null) && (oldTable[i] != nulled)){
-				add(oldTable[i]);
+				quickAdd(oldTable[i]);
 			}
 		}
 	}

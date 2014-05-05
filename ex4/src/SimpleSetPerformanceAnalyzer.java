@@ -19,7 +19,7 @@ public class SimpleSetPerformanceAnalyzer {
 		dataListTow = Ex4Utils.file2array("src/data2.txt");
 		times = new TimeCounts[NUM_OF_SETS];
 
-		for (int i = 0; i<5; i++){
+		for (int i = 0; i<NUM_OF_SETS; i++){
 			switch(i){
 			case OPEN_HASH_SET:
 				//data1 related
@@ -205,7 +205,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time it took each" +
 				" structure to initialize:");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
 			}
@@ -221,7 +221,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time took structures to " +
 				"return contains hi");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dOneContainHi < times[j].dOneContainHi){
 				j=i;
 			}
@@ -237,7 +237,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data1.txt, the time took structures to " +
 				"return contains number");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dOneContainNum < times[j].dOneContainNum){
 				j=i;
 			}
@@ -251,7 +251,7 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void compareDataOneContain(){
 		System.out.println("for data1");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			System.out.println(times[i].name + " finding the number took " + 
 		(times[i].dOneContainNum- times[i].dOneContainHi) + " longer than Hi");
 		}
@@ -264,7 +264,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time it took each " +
 				"structure to initialize:");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dataOneTime < times[j].dataOneTime){
 				j=i;
 			}
@@ -280,7 +280,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time took structures to" +
 				" return contains hi");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dTowContainHi < times[j].dTowContainHi){
 				j=i;
 			}
@@ -296,7 +296,7 @@ public class SimpleSetPerformanceAnalyzer {
 		int j=0;
 		System.out.println("for data2.txt, the time took structures to " +
 				"return contains number");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			if (times[i].dOneContainNum < times[j].dTowContainNum){
 				j=i;
 			}
@@ -310,7 +310,7 @@ public class SimpleSetPerformanceAnalyzer {
 	 */
 	private static void compareDataTowContain(){
 		System.out.println("for data2");
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			System.out.println(times[i].name + " finding hi took " + 
 		(times[i].dTowContainHi - times[i].dTowContainNum) + 
 					" longer than the number");
@@ -321,7 +321,7 @@ public class SimpleSetPerformanceAnalyzer {
 	 * printing the difference between initialize times.
 	 */
 	private static void printCompareInitTimes(){
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < NUM_OF_SETS; i++){
 			System.out.println("for " + times[i].name + "data1 initialize " +
 					"was " + times[i].initCompareTime + " longer than data2");
 		}

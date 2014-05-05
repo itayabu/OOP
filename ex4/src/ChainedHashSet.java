@@ -2,7 +2,7 @@ import java.lang.String;
 import java.util.LinkedList;
 public class ChainedHashSet extends SimpleHashSet {
 
-	private final int divFactor=2, doubleFactor=2;
+	private final int DIV_FACTOR=2, DOUBLE_FACTOR=2;
 	private MyLinkedListFadace [] hashTable;
 
 	/**
@@ -80,7 +80,6 @@ public class ChainedHashSet extends SimpleHashSet {
 			}
 			return true;
 		}
-		//		System.out.println("oh bummer, something happend");
 		return false;
 	}
 
@@ -112,7 +111,7 @@ public class ChainedHashSet extends SimpleHashSet {
 		MyLinkedListFadace[] oldTable= hashTable;
 		int oldCap = capacity;
 		size=0;
-		capacity = (capacity/ divFactor);
+		capacity = (capacity/ DIV_FACTOR);
 		hashTable = new MyLinkedListFadace[capacity];
 		nullify(hashTable);
 		// copy values from the old table to the new
@@ -130,7 +129,7 @@ public class ChainedHashSet extends SimpleHashSet {
 		MyLinkedListFadace [] oldTable= hashTable;
 		int oldCap = capacity();
 		size=0;
-		capacity *= doubleFactor;
+		capacity *= DOUBLE_FACTOR;
 		hashTable = new MyLinkedListFadace[capacity];
 		nullify(hashTable);
 		// copy values from the old table to the new
@@ -177,11 +176,7 @@ public class ChainedHashSet extends SimpleHashSet {
 		 * @param newValue New value to add to the set
 		 */
 		private void add(String newValue) {
-			//			if ( !this.contains(newValue)){
 			list.add(newValue);
-			//				return true;
-			//			}
-			//			return false;
 		}
 
 		/**
@@ -202,11 +197,7 @@ public class ChainedHashSet extends SimpleHashSet {
 		 * @return
 		 */
 		private void delete(String toDelete) {
-			//			if (this.contains(toDelete)){
 			this.list.remove(toDelete);
-			//				return true;
-			//			}
-			//			return false;
 		}
 
 		/**

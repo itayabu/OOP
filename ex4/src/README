@@ -47,20 +47,20 @@ so it seemed more proper.
 = time analyst=
 =================
 for data1.txt, the time it took each structure to initialize:
-OpenHashCell 591192
+OpenHashCell 281946
 ChainedHashSet 173927
 LinkedList 11
 TreeSet 21
 HashSet 28
 quickest structure: LinkedList
 for data2.txt, the time it took each structure to initialize:
-OpenHashCell 39
+OpenHashCell 30
 ChainedHashSet 764
 LinkedList 7
 TreeSet 18
 HashSet 13
 quickest structure: LinkedList
-for OpenHashCelldata1 initialize was 591153 longer than data2
+for OpenHashCelldata1 initialize was 281946 longer than data2
 for ChainedHashSetdata1 initialize was 173163 longer than data2
 for LinkedListdata1 initialize was 4 longer than data2
 for TreeSetdata1 initialize was 3 longer than data2
@@ -135,14 +135,14 @@ Q: What results surprised you and which did you expect?
 	(-1 points if you didn’t list java’s HashSet performance on data1.txt 
 	as surprising. Can you explain it? Can google?)
 A: hashSet!!! of course. stackoverflow explain it by containing a large hash
-	map, and using the value as a key for an irrelative object. meaning hasSet
+	map, and using the value as a key for an irrelevant object. meaning hasSet
 	prefer time saving over memory saving. 
 	
 Q: If you implemented the modulo efficiently (appendix A), how significant was the
 	 speed up? And how awesome is that?
 A: testing it...
-	time take for OpenHashSet initialize on data1.txt with "/": 976300
-	time take for OpenHashSet initialize on data1.txt with "&": 591192
+	time take for OpenHashSet initialize on data1.txt with "/": 591192
+	time take for OpenHashSet initialize on data1.txt with "&": 281946
 	on a scale of 1 to 10 of awsomeness i'd give it 7 =]
 
 =======================
