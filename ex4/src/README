@@ -34,8 +34,10 @@ of type containing a boolean seemed a big waste of memory.
 I used a string named "nulled" and used its pointer for checking.
 meaning- to see if a cell was deleted I didnt compare the cell value using
 the .equals(nulled)- witch would have cause errors if i had to add the string's
-value to the set. But used "==" witch on strings compare their operands- their
-location on memory, so no string will ever have the "nulled" memory address.
+value to the set. But used identity hash code of system operands that check 
+their location on memory, so no string will ever have the "nulled" memory 
+address. the system.identityHashCode() is is in system- just like println 
+and therefore I figured its "legal" to use it.
 
 
 SimpleSetPerformanceAnalyzer- came out a bit ugly and many "code repetition",

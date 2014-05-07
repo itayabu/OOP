@@ -1,7 +1,7 @@
+
 public class OpenHashSet extends SimpleHashSet {
 
-	private final int DIV_FACTOR=2, DOUBLE_FACTOR=2;
-
+	private final double DIV_FACTOR=0.5, DOUBLE_FACTOR=2;
 	String [] hashTable;
 	String nulled = "nothing here";
 
@@ -12,8 +12,8 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(){
 		super ();
-		buildHashSet();
-	}
+		hashTable = new String[capacity];
+		}
 
 	/**
 	 * ChainedHashTable constructor
@@ -24,8 +24,8 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(float upperLoadFactor, float lowerLoadFactor){
 		super (upperLoadFactor, lowerLoadFactor);
-		buildHashSet();
-	}
+		hashTable = new String[capacity];
+		}
 
 	/**
 	 * Data constructor - builds the hash set by adding the elements one by one. 
@@ -35,7 +35,7 @@ public class OpenHashSet extends SimpleHashSet {
 	 */
 	public OpenHashSet(String[] data){
 		super ();
-		buildHashSet();
+		hashTable = new String[capacity];
 		for (int i = 0; i < data.length; i++){
 			this.add(data[i]);
 		}
@@ -44,11 +44,7 @@ public class OpenHashSet extends SimpleHashSet {
 	/**
 	 * construct a new hash table
 	 */
-	private void buildHashSet(){
-		hashTable = new String[capacity];
-		nullify(hashTable, capacity);
-	}
-
+	
 	@Override
 	public boolean add(String newValue) {
 		if (this.contains(newValue)){
@@ -56,7 +52,7 @@ public class OpenHashSet extends SimpleHashSet {
 		}
 		quickAdd (newValue);
 		if (toExpand()){
-			expand();
+			changeCapacity(DOUBLE_FACTOR);
 		}
 		return true;
 	}
@@ -76,9 +72,6 @@ public class OpenHashSet extends SimpleHashSet {
 			if ((hashTable[val] == null) || (hashTable[val] == nulled)){
 				hashTable[val] = newValue;
 				size++;
-				if (toExpand()){
-					expand();
-				}
 				return;
 			}
 			i++;
@@ -100,11 +93,10 @@ public class OpenHashSet extends SimpleHashSet {
 			hashTable[place] = nulled;
 			size--;
 			if (toShrink()){
-				shrink();
+				changeCapacity(DIV_FACTOR);
 			}
 			return true;
 		}
-		//		System.out.println("didnt delete " + toDelete);
 		return false;
 	}
 
@@ -124,18 +116,8 @@ public class OpenHashSet extends SimpleHashSet {
 	 * @return
 	 */
 	private int reHash(int oldVal, int hashFactor){
-		return (oldVal + ((hashFactor * hashFactor +
-				hashFactor)/DIV_FACTOR)) & (capacity()-1) ;
-	}
-
-	/**
-	 * initialize the hash table
-	 * @param Table to be initialized
-	 */
-	private void nullify( String[] Table, int sizeOfTable){
-		for (int i = 1; i < sizeOfTable; i++){
-			Table[i]=null;
-		}
+		return (int) (oldVal + ((hashFactor * hashFactor +
+				hashFactor)*DIV_FACTOR)) & (capacity()-1) ;
 	}
 
 	/**
@@ -154,7 +136,9 @@ public class OpenHashSet extends SimpleHashSet {
 			if (hashTable[val] == null){
 				return (-1);
 			}
-			if (hashTable[val].equals(name)){
+			if (hashTable[val].equals(name) &&
+					(!(System.identityHashCode(hashTable[val]) == 
+					System.identityHashCode(nulled)))){
 				return val;
 			}
 			i++;
@@ -162,32 +146,15 @@ public class OpenHashSet extends SimpleHashSet {
 	}
 
 	/**
-	 * expand the table by 2
+	 * Change table capacity by a given factor
+	 * @param factor to double the table by.
 	 */
-	private void expand(){
+	private void changeCapacity(double factor){
 		// save the old table stats and build a new table
 		String [] oldTable= hashTable;
-		int oldCap = capacity();
+		int oldCap = capacity;
 		size=0;
-		capacity *= DOUBLE_FACTOR;
-		hashTable = new String [capacity()];
-		// copy values from the old table to the new
-		for (int i = 0; i < oldCap; i++){
-			if ((oldTable[i] != null) && (oldTable[i] != nulled)){
-				quickAdd(oldTable[i]);
-			}
-		}
-	}
-
-	/**
-	 * shrink table capacity by 2
-	 */
-	private void shrink(){
-		// save the old table stats and build a new table
-		String [] oldTable= hashTable;
-		int oldCap = capacity();
-		size=0;
-		capacity = (capacity()/ DIV_FACTOR);
+		capacity = (int) (oldCap*factor);
 		hashTable = new String [capacity()];
 		// copy values from the old table to the new
 		for (int i = 0; i < oldCap; i++){
@@ -200,5 +167,30 @@ public class OpenHashSet extends SimpleHashSet {
 	@Override
 	public int capacity() {
 		return capacity;
+	}
+	/**
+	 * check if set needs to expand.
+	 * check if upper load bound exceeded.
+	 * @return true if upper bound exceeded
+	 */
+	private boolean toExpand(){
+		float check = (float) ((float) size / (float) capacity);
+		if ( check > getUpperLoadFactor()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * check if set needs to shrink.
+	 * check if lower load bound exceeded.
+	 * @return true if upper bound exceeded
+	 */
+	private boolean toShrink(){
+		float check = ((float) size / (float) capacity);
+		if ((check < getLowerLoadFactor()) && (capacity>1)){
+			return true;
+		}
+		return false;
 	}
 }

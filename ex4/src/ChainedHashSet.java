@@ -2,7 +2,7 @@ import java.lang.String;
 import java.util.LinkedList;
 public class ChainedHashSet extends SimpleHashSet {
 
-	private final int DIV_FACTOR=2, DOUBLE_FACTOR=2;
+	private final double DIV_FACTOR=0.5, DOUBLE_FACTOR=2;
 	private MyLinkedListFadace [] hashTable;
 
 	/**
@@ -55,7 +55,7 @@ public class ChainedHashSet extends SimpleHashSet {
 			hashTable[hash(newValue)].add(newValue);
 			size++;
 			if(toExpand()){
-				expand();
+				changeCapacity(DOUBLE_FACTOR);
 			}
 			return true;
 		}
@@ -76,7 +76,7 @@ public class ChainedHashSet extends SimpleHashSet {
 			hashTable[hash(toDelete)].delete(toDelete);
 			size--;
 			if (toShrink()){
-				shrink();
+				changeCapacity(DIV_FACTOR);
 			}
 			return true;
 		}
@@ -89,7 +89,7 @@ public class ChainedHashSet extends SimpleHashSet {
 	 * @return the hashed value.
 	 */
 	private int hash(String value){
-		return value.hashCode()&(capacity()-1);
+		return value.hashCode()&(capacity-1);
 	}
 
 	/**
@@ -103,33 +103,16 @@ public class ChainedHashSet extends SimpleHashSet {
 	}
 
 	/**
-	 * shrink table capacity by 2
+	 * change table capacity by factor.
+	 * @param factor to change capacity by.
 	 */
-	private void shrink(){
+	private void changeCapacity(double factor){
 
 		// save the old table stats and build a new table
 		MyLinkedListFadace[] oldTable= hashTable;
 		int oldCap = capacity;
 		size=0;
-		capacity = (capacity/ DIV_FACTOR);
-		hashTable = new MyLinkedListFadace[capacity];
-		nullify(hashTable);
-		// copy values from the old table to the new
-		for (int i = 0; i < oldCap; i++){
-			reHashList(oldTable[i]);
-		}
-	}
-
-	/**
-	 * expand the table by 2
-	 */
-	private void expand(){
-
-		// save the old table stats and build a new table
-		MyLinkedListFadace [] oldTable= hashTable;
-		int oldCap = capacity();
-		size=0;
-		capacity *= DOUBLE_FACTOR;
+		capacity = (int)(capacity* factor);
 		hashTable = new MyLinkedListFadace[capacity];
 		nullify(hashTable);
 		// copy values from the old table to the new
@@ -148,10 +131,35 @@ public class ChainedHashSet extends SimpleHashSet {
 			add(list.pollString());
 		}
 	}
-	
+
 	@Override
 	public int capacity() {
 		return capacity;
+	}
+	/**
+	* check if set needs to expand.
+	* check if upper load bound exceeded.
+	* @return true if upper bound exceeded
+			*/
+			private boolean toExpand(){
+		float check = (float) ((float) size / (float) capacity);
+		if ( check > getUpperLoadFactor()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * check if set needs to shrink.
+	 * check if lower load bound exceeded.
+	 * @return true if upper bound exceeded
+	 */
+	private boolean toShrink(){
+		float check = ((float) size / (float) capacity);
+		if ((check < getLowerLoadFactor()) && (capacity>1)){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -216,6 +224,5 @@ public class ChainedHashSet extends SimpleHashSet {
 			return list.isEmpty();
 		}
 	}
-
 }
 

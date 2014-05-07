@@ -7,16 +7,14 @@ public abstract class SimpleHashSet implements SimpleSet {
 	protected int capacity,size;
 	private final int DIF_CAPACITY = 16;
 	private float upperLoadFactor, lowerLoadFactor;
-	private final float DEFULT_UPPER_LF = (float) 0.75, 
-			DEFULT_LOWER_LF= (float) 0.25; 
+	private final static float DEFULT_UPPER_LF = (float) 0.75, 
+			DEFULT_LOWER_LF= (float) 0.25;
 	
 	/**
 	 * default constructor
 	 */
 	public SimpleHashSet(){
-		capacity = DIF_CAPACITY;
-		upperLoadFactor = DEFULT_UPPER_LF;
-		lowerLoadFactor = DEFULT_LOWER_LF;
+		this(DEFULT_UPPER_LF, DEFULT_LOWER_LF);
 	}
 	
 	/**
@@ -29,6 +27,7 @@ public abstract class SimpleHashSet implements SimpleSet {
 		this.upperLoadFactor = upperLoadFactor;
 		this.lowerLoadFactor = lowerLoadFactor;
 		capacity = DIF_CAPACITY;
+		size=0;
 	}
 	
 	/**
@@ -64,29 +63,11 @@ public abstract class SimpleHashSet implements SimpleSet {
 	 */
 	public abstract int capacity();
 	
-	/**
-	 * check if set needs to expand.
-	 * check if upper load bound exceeded.
-	 * @return true if upper bound exceeded
-	 */
-	protected boolean toExpand(){
-		float check = (float) ((float) size / (float) capacity);
-		if ( check > upperLoadFactor){
-			return true;
-		}
-		return false;
+	protected float getUpperLoadFactor(){
+		return upperLoadFactor;
 	}
 	
-	/**
-	 * check if set needs to shrink.
-	 * check if lower load bound exceeded.
-	 * @return true if upper bound exceeded
-	 */
-	protected boolean toShrink(){
-		float check = ((float) size / (float) capacity);
-		if (check < lowerLoadFactor){
-			return true;
-		}
-		return false;
+	protected float getLowerLoadFactor(){
+		return lowerLoadFactor;
 	}
 }
