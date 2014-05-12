@@ -59,32 +59,6 @@ public class AvlTree {
 	}
 
 	/**
-	 * Add a new node with key newValue into the tree
-	 * 
-	 * @param new value to add to the tree
-	 * @return false iff new value already exist
-	 */
-	public boolean add (int newValue){
-		if (root == null){
-			root= new Node (newValue, 0);
-			System.out.println("added "+ newValue + " to root");
-			treeSize++;
-			return true;
-		}
-		Node place = findNodePlace(newValue);
-		if (place.value == newValue){
-			System.out.println("didnt add "+ newValue + "because already exist");
-			return false;
-		}
-		buildNode (place, newValue);
-		System.out.println("added " + newValue+ " as son of " + place.value +" hight: "+ (place.hight+1));
-		treeSize++;
-		return true;
-
-
-	}
-
-	/**
 	 * find the position of the new value.
 	 * return the node with this value if exist, 
 	 * or the position to build it from if doesn't 
@@ -93,15 +67,15 @@ public class AvlTree {
 	 */
 	private Node findNodePlace (int value){
 		Node currentNode =root;
-		boolean flag=true;
-		while (flag){
+		boolean serach=true;
+		while (serach){
 			// check if value greater than the current's
 			if (currentNode.value > value){
 				if (currentNode.left() != null){
 					currentNode = currentNode.left();
 				}
 				else{
-					flag= false;
+					serach= false;
 				}
 			}
 			//check if the value lower than the current's
@@ -110,16 +84,17 @@ public class AvlTree {
 					currentNode = currentNode.right();
 				}
 				else{
-					flag= false;
+					serach= false;
 				}
 			}
 			if (currentNode.value == value){
-				flag= !flag;
+				serach= false;
 			}
 		}
 		return currentNode;
 
 	}
+
 
 	/**
 	 * build a new node as a son for existing node
@@ -128,15 +103,44 @@ public class AvlTree {
 	 */
 	private void buildNode (Node parent, int value){
 		if (parent.value < value){
-			parent.family[RIGHT] = new Node(value, parent.hight+1);
+			parent.family[RIGHT] = new Node(value, parent.hightFromRoot+1);
 			parent.family[RIGHT].family[PARENT]=parent;
 			return;
 		}
 		if (parent.value > value){
-			parent.family[LEFT] = new Node(value, parent.hight+1);
+			parent.family[LEFT] = new Node(value, parent.hightFromRoot+1);
 			parent.family[LEFT].family[PARENT]=parent;
 			return;
 		}
+	}
+
+
+	/**
+	 * Add a new node with key newValue into the tree
+	 * 
+	 * @param new value to add to the tree
+	 * @return false iff new value already exist
+	 */
+	public boolean add (int newValue){
+		// handle first Node
+		if (root == null){
+			root= new Node (newValue, 0);
+			System.out.println("added "+ newValue + " to root");
+			treeSize++;
+			return true;
+		}
+		// handle other Nodes
+		Node place = findNodePlace(newValue);
+		if (place.value == newValue){
+			//			System.out.println("didnt add "+ newValue + "because already exist");
+			return false;
+		}
+		buildNode (place, newValue);
+		System.out.println("added " + newValue+ " as son of " + place.value 
+				+" hight: " + (place.hightFromRoot+1));
+		treeSize++;
+		checkHightDiff(place);
+		return true;
 
 
 	}
@@ -150,14 +154,14 @@ public class AvlTree {
 	public int contains (int searchVal){
 		Node temp = findNodePlace(searchVal);
 		if (temp.value == searchVal){
-			return temp.hight;
+			return temp.hightFromRoot;
 		}
 		return NOT_EXIST;
 
 	}
 
 	/**
-	 * remove a node from a tree, if eists.
+	 * remove a node from a tree, if exists.
 	 * 
 	 * @param toDelete value to delete
 	 * @return true iff toDelete is found and deleted.
@@ -173,124 +177,27 @@ public class AvlTree {
 
 		// case this Node is a leaf
 		if ((deleteNode.right()==null) && (deleteNode.left()==null)){
-			System.out.println("deleting leaf");
+			//			System.out.println("deleting leaf");
 			deleteLeaf(deleteNode);
 			treeSize--;
-			//TODO recursive height
+			//TODO recursive hight
 			return true;
 		}
 
 		//case Node has one son
 		if (! ((deleteNode.right()!=null) && (deleteNode.left()!=null))){
-			System.out.println("deleting father of one");
+			System.out.println("deleting father of one child");
 			deleteParentForOne(deleteNode);
 			treeSize--;
 			return true;
 		}
-		
+
 		//case Node has two sons
 		System.out.println("deleting father of tow");
 		deleteParentForTwo(deleteNode);
 		treeSize--;
 
 		return true;
-	}
-
-	/**
-	 * deleting Node parent of two sons.
-	 * replacing the node with Node's successor
-	 * @param deleteNode the Node to delete
-	 */
-	private void deleteParentForTwo(Node deleteNode) {
-		
-		//finding successor
-		Node successor = deleteNode.right();
-		while (successor.left() != null){
-			successor= successor.left();
-		}
-		
-		//updating successor's family members
-		if (successor.parent() != null){
-			successor.parent().family[LEFT] = successor.right();
-		}
-		if (successor.right() != null){
-			successor.right().family[PARENT] = successor.parent();
-		}
-		//successor doesn't have left son (this is how we chose it)
-		
-		
-		// replacing nodes- updating successor's family array
-		successor.family[PARENT]= deleteNode.parent();
-		successor.family[LEFT]= deleteNode.left();
-		successor.family[RIGHT]= deleteNode.right();
-		
-		//updating family of deleteNode with new Node:
-		//updating parent of deleteNode
-		if(successor.family[PARENT] != null){
-			if (successor.parent().left().value == deleteNode.value){
-				System.out.println("replacing left son of parent");
-				successor.parent().family[LEFT] = successor;
-			}
-			else{
-				System.out.println("replacing right so of parent");
-				successor.parent().family[RIGHT] = successor;
-			}
-		}
-		//updating right son of deleteNode
-		if (successor.right().value != successor.value){
-			successor.right().family[PARENT] = successor;
-		}
-		else{
-			successor.right().family[PARENT] = null;
-		}
-		// updating left son of deleteNode;
-		successor.left().family[PARENT] = successor;
-	}
-	
-
-	/**
-	 * delete Node that has one child
-	 * @param deleteNode the node to delete
-	 */
-	private void deleteParentForOne(Node deleteNode) {
-		
-		// marking the son of the Node to delete
-		Node replaceNode;
-		if (deleteNode.right() != null){
-			replaceNode = deleteNode.right();
-		}
-		else {
-			replaceNode = deleteNode.left();
-		}
-		
-		// case deleteNode is the root
-		if (deleteNode==root){
-			root=replaceNode;
-			//TODO height
-			return;
-		}
-		
-		replaceNode.family[PARENT]= deleteNode.parent();
-		// case deleteNode is on left side of parent
-		if (deleteNode.parent().value > deleteNode.value){
-			deleteNode.parent().family[LEFT]=replaceNode;
-			//TODO height
-			System.out.println("successfully deleted right Node "+
-					deleteNode.value + "and replace it with" +replaceNode.value);
-			return;
-		}
-
-		// case leaf is on right side of its parent
-		if (deleteNode.parent().value < deleteNode.value){
-			deleteNode.parent().family[RIGHT]=replaceNode;
-			//TODO height
-			System.out.println("successfully deleted right Node "+
-					deleteNode.value + "and replace it with" +replaceNode.value);
-			return;
-		}
-
-		// TODO recursive check height
-
 	}
 
 	/**
@@ -313,8 +220,164 @@ public class AvlTree {
 			deleteNode.parent().family[RIGHT]=null;
 			System.out.println("successfully deleted right leaf "+ deleteNode.value);
 		}
+		checkHightDiff(deleteNode.parent());
+	}
 
-		// TODO recursive check height
+
+	/**
+	 * delete Node that has one child
+	 * @param deleteNode the node to delete
+	 */
+	private void deleteParentForOne(Node deleteNode) {
+
+		// marking the son of the Node to delete
+		Node replaceNode;
+		if (deleteNode.right() != null){
+			replaceNode = deleteNode.right();
+		}
+		else {
+			replaceNode = deleteNode.left();
+		}
+
+		// case deleteNode is the root
+		replaceNode.family[PARENT]= deleteNode.parent();
+		if (deleteNode==root){
+			root=replaceNode;
+			root.family[PARENT]= null;
+//			decreaseHight(root);
+		}
+
+		// case deleteNode is on left side of parent
+		else if (deleteNode.parent().value > deleteNode.value){
+			deleteNode.parent().family[LEFT]=replaceNode;
+//			decreaseHight(replaceNode);
+			System.out.println("successfully deleted right Node "+
+					deleteNode.value + "and replace it with" +replaceNode.value);
+		}
+
+		// case leaf is on right side of its parent
+		else if (deleteNode.parent().value < deleteNode.value){
+			deleteNode.parent().family[RIGHT]=replaceNode;
+//			decreaseHight(replaceNode);
+			System.out.println("successfully deleted right Node "+
+					deleteNode.value + "and replace it with" +replaceNode.value);
+		}	
+		decreaseHight(replaceNode);
+		checkHightDiff(replaceNode.parent());
+		
+	}
+
+
+	private void decreaseHight(Node decrease) {
+		decrease.hightFromRoot--;
+		if (decrease.left() != null){
+			decreaseHight(decrease.left());
+		}
+		if (decrease.right() != null){
+			decreaseHight (decrease.right());
+		}
+
+	}
+
+
+	/**
+	 * deleting Node parent of two sons.
+	 * replacing the node with Node's successor
+	 * @param deleteNode the Node to delete
+	 */
+	private void deleteParentForTwo(Node deleteNode) {
+		//finding successor
+		Node successor = deleteNode.right();
+		while (successor.left() != null){
+			successor= successor.left();
+		}
+		System.out.println("placing "+successor.value+" instead of"+deleteNode.value);
+		Node oldParent=null;
+		
+		//updating successor's family members
+		if ((successor.parent() != null) && (successor.parent() != deleteNode)){
+			successor.parent().family[LEFT] = successor.right();
+			oldParent = successor.parent();
+		}
+		if (successor.right() != null){
+			successor.right().family[PARENT] = successor.parent();
+			decreaseHight(successor.right());
+		}
+		//successor doesn't have left son (this is how we chose it)
+
+
+		// replacing nodes- updating successor's family array and fields
+		successor.family[PARENT]= deleteNode.parent();
+		if(successor.parent() == null){
+			root = successor;
+		}
+		successor.family[LEFT]= deleteNode.left();
+		if (deleteNode.right().value != successor.value){
+			successor.family[RIGHT]= deleteNode.right();
+			successor.hightFromRoot = deleteNode.hightFromRoot;
+		}
+
+
+		//updating family of deleteNode with new Node:
+		//updating parent of deleteNode
+		if(successor.family[PARENT] != null){
+			if (successor.parent().left().value == deleteNode.value){
+				System.out.println("replacing left son of parent");
+				successor.parent().family[LEFT] = successor;
+				successor.hightFromRoot = successor.parent().hightFromRoot+1;
+			}
+			else{
+				System.out.println("replacing right son of parent");
+				successor.parent().family[RIGHT] = successor;
+				successor.hightFromRoot = 0;
+			}
+		}
+		//updating right son of deleteNode
+		if (successor.right() != null){
+			if (deleteNode.right().value != successor.value){
+				successor.right().family[PARENT] = successor;
+			}
+			else{
+				successor.right().family[PARENT] = null;
+			}
+		}
+		// updating left son of deleteNode;
+		successor.left().family[PARENT] = successor;
+		checkHightDiff(oldParent);
+		
+		
+
+	}
+
+	/**
+	 * check differences in children hights
+	 */
+	private void checkHightDiff(Node current){
+		if (current == null){
+			return;
+		}
+		// initialize help ints
+		int maxHight=0, rightHight=-1, leftHight=-1;
+		// put values in help ints
+		if (current.left() != null){
+			leftHight=current.left().hightFromLeaf;
+		}
+		if (current.right() != null){
+			rightHight=current.right().hightFromLeaf;
+		}
+
+		// check witch is bigger
+		maxHight =(rightHight>leftHight)? (rightHight): (leftHight);
+		if (maxHight - rightHight > 1){
+			System.out.println("need to rotate right at "+ current.value);
+		}
+		if (maxHight - leftHight > 1){
+			System.out.println("hight error in "+ current.value);	
+		}
+		if (current.hightFromLeaf != (maxHight+1)){
+			current.hightFromLeaf = maxHight+1;
+			checkHightDiff(current.parent());
+		}
 	}
 
 	/**
@@ -334,14 +397,16 @@ public class AvlTree {
 
 	public static class Node{
 		Node[] family = new Node[MEMBERS];
-		int hightDifferance, hight, value;
-		boolean changed;
+		int hightDifferance, hightFromRoot, /*hightRight, hightLeft,*/ value, hightFromLeaf;
+		//		boolean changed;
 
 		Node(int val, int hight){
 			value= val;
-			changed= false;
-			hightDifferance=0;
-			this.hight = hight;
+			hightFromLeaf=0;
+			//			hightDifferance=0;
+			this.hightFromRoot = hight;
+			//			hightRight=0;
+			//			hightLeft=0;
 			for (int i=0; i<MEMBERS; i++){
 				family[i]=null;
 			}
@@ -362,6 +427,9 @@ public class AvlTree {
 		 * @return left child if exist, null if doesnt
 		 */
 		private Node left(){
+			//			if (family[LEFT]==null){
+			//				return null;
+			//			}
 			return family[LEFT];
 		}
 
@@ -450,5 +518,6 @@ public class AvlTree {
 			iterCurrent= temp;
 			return true;
 		}
+
 	}
 }
