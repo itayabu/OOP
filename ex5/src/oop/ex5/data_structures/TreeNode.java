@@ -14,7 +14,7 @@ class TreeNode {private TreeNode leftNode, rightNode, parentNode;
 	/**
 	 * return the parent
 	 * return null if this is the root
-	 * @return parent if exist, null if doesnt
+	 * @return parent if exist, null if doesn't
 	 */
 	TreeNode getParent(){
 		return parentNode;
@@ -29,7 +29,6 @@ class TreeNode {private TreeNode leftNode, rightNode, parentNode;
 	 * @return left child if exist, null if doesnt
 	 */
 	TreeNode getLeft(){
-
 		return leftNode;
 	}
 

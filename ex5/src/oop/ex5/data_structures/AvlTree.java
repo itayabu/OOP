@@ -43,7 +43,6 @@ public class AvlTree {
 	 * minimum number of nodes
 	 * This method calculates the minimum number of nodes in an AVL tree of 
 	 * height h
-	 * 
 	 * @param h height of tree (a non negative number)
 	 * @return minimum number of nodes in the tree
 	 */
@@ -100,7 +99,6 @@ public class AvlTree {
 		return currentNode;
 	}
 
-
 	/**
 	 * build a new node as a son for existing node
 	 * @param parent - Node witch will be the parent of the new Node 
@@ -143,7 +141,6 @@ public class AvlTree {
 		treeSize++;
 		checkHeightDiff(place);
 		return true;
-
 	}
 
 	/**
@@ -162,7 +159,6 @@ public class AvlTree {
 
 	/**
 	 * remove a node from a tree, if exists.
-	 * 
 	 * @param toDelete value to delete
 	 * @return true iff toDelete is found and deleted.
 	 */
@@ -218,7 +214,6 @@ public class AvlTree {
 		checkHeightDiff(deleteNode.getParent());
 	}
 
-
 	/**
 	 * delete Node that has one child
 	 * @param deleteNode the node to delete
@@ -252,7 +247,6 @@ public class AvlTree {
 		}	
 		decreaseHeight(replaceNode);
 		checkHeightDiff(replaceNode.getParent());
-
 	}
 
 	/**
@@ -276,7 +270,6 @@ public class AvlTree {
 		decreaseHeight(decrease.getLeft());
 		decreaseHeight (decrease.getRight());
 	}
-
 
 	/**
 	 * deleting Node parent of two sons.
@@ -303,7 +296,6 @@ public class AvlTree {
 		}
 		//successor doesn't have left son (this is how we chose it)
 
-
 		// replacing nodes- updating successor's family array and fields
 		successor.setParent(deleteNode.getParent());
 		if(successor.getParent() == null){
@@ -314,7 +306,6 @@ public class AvlTree {
 			successor.setRight(deleteNode.getRight());
 			successor.heightFromRoot = deleteNode.heightFromRoot;
 		}
-
 
 		//updating family of deleteNode with new Node:
 		//updating parent of deleteNode
@@ -341,9 +332,6 @@ public class AvlTree {
 		// updating left son of deleteNode;
 		successor.getLeft().setParent(successor);
 		checkHeightDiff(oldParent);
-
-
-
 	}
 
 	/**
@@ -385,7 +373,6 @@ public class AvlTree {
 			}
 			complexRotationLeft(balanceNode);
 			return;
-
 		}
 		if (direction == RIGHT){
 			if(getHeightFromLeaf(balanceNode.getRight().getLeft()) >
@@ -441,7 +428,6 @@ public class AvlTree {
 		increaseHeight(currNode.getLeft());
 		decreaseHeight(currNode.getParent().getRight());
 		return;
-		
 	}
 
 	/**
@@ -449,6 +435,8 @@ public class AvlTree {
 	 * become left 
 	 */
 	private void simpleLeftRotation(TreeNode toRotate){
+		
+		// manage parent of rotation couple
 		if (toRotate == root){
 			root = toRotate.getLeft();
 		}
@@ -458,10 +446,13 @@ public class AvlTree {
 		else{
 			toRotate.getParent().setRight(toRotate.getLeft());
 		}
+		
+		// manage rotation couple pointers and heights
 		toRotate.getLeft().setParent(toRotate.getParent());
 		toRotate.getLeft().setRight(toRotate);
 		toRotate.setParent(toRotate.getLeft());
 		toRotate.setLeft(null);
+		// change heights
 		toRotate.heightFromRoot++;
 		toRotate.getParent().heightFromRoot--;
 	}
@@ -552,15 +543,18 @@ public class AvlTree {
 			// case current is the right-hand son of parent, need to go up until we find we find 
 			// a parent that current is a left hand son of it. if doesnt exist, then we were at the 
 			// right end of the tree
-			if ((iterCurrent != iterRoot) && (iterCurrent == iterCurrent.getParent().getLeft())){
+			if ((iterCurrent != iterRoot) && 
+					(iterCurrent == iterCurrent.getParent().getLeft())){
 				iterCurrent = iterCurrent.getParent();
 				return toReturn.value;
 			}
-			while ((iterCurrent != iterRoot) && (iterCurrent == iterCurrent.getParent().getRight())){
+			while ((iterCurrent != iterRoot) && 
+					(iterCurrent == iterCurrent.getParent().getRight())){
 				iterCurrent=iterCurrent.getParent();
 
 			}
-			if ((iterCurrent != iterRoot) && (iterCurrent == iterCurrent.getParent().getLeft())){
+			if ((iterCurrent != iterRoot) && 
+					(iterCurrent == iterCurrent.getParent().getLeft())){
 				iterCurrent = iterCurrent.getParent();
 				return toReturn.value;
 			}
@@ -592,6 +586,5 @@ public class AvlTree {
 			iterCurrent= temp;
 			return true;
 		}
-
 	}
 }
