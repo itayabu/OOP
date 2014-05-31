@@ -1,0 +1,109 @@
+itayabu 
+
+=======================
+=  File Description: = 
+=======================
+FileParser- parse a file to sections of filter/order
+FolderParser- Open a folder and get its files
+MyFileScript- receive directory and command file, and print files in directory 
+	according to commands in the commend file.
+Section- hold and manage filter and order instances
+sectionexceptions- exceptions concerning a sections building through FileParser.
+filters- each one filter files by a given parameter.
+FilterFactory- manage all filter creating.
+filte.rexceptions- all exceptions concerning filters.
+OrderFactory- manage all order creating
+order.execptions- all exceptions concerning orders.
+ 
+
+============
+=  Design: = 
+============
+The design I used is pretty similar to the design shown in class, I tried to
+make my project as "oopy" as possible, concerning all oop design principles:
+
+modularity:
+Decomposability: Filter, Order, FileParser and FolderParser have no interaction 
+	with each other, each concern a different smaller problem. and MyFileScript
+	has very few orders to manage all the parts.
+Composability: each module (except Section that hold filter and order) is 
+	independent and can be recomposed to a different project.
+Uderstandability:  each module is simple, and simple to understand, just like
+	I wrote above in the file description.
+Modular Continuity: small changes, as adding filters or orders will take only
+	few lines in the relevant factory, change the structure of the command file
+	will affect only the FileParser, and so on...
+	Moreover, I divided the filters to numeric, string-concerning and mod 
+	concerning filters, so in the future it might be possible to use one of them
+	for different cause (for example, writable, hidden and executable are all
+	extending ModFilter)
+	
+Open-Closed: it is very easy to add filters or orders- open to 
+	extention, and doing that will not change any existing one therefore they 
+	are closed for changes even adding a new sub-section will only cause
+	line adding in FileParser and new instance in Section. everything is easy
+	to expand and there is no need to delete/ change too much of existing code.
+
+Single-Choice: I used Factories to manage all choices given.
+
+exceptions- were a major part of the exercise, I built a succession tree of 
+exceptions, mostly in the filter part, where there were many errors, 
+I tried to be as specific as possible- with different exception for every 
+different problem that could rise, though after all, all exceptions were empty,
+and treated the same after catch. but its a very effective tool, I'm glad I had
+to deal and play with it.
+
+Finally, I used ArrayList to sort and move the matched files, because it is more
+comfort to manage than Array (size manage concerning), keep order of inputs and
+can be easily sorted using collection.sort() method.
+
+=======================
+=  source files: = 
+=======================
+README
+java files:
+FileParser
+FolderParser
+MyFileScript
+Section
+AllFilter
+BetweenFilter
+ContainFilter
+ExecuteFilter
+FileNameFilter
+Filter
+FilterFactory
+GreaterThanFilter
+HiddenFilter
+ModFilter
+NotFilter
+NumericFilter
+PrefixFilter
+SmallerThanFilter
+StringFilter
+SuffixFilter
+WritableFilter
+AbsFilter
+OrderFactory
+ReverseOrder
+SizeOrder
+TypeOrder
+NoFilterSubSectionException
+NoOrderSubSectionException
+WrongOrderOfNumbersException
+BadBooleanParameterException
+BadFilterException
+BadFilterNameException
+BadNOTArgumentException
+BadParameterException
+NegativeNumberParameterException
+NumericFilterBadParameterException
+
+
+
+
+
+
+
+
+

@@ -55,10 +55,10 @@ public class FilterFactory {
 
 			else if(filterStr[i].equals ("writable")){
 				if (filterStr[++i].equals("YES")){
-					filter = new WriteableFilter(true);	
+					filter = new WritableFilter(true);	
 				}
 				else if (filterStr[i].equals("NO")){
-					filter = new WriteableFilter(false);	
+					filter = new WritableFilter(false);	
 				}
 				else{
 					throw new BadBooleanParameterException();

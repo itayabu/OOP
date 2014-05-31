@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import oop.ex6.filescript.sectionexceptions.NoFilterSubSectionException;
 import oop.ex6.filescript.sectionexceptions.NoOrderSubSectionException;
 
+/**
+ * parse a file to sections of filter/order
+ *
+ */
 public class FileParser {
 	private int lineNum;
 	private ArrayList<Section> toReturn = new ArrayList<Section>();
@@ -40,19 +44,23 @@ public class FileParser {
 				if (!text.equals("FILTER")){
 					throw new NoFilterSubSectionException();
 				}
+				
 				// second line must be FILTER parameters
 				text =reader.readLine();
 				lineNum++;
 				sec.addFilter(text, lineNum);
 				text = reader.readLine();
 				lineNum++;
+				
 				// third line must be ORDER
 				if (text == null || !text.equals("ORDER") ){
 					throw new NoOrderSubSectionException();
 				}
 				text =reader.readLine();
 				lineNum++;
-				// forth line may be the start of next section, or not exist
+				
+				// forth line may be ORDER parameters, 
+				// the start of next section, or not exist
 				if (text == null || text.equals("FILTER")){					
 					sec.addOrder("", lineNum);
 				}
@@ -61,7 +69,7 @@ public class FileParser {
 					text =reader.readLine();
 					lineNum++;
 				}
-				// manage the arrayList
+				// end of this section -manage the arrayList
 				toReturn.add(sec);
 			}
 			return toReturn;

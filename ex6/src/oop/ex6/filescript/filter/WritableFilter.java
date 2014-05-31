@@ -6,13 +6,13 @@ import java.io.File;
  * @author Itay
  *
  */
-public class WriteableFilter extends ModFilter {
+public class WritableFilter extends ModFilter {
 
 	/**
 	 * basic constructor
 	 * @param isMod filter if can write or not
 	 */
-	public WriteableFilter(boolean isMod) {
+	public WritableFilter(boolean isMod) {
 		super(isMod);
 	}
 

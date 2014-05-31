@@ -27,7 +27,7 @@ public class OrderFactory {
 
 			// manage the REVERSE filter
 			if (++i < orderStr.length){
-				if (orderStr[i].equals("NOT")){
+				if (orderStr[i].equals("REVERSE")){
 					order = new ReverseOrder(order);
 				}
 				else{
