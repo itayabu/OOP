@@ -5,14 +5,14 @@ import java.io.File;
 /**
  * Open a folder and get its files
  */
-class FolderParser {
-	File folder;
-	static File[] fileList;
+public class FolderParser {
+	private File folder;
+	private static File[] fileList;
 	/**
 	 * basic constructor- open a folder.
 	 * @param folderPath - address of folder
 	 */
-	FolderParser(String folderPath)	 {
+	public FolderParser(String folderPath)	 {
 
 		try{
 		folder = new File(folderPath);
@@ -29,7 +29,7 @@ class FolderParser {
  * return folder's files arranged in an array.
  * @return folder's files arranged in an array
  */
-	static File[] getFileList(){
+	public static File[] getFileList(){
 		return fileList;
 	}
 

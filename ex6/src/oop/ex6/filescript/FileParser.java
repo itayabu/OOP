@@ -17,7 +17,7 @@ public class FileParser {
 	/**
 	 * default constructor
 	 */
-	FileParser(){
+	public FileParser(){
 	}
 
 	/**
@@ -26,13 +26,14 @@ public class FileParser {
 	 * @return ArrayList of sections
 	 * @throws IOException
 	 */
-	ArrayList<Section> parseFile (String filePlace) throws IOException{
+	public ArrayList<Section> parseFile (String filePlace) throws IOException{
 		lineNum=0;
 		File file = new File (filePlace);
 		Section sec;
 		String text = null;
 		
 		// start reading from file
+		// (the try is to close BufferReader in any case)
 		try(BufferedReader reader = new BufferedReader(new FileReader (file))){
 			text = reader.readLine();
 			lineNum++;

@@ -13,7 +13,7 @@ import oop.ex6.filescript.filter.exceptions.BadNOTArgumentException;
 public class FilterFactory {
 
 	/**
-	 * 
+	 * manage creation of all filters
 	 * @param filterStr - filter name and parameters
 	 * @param filterLine - line in ordersFile that filter was called from
 	 * @return

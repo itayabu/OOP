@@ -4,7 +4,18 @@ import oop.ex6.filescript.order.exceptions.BadOrderException;
 import oop.ex6.filescript.order.exceptions.BadOrderNameExcepton;
 import oop.ex6.filescript.order.exceptions.BadREVERSENameException;
 
+/**
+ * manage all orders
+ *
+ */
 public class OrderFactory {
+	
+	/**
+	 * manage all orders
+	 * @param orderStr
+	 * @param orderLine
+	 * @return
+	 */
 	public static Order creatOrder (String[] orderStr, int orderLine){
 		Order order=null;
 		int i=0;

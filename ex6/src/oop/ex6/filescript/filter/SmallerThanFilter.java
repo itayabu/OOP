@@ -25,7 +25,6 @@ public class SmallerThanFilter extends NumericFilter {
 		return (space < value);
 	}
 
-	//TODO delete
 	@Override
 	public void PrintFilter() {
 		System.out.println("filter: smaller than " + value);
