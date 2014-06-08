@@ -10,7 +10,9 @@ public class Dummy {
 		System.out.println("yay");
 		System.out.println("bla");
 		int a=2;
-		int b=3;
+		boolean work =true;
+		boolean aa=false;
+		boolean a2 = true;
 	}
 
 }
