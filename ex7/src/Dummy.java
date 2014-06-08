@@ -14,5 +14,6 @@ public class Dummy {
 		boolean aa=false;
 		boolean a2 = true;
 		int aaa = 3;
+		int b =3;
 	}
 }
