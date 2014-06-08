@@ -1,6 +1,6 @@
 
 public class Dummy {
-	String itay = "ITAY"
+	static String itay = "ITAY";
 	/**
 	 * @param args
 	 */
