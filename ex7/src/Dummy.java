@@ -11,6 +11,7 @@ public class Dummy {
 		System.out.println("bla");
 		int a=2;
 		boolean work =true;
+		boolean aa=false
 	}
 
 }
