@@ -10,6 +10,7 @@ public class Dummy {
 		System.out.println("yay");
 		System.out.println("bla");
 		int a=2;
+		int b=3;
 	}
 
 }
