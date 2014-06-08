@@ -12,6 +12,7 @@ public class Dummy {
 		int a=2;
 		boolean work =true;
 		boolean aa=false;
+		boolean a2 = true;
 	}
 
 }
