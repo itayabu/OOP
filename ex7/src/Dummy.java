@@ -13,6 +13,5 @@ public class Dummy {
 		boolean work =true;
 		boolean aa=false;
 		boolean a2 = true;
-		int aaa = 3;
 	}
 }
