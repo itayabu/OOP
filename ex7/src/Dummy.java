@@ -9,6 +9,7 @@ public class Dummy {
 		System.out.println(itay);
 		System.out.println("yay");
 		System.out.println("bla");
+		int a=2;
 	}
 
 }
