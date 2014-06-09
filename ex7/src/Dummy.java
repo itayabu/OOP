@@ -1,17 +1,20 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 public class Dummy {
 	static String itay = "ITAY";
 	/**
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println(itay);
-		System.out.println("yay");
-		System.out.println("bla");
-		int a=2;
-		boolean work =true;
-		boolean aa=false;
-		boolean a2 = true;
+	public static void main(String[] args) throws IOException {
+		//clean all white space for start
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String text = reader.readLine();
+		text = text.replaceAll("\\s+", " ");
+		System.out.println(text);
 	}
 }
