@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import oop.ex7.Sjavac.codeRead.SomeMainParser;
 import oop.ex7.Sjavac.instance.FuncInstance;
 import oop.ex7.Sjavac.instance.FieldInstance;
 
@@ -14,14 +15,18 @@ public class Dummy {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args){
-		String[] check = {"int","bla","54","4","a","aa"};
-		FuncInstance a = new FuncInstance(check);
-		System.out.println(a.getName());
-		System.out.println(a.getType());
-		System.out.println(a.isInitialized());
-		String[] aa= a.getArgs();
-		for (int i=0; i< aa.length; i++){
-			System.out.println(aa[i]);
-		}
+		
+		//TODO: change your path!
+		SomeMainParser parser = new SomeMainParser("C:/Users/Itay/git/OOP/ex7/mytest/test005.txt");
+		
+//		String[] check = {"int","bla","54","4","a","aa"};
+//		FuncInstance a = new FuncInstance(check);
+//		System.out.println(a.getName());
+//		System.out.println(a.getType());
+//		System.out.println(a.isInitialized());
+//		String[] aa= a.getArgs();
+//		for (int i=0; i< aa.length; i++){
+//			System.out.println(aa[i]);
+//		}
 	}
 }

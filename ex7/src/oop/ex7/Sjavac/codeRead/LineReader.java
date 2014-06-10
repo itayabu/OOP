@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import oop.ex7.Sjavac.exception.BadInputException;
+import oop.ex7.Sjavac.exception.BadLineEndingException;
 import oop.ex7.Sjavac.exception.IllegalLineException;
 import oop.ex7.Sjavac.exception.NoFileFoundException;
 import oop.ex7.Sjavac.exception.WrongCommentException;
@@ -15,7 +16,7 @@ import oop.ex7.Sjavac.exception.WrongCommentException;
  * and add spaces before and after "=" equal characters.
  * @author Assaf M. & Itay A
  */
-public class CodeReader {
+public class LineReader {
 
 	private Scanner scanner;//init the scanner instance
 
@@ -26,9 +27,9 @@ public class CodeReader {
 	 * @param filename the name of the file to open
 	 * @throws WrongCommentException if the file is starting with illegal comment
 	 */
-	public CodeReader(String filename) throws BadInputException {
+	public LineReader(String filename) throws BadInputException {
 		this.filename = filename;
-			reset();//reset the scanner
+		reset();//reset the scanner
 	}
 
 	/**
@@ -48,6 +49,9 @@ public class CodeReader {
 					replaceAll("(//.*$)", " ").//remove comments 
 					replaceAll("\\s+", " ").//make sure spaces are not doubled
 					trim();//remove any trailing or leading spaces
+			if (!((result.endsWith("{")) || (result.endsWith(";")) || (result.endsWith("}"))) ){
+				throw new BadLineEndingException("bad line!");
+			}
 			trim();//remove trailing comments, useful for hasNext() method
 		}
 		while(result.length()<1); //ignore empty lines
@@ -93,11 +97,11 @@ public class CodeReader {
 	 * @throws BadInputException 
 	 */
 	public void reset() throws BadInputException {
-			try {
-				this.scanner=new Scanner(new File(filename));
-			} catch (FileNotFoundException e) {
-				throw new NoFileFoundException("could not open file");
-			}
+		try {
+			this.scanner=new Scanner(new File(filename));
+		} catch (FileNotFoundException e) {
+			throw new NoFileFoundException("could not open file");
+		}
 	}
 
 }
