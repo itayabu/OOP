@@ -10,9 +10,14 @@ public class FuncInstance extends Instance {
 	}
 	
 	private void copyArguments(String[] args){
+		funcArguments= new String[args.length-ARGUMENT_PLACE];
 		for (int i =0; i< (args.length-ARGUMENT_PLACE); i++){
 			funcArguments[i] = args[i+ARGUMENT_PLACE];
 		}
+	}
+	
+	public String[] getArgs(){
+		return funcArguments;
 	}
 	
 

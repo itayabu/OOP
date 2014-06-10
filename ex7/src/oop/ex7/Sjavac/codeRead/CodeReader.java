@@ -1,6 +1,11 @@
 package oop.ex7.Sjavac.codeRead;
 import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import oop.ex7.Sjavac.exception.BadInputException;
+import oop.ex7.Sjavac.exception.IllegalLineException;
+import oop.ex7.Sjavac.exception.NoFileFoundException;
 import oop.ex7.Sjavac.exception.WrongCommentException;
 /**
  * This class reads files.
@@ -21,9 +26,9 @@ public class CodeReader {
 	 * @param filename the name of the file to open
 	 * @throws WrongCommentException if the file is starting with illegal comment
 	 */
-	public CodeReader(String filename) throws WrongCommentException {
+	public CodeReader(String filename) throws BadInputException {
 		this.filename = filename;
-		reset();//reset the scanner
+			reset();//reset the scanner
 	}
 
 	/**
@@ -35,7 +40,7 @@ public class CodeReader {
 	 * @return line that was skipped excluding any comments/spaces at the end.
 	 * @throws WrongCommentException the next lines has illegal comment
 	 */
-	public String next() throws WrongCommentException {
+	public String next() throws BadInputException, NoSuchElementException {
 		String result;
 		do {
 			result = scanner.nextLine().//advance the line
@@ -70,12 +75,12 @@ public class CodeReader {
 	}
 
 	//run to the next line of code 
-	private void trim() throws WrongCommentException {
+	private void trim() throws BadInputException {
 		while(scanner.hasNext("/.*")) {
 
 			if(scanner.hasNext("/[^/\\*]"))
-				throw new WrongCommentException("illigal expression at line\n"+scanner.nextLine());
-
+				throw new IllegalLineException("illigal expression at line\n"+scanner.nextLine());
+			//TODO this is also illegal
 			if(scanner.hasNext("/\\*.*"))//long comment
 				scanner.findWithinHorizon("\\*/", 0);
 
@@ -85,17 +90,14 @@ public class CodeReader {
 
 	/**
 	 * take this FileRead back to the start of the file
-	 * @throws WrongCommentException if the file was changed and 
-	 * now is starting with illegal comment
+	 * @throws BadInputException 
 	 */
-	public void reset() throws  {
-		try {
-			this.scanner=new Scanner(new File(filename));
-		} catch (FileNotFoundException e) {
-			IOError("file not found: "+filename);
-		}
-		trim();		
+	public void reset() throws BadInputException {
+			try {
+				this.scanner=new Scanner(new File(filename));
+			} catch (FileNotFoundException e) {
+				throw new NoFileFoundException("could not open file");
+			}
 	}
 
-}
 }

@@ -7,6 +7,8 @@ public abstract class Instance {
 	 */
 	protected final static int NAME_PLACE=1, TYPE_PLACE=0, ARGUMENT_PLACE=2;
 	
+	enum Types{}
+	
 	private String type, name;
 	private boolean initialized; 
 	
@@ -25,7 +27,7 @@ public abstract class Instance {
 	 * name getter
 	 * @return name of instance
 	 */
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -52,6 +54,7 @@ public abstract class Instance {
 	public void setInitialized(boolean initialized) {
 		this.initialized = initialized;
 	}
+	
 	
 
 }

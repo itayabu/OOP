@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import oop.ex7.Sjavac.instance.FuncInstance;
+import oop.ex7.Sjavac.instance.FieldInstance;
+
 
 public class Dummy {
 	static String itay = "ITAY";
@@ -10,12 +13,15 @@ public class Dummy {
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
-		//clean all white space for start
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		String text = reader.readLine();
-		text = text.trim();
-		text = text.replaceAll("\\s+", " ");
-		System.out.println(text);
+	public static void main(String[] args){
+		String[] check = {"int","bla","54","4","a","aa"};
+		FuncInstance a = new FuncInstance(check);
+		System.out.println(a.getName());
+		System.out.println(a.getType());
+		System.out.println(a.isInitialized());
+		String[] aa= a.getArgs();
+		for (int i=0; i< aa.length; i++){
+			System.out.println(aa[i]);
+		}
 	}
 }
