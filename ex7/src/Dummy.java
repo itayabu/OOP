@@ -14,6 +14,7 @@ public class Dummy {
 		//clean all white space for start
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		String text = reader.readLine();
+		text = text.trim();
 		text = text.replaceAll("\\s+", " ");
 		System.out.println(text);
 	}
