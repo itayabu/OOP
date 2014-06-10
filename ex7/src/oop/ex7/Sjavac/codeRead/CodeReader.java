@@ -40,7 +40,7 @@ public class CodeReader {
 		do {
 			result = scanner.nextLine().//advance the line
 					replace("=", " = ").//correct the equal form
-					replaceAll("(/\\*.*\\*/|//.*$)", " ").//remove comments 
+					replaceAll("(//.*$)", " ").//remove comments 
 					replaceAll("\\s+", " ").//make sure spaces are not doubled
 					trim();//remove any trailing or leading spaces
 			trim();//remove trailing comments, useful for hasNext() method
