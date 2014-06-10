@@ -17,5 +17,4 @@ public class Dummy {
 		text = text.replaceAll("\\s+", " ");
 		System.out.println(text);
 	}
-	int a = 3;
 }
