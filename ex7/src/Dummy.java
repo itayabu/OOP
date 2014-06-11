@@ -1,9 +1,11 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import oop.ex7.Sjavac.codeRead.SomeMainParser;
+import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.instance.FuncInstance;
 import oop.ex7.Sjavac.instance.FieldInstance;
 
@@ -17,7 +19,10 @@ public class Dummy {
 	public static void main(String[] args){
 		
 		//TODO: change your path!
-		SomeMainParser parser = new SomeMainParser("C:/Users/Itay/git/OOP/ex7/mytest/test005.txt");
+		SomeMainParser parser = new SomeMainParser();
+		int a=parser.parseMainBlock("C:/Users/Itay/git/OOP/ex7/mytest/test005.txt");
+		System.out.println(a);
+		
 		
 //		String[] check = {"int","bla","54","4","a","aa"};
 //		FuncInstance a = new FuncInstance(check);

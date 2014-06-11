@@ -7,7 +7,6 @@ public abstract class Instance {
 	 */
 	protected final static int NAME_PLACE=1, TYPE_PLACE=0, ARGUMENT_PLACE=2;
 	
-	enum Types{}
 	
 	private String type, name;
 	private boolean initialized; 

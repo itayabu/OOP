@@ -27,7 +27,7 @@ public class LineReader {
 	 * @param filename the name of the file to open
 	 * @throws WrongCommentException if the file is starting with illegal comment
 	 */
-	public LineReader(String filename) throws BadInputException {
+	public LineReader(String filename) throws FileNotFoundException {
 		this.filename = filename;
 		reset();//reset the scanner
 	}
@@ -96,12 +96,10 @@ public class LineReader {
 	 * take this FileRead back to the start of the file
 	 * @throws BadInputException 
 	 */
-	public void reset() throws BadInputException {
-		try {
+	public void reset() throws FileNotFoundException {
+		
 			this.scanner=new Scanner(new File(filename));
-		} catch (FileNotFoundException e) {
-			throw new NoFileFoundException("could not open file");
-		}
+		
 	}
 
 }
