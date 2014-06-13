@@ -9,6 +9,7 @@ import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.exception.BadLineEndingException;
 import oop.ex7.Sjavac.exception.NoClosureToParenthesesException;
 import oop.ex7.Sjavac.instance.Instance;
+import oop.ex7.Sjavac.instance.InstanceFactory;
 
 /**
  * this class will change, just want to catch the line of CodeReader
@@ -18,6 +19,7 @@ public class SomeMainParser {
 
 	ArrayList<ArrayList<Instance>> instanceListByBlock = new ArrayList<ArrayList<Instance>>();
 	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
+	InstanceFactory factory;
 
 	/**
 	 * read from file with LineReader and manage kind of lines
@@ -26,7 +28,8 @@ public class SomeMainParser {
 	 */
 
 	public SomeMainParser(){
-
+		instanceListByBlock.add(mainBlockInstances);
+		factory = new InstanceFactory();
 	}
 
 	public int parseMainBlock(String path){
@@ -38,16 +41,19 @@ public class SomeMainParser {
 					text = deleteSuffix(text);
 					//TODO parse variable
 					System.err.println(text);
+					mainBlockInstances.add(factory.createInstance(text));
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
 					methodCheckAndSkip(reader,text);
 					text = deleteSuffix(text);
-					//TODO parse variable
+					mainBlockInstances.add(factory.createInstance(text));
 
+					//TODO parse variable
 				} 
+				
+				// no method or variable
 				else{
-					// no function or variable
 					throw new BadLineEndingException("bad line exception in main block");
 				}
 			}

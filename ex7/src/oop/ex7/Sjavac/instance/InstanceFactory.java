@@ -13,6 +13,19 @@ public class InstanceFactory {
 
 	int TYPE_PLACE=0, NAME_PLACE=1;
 	
+	/**
+	 * basic constructor
+	 */
+	public InstanceFactory(){
+		
+	}
+	
+	/**
+	 * creatin a new instance for a given instance line
+	 * @param line - the params for a new instance
+	 * @return	a new instance
+	 * @throws BadInputException
+	 */
 	public Instance createInstance(String line) throws BadInputException{
 		String[] splittedLine = line.split(" ");
 		String name = splittedLine[NAME_PLACE];
@@ -21,17 +34,17 @@ public class InstanceFactory {
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
 		line = line.substring(currentType.getType().length());
 		
-		// check if function
+		// check if String is a function
 		Matcher m =RegexConstants.RegexPatterns.VARIABLE_DECLARATION.matcher(line);
 		if (m.matches()){
 			ArrayList <Type> argList = makeArgList(line);
 			return new FuncInstance (currentType, name, argList);
 		}
 		
+		// if String is not a function, then it is a field
 		else{
 			return new FieldInstance (currentType, name, checkLegalInit(line));
-		}
-		
+		}	
 	}
 
 	private boolean checkLegalInit(String s){

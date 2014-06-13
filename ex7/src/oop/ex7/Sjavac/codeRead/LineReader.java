@@ -6,8 +6,7 @@ import java.util.Scanner;
 import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.exception.BadLineEndingException;
 import oop.ex7.Sjavac.exception.IllegalLineException;
-import oop.ex7.Sjavac.exception.NoFileFoundException;
-import oop.ex7.Sjavac.exception.WrongCommentException;
+
 /**
  * This class reads files.
  * this class also do some operations on 
@@ -96,7 +95,7 @@ public class LineReader {
 	 * take this FileRead back to the start of the file
 	 * @throws BadInputException 
 	 */
-	public static void reset() throws FileNotFoundException {
+	public void reset() throws FileNotFoundException {
 		
 			scanner=new Scanner(new File(filename));
 		
