@@ -1,22 +1,18 @@
 package oop.ex7.Sjavac.instance;
 
+import java.util.ArrayList;
+
+import oop.ex7.Sjavac.Type;
+
 public class FuncInstance extends Instance {
 
-	String[] funcArguments;
-	public FuncInstance(String[] args) {
-		super(args[TYPE_PLACE], args[NAME_PLACE]);
+	ArrayList<Type> funcArguments;
+	public FuncInstance(Type type, String name, ArrayList<Type> args) {
+		super(type, name);
 		setInitialized(true);
-		copyArguments(args);
 	}
 	
-	private void copyArguments(String[] args){
-		funcArguments= new String[args.length-ARGUMENT_PLACE];
-		for (int i =0; i< (args.length-ARGUMENT_PLACE); i++){
-			funcArguments[i] = args[i+ARGUMENT_PLACE];
-		}
-	}
-	
-	public String[] getArgs(){
+	public ArrayList<Type> getArgs(){
 		return funcArguments;
 	}
 	

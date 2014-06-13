@@ -36,7 +36,7 @@ public class RegexConstants {
         public Pattern VALUE_CHAR = Pattern.compile("\\s*'.'\\s*");
         
         // commands patterns
-        public Pattern VARIABLE_DECLARATION = Pattern.compile(
+        static public Pattern VARIABLE_DECLARATION = Pattern.compile(
                 "((final)\\s+)?(int|double|boolean|char|String)\\s+(_[A-Za-z0-9_]+|[A-Za-z][A-Za-z0-9_]*)(\\s*=\\s*([^;]+))?;");
 
         public Pattern METHOD_DECLARATION = Pattern.compile(

@@ -1,14 +1,12 @@
 package oop.ex7.Sjavac.instance;
 
+import oop.ex7.Sjavac.Type;
+
 public abstract class Instance {
 	
-	/**
-	 * places in array of name and place
-	 */
-	protected final static int NAME_PLACE=1, TYPE_PLACE=0, ARGUMENT_PLACE=2;
 	
-	
-	private String type, name;
+	private String name;
+	private Type type;
 	private boolean initialized; 
 	
 	/**
@@ -16,7 +14,7 @@ public abstract class Instance {
 	 * @param type the type or return type of instance
 	 * @param name the name of instance
 	 */
-	public Instance(String type, String name){
+	public Instance(Type type, String name){
 		this.name = name;
 		this.type =  type;
 		initialized = false;
@@ -35,7 +33,7 @@ public abstract class Instance {
 	 * @return String of type name
 	 */
 	public String getType() {
-		return type;
+		return type.getType();
 	}
 
 	/**

@@ -16,7 +16,8 @@ import oop.ex7.Sjavac.instance.Instance;
  */
 public class SomeMainParser {
 
-	ArrayList<Instance> instances = new ArrayList();
+	ArrayList<ArrayList<Instance>> instanceListByBlock = new ArrayList<ArrayList<Instance>>();
+	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
 
 	/**
 	 * read from file with LineReader and manage kind of lines
@@ -39,10 +40,10 @@ public class SomeMainParser {
 					System.err.println(text);
 				}
 				else if(text.endsWith("{")){
-					//TODO parse variable
 					System.out.println("func");
 					methodCheckAndSkip(reader,text);
 					text = deleteSuffix(text);
+					//TODO parse variable
 
 				} 
 				else{
@@ -59,7 +60,31 @@ public class SomeMainParser {
 		}
 	}
 
+	public int parseMethods(String path){
+		try{
+			LineReader reader = new LineReader(path);
+			while (reader.hasNext()){
+				String text = reader.next();
+				if (text.endsWith(";")){
+					text= reader.next();
+					continue;
+				}
+				if (text.endsWith("{")){
+					//TODO: add to arrayList and send to blockParse
+				}
+			}
+		} catch(FileNotFoundException e){
+			return 2;
+		} catch (BadInputException e){
+			e.getMessage();
+			return 1;
+		} 
+		return 0;
+	}
 
+	public void parseBlock(LineReader reader){
+		
+	}
 
 	/**
 	 * will skip every method but check if blocks are legal
@@ -102,5 +127,5 @@ public class SomeMainParser {
 		return s.trim();
 	}
 
-	
+
 }
