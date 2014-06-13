@@ -15,59 +15,61 @@ import oop.ex7.Sjavac.instance.Instance;
  *
  */
 public class SomeMainParser {
-	
+
 	ArrayList<Instance> instances = new ArrayList();
-	
+
 	/**
 	 * read from file with LineReader and manage kind of lines
 	 * @param path
 	 * @return 
 	 */
-	
+
 	public SomeMainParser(){
-		
+
 	}
-	
+
 	public int parseMainBlock(String path){
 		try{
-			// TODO: open new file and write to it
 			LineReader reader = new LineReader(path);
 			while (reader.hasNext()){
-			String text = reader.next();
-			if (text.endsWith(";")){
-				text = deleteSuffix(text);
-				//TODO parse variable
-				System.err.println(text);
-			}
-			else if(text.endsWith("{")){
-				//TODO parse variable
-				System.out.println("func");
-				methodCopy(reader,text);
-				text = deleteSuffix(text);
-				
-			} 
-			else{
+				String text = reader.next();
+				if (text.endsWith(";")){
+					text = deleteSuffix(text);
+					//TODO parse variable
+					System.err.println(text);
+				}
+				else if(text.endsWith("{")){
+					//TODO parse variable
+					System.out.println("func");
+					methodCheckAndSkip(reader,text);
+					text = deleteSuffix(text);
+
+				} 
+				else{
 					// no function or variable
-				throw new BadLineEndingException("bad line exception in main block");
+					throw new BadLineEndingException("bad line exception in main block");
+				}
 			}
-			}
-			} catch(FileNotFoundException e){
-				return 2;
-			} catch (BadInputException e){
-				e.getMessage();
-				return 1;
-			}
-		return 0;
+			return 0;
+		} catch(FileNotFoundException e){
+			return 2;
+		} catch (BadInputException e){
+			e.getMessage();
+			return 1;
+		}
 	}
-	
+
+
+
 	/**
-	 * will print to the new file every line and check that every block is closed
+	 * will skip every method but check if blocks are legal
 	 * @param reader
 	 * @param text
+	 * @return 
 	 * @throws BadInputException 
 	 * @throws NoSuchElementException 
 	 */
-	private void methodCopy(LineReader reader, String text) throws BadInputException{
+	private void methodCheckAndSkip(LineReader reader, String text) throws BadInputException{
 		int openBlocks=0;
 		do{
 			System.out.println(text);
@@ -76,9 +78,12 @@ public class SomeMainParser {
 			}
 			if (text.endsWith("}")){
 				openBlocks--;
+				if (openBlocks == 0){
+					return;
+				}
 			}
 			if (reader.hasNext()){
-			text= reader.next();
+				text= reader.next();
 			}
 			else{
 				if (openBlocks > 0){
@@ -87,10 +92,8 @@ public class SomeMainParser {
 			}
 		}
 		while (openBlocks > 0);
-		
-		
 	}
-	
+
 	/**
 	 * will delete suffix of String
 	 */
@@ -98,4 +101,6 @@ public class SomeMainParser {
 		s = s.substring(0, s.length()-1);
 		return s.trim();
 	}
+
+	
 }

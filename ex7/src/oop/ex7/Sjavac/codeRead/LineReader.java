@@ -18,9 +18,9 @@ import oop.ex7.Sjavac.exception.WrongCommentException;
  */
 public class LineReader {
 
-	private Scanner scanner;//init the scanner instance
+	private static Scanner scanner;//init the scanner instance
 
-	private String filename;//init the file name to use with reset
+	private static String filename;//init the file name to use with reset
 
 	/**
 	 * construct a new CodeReader object
@@ -96,9 +96,9 @@ public class LineReader {
 	 * take this FileRead back to the start of the file
 	 * @throws BadInputException 
 	 */
-	public void reset() throws FileNotFoundException {
+	public static void reset() throws FileNotFoundException {
 		
-			this.scanner=new Scanner(new File(filename));
+			scanner=new Scanner(new File(filename));
 		
 	}
 
