@@ -7,9 +7,12 @@ import java.util.zip.Adler32;
 
 import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.exception.BadLineEndingException;
+import oop.ex7.Sjavac.exception.DuplicateInstaceException;
+import oop.ex7.Sjavac.exception.MemberDoesNotExistException;
 import oop.ex7.Sjavac.exception.NoClosureToParenthesesException;
 import oop.ex7.Sjavac.instance.Instance;
 import oop.ex7.Sjavac.instance.InstanceFactory;
+import oop.ex7.Sjavac.validations.ValidateType;
 
 /**
  * this class will change, just want to catch the line of CodeReader
@@ -32,26 +35,27 @@ public class SomeMainParser {
 		factory = new InstanceFactory();
 	}
 
+	/**
+	 * parse the main block.
+	 * make an Instance of every field and method in main block.
+	 * skip any other block.
+	 * @param path
+	 * @return
+	 */
 	public int parseMainBlock(String path){
 		try{
 			LineReader reader = new LineReader(path);
 			while (reader.hasNext()){
 				String text = reader.next();
 				if (text.endsWith(";")){
-					text = deleteSuffix(text);
-					//TODO parse variable
 					System.err.println(text);
 					mainBlockInstances.add(factory.createInstance(text));
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
-					methodCheckAndSkip(reader,text);
-					text = deleteSuffix(text);
 					mainBlockInstances.add(factory.createInstance(text));
-
-					//TODO parse variable
+					methodCheckAndSkip(reader,text);
 				} 
-				
 				// no method or variable
 				else{
 					throw new BadLineEndingException("bad line exception in main block");
@@ -88,8 +92,43 @@ public class SomeMainParser {
 		return 0;
 	}
 
-	public void parseBlock(LineReader reader){
-		
+	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException{
+		ArrayList <Instance> blockList = new ArrayList <Instance>();
+		instanceListByBlock.add(1, blockList);
+		while (reader.hasNext()){
+			String text = reader.next();
+			Instance currInstance;
+
+			//new block
+			String[] splittedText = text.split(" ");
+			if (text.endsWith("{")){
+				//TODO: check if valid
+				parseBlock (reader);
+			}
+			
+			//end of block
+			else if (text.endsWith("}")){
+				//TODO: change instance's initialize back
+				instanceListByBlock.remove(1);
+			}
+			
+			// must end with ";"
+			else if (ValidateType.isValidInstanceType(splittedText[0])){
+				currInstance = InstanceFactory.createInstance(text);
+				if (InstanceNameExistInBlock(currInstance,blockList)){
+					throw new DuplicateInstaceException("Instance created twice in the same block");					
+				}
+			}
+			else{
+				currInstance = findInstance(instanceListByBlock, splittedText[1]);
+				if (currInstance == null){
+					throw new MemberDoesNotExistException
+					("searched for member called "+splittedText[1]+" and didnt find it");
+				}
+				//TODO: continue here
+			}
+
+		}
 	}
 
 	/**
@@ -126,12 +165,28 @@ public class SomeMainParser {
 	}
 
 	/**
-	 * will delete suffix of String
+	 * check if already exist instance in block
+	 * @param checkInstance the instance to check
+	 * @param instanceInBlock all instances already exist in current block
+	 * @return
 	 */
-	private String deleteSuffix(String s){
-		s = s.substring(0, s.length()-1);
-		return s.trim();
+	private boolean InstanceNameExistInBlock(Instance checkInstance, ArrayList<Instance> instanceInBlock){
+		for (Instance instance:instanceInBlock){
+			if (checkInstance.getName().equals(instance.getName())){
+				return true;
+			}
+		}
+		return false;
 	}
 
-
+	private Instance findInstance(ArrayList<ArrayList<Instance>> list, String s){
+		for (ArrayList<Instance> subList: list){
+			for (Instance instance: subList){
+				if (instance.getName().equalsIgnoreCase(s)){
+					return instance;
+				}
+			}
+		}
+		return null;
+	}
 }

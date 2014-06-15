@@ -8,4 +8,9 @@ public class FieldInstance extends Instance {
 		super(type, name);
 		setInitialized(init);
 	}
+
+	@Override
+	public boolean compareInstances(Instance otherInstance) {
+		return compareInstancesType(otherInstance);
+	}
 }

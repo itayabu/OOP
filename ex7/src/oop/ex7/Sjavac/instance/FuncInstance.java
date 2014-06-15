@@ -15,6 +15,12 @@ public class FuncInstance extends Instance {
 	public ArrayList<Type> getArgs(){
 		return funcArguments;
 	}
+
+	@Override
+	public boolean compareInstances(Instance otherInstance) {
+		// TODO- all comparisons
+		return false;
+	}
 	
 
 }

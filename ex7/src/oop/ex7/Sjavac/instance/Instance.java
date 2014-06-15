@@ -32,8 +32,8 @@ public abstract class Instance {
 	 * type name getter
 	 * @return String of type name
 	 */
-	public String getType() {
-		return type.getType();
+	public Type getType() {
+		return type;
 	}
 
 	/**
@@ -52,6 +52,20 @@ public abstract class Instance {
 		this.initialized = initialized;
 	}
 	
+	/**
+	 * check Instance is the same as other instance
+	 * @param otherInstance
+	 * @return true if instances are the same, flase else
+	 */
+	public abstract boolean compareInstances(Instance otherInstance);
 	
+	/**
+	 * check if the type of instances are the same
+	 * @param otherInstance
+	 * @return
+	 */
+	protected boolean compareInstancesType(Instance otherInstance){
+		return (this.type.equals(otherInstance.getType()));
+	}	
 
 }

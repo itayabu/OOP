@@ -37,10 +37,10 @@ public class RegexConstants {
         
         // commands patterns
         static public Pattern VARIABLE_DECLARATION = Pattern.compile(
-                "((final)\\s+)?(int|double|boolean|char|String)\\s+(_[A-Za-z0-9_]+|[A-Za-z][A-Za-z0-9_]*)(\\s*=\\s*([^;]+))?;");
+                "([A-Za-z0-9_]+);|([A-Za-z][A-Za-z0-9_]*)(\\s*=\\s*([^;]+))?;");
 
-        public Pattern METHOD_DECLARATION = Pattern.compile(
-                "(int|double|boolean|char|String|void)\\s+([A-Za-z][A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)\\}",
+       static public Pattern METHOD_DECLARATION = Pattern.compile(
+                "([A-Za-z][A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
                 Pattern.DOTALL);
 
         public Pattern METHOD_ARGUMENTS = Pattern.compile(
