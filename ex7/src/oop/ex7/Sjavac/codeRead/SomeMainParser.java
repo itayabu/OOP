@@ -20,7 +20,7 @@ import oop.ex7.Sjavac.validations.ValidateType;
  */
 public class SomeMainParser {
 
-	ArrayList<ArrayList<Instance>> instanceListByBlock = new ArrayList<ArrayList<Instance>>();
+	ArrayList<ArrayList<Instance>> methodInstanceListByBlock = new ArrayList<ArrayList<Instance>>();
 	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
 	InstanceFactory factory;
 
@@ -31,7 +31,7 @@ public class SomeMainParser {
 	 */
 
 	public SomeMainParser(){
-		instanceListByBlock.add(mainBlockInstances);
+		methodInstanceListByBlock.add(mainBlockInstances);
 		factory = new InstanceFactory();
 	}
 
@@ -49,11 +49,22 @@ public class SomeMainParser {
 				String text = reader.next();
 				if (text.endsWith(";")){
 					System.err.println(text);
-					mainBlockInstances.add(factory.createInstance(text));
+					Instance newInstance =factory.createInstance(text); 
+					if (instanceNameExistInBlock(newInstance, mainBlockInstances)){
+						throw new DuplicateInstaceException("instance "+newInstance.getName()+
+								" is declared twice in main block");
+					}
+					mainBlockInstances.add(newInstance);
+					//TODO check legal regexes
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
-					mainBlockInstances.add(factory.createInstance(text));
+					Instance newInstance =factory.createInstance(text); 
+					if (instanceNameExistInBlock(newInstance, mainBlockInstances)){
+						throw new DuplicateInstaceException("instance "+newInstance.getName()+
+								" is declared twice in main block");
+					}
+					mainBlockInstances.add(newInstance);
 					methodCheckAndSkip(reader,text);
 				} 
 				// no method or variable
@@ -80,7 +91,7 @@ public class SomeMainParser {
 					continue;
 				}
 				if (text.endsWith("{")){
-					//TODO: add to arrayList and send to blockParse
+					parseBlock(reader);
 				}
 			}
 		} catch(FileNotFoundException e){
@@ -94,40 +105,62 @@ public class SomeMainParser {
 
 	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
-		instanceListByBlock.add(1, blockList);
+		methodInstanceListByBlock.add(1, blockList);
 		while (reader.hasNext()){
 			String text = reader.next();
 			Instance currInstance;
+			String[] splittedText = text.split(" ");
 
 			//new block
-			String[] splittedText = text.split(" ");
 			if (text.endsWith("{")){
 				//TODO: check if valid
 				parseBlock (reader);
-			}
-			
-			//end of block
-			else if (text.endsWith("}")){
-				//TODO: change instance's initialize back
-				instanceListByBlock.remove(1);
-			}
-			
-			// must end with ";"
-			else if (ValidateType.isValidInstanceType(splittedText[0])){
-				currInstance = InstanceFactory.createInstance(text);
-				if (InstanceNameExistInBlock(currInstance,blockList)){
-					throw new DuplicateInstaceException("Instance created twice in the same block");					
-				}
-			}
-			else{
-				currInstance = findInstance(instanceListByBlock, splittedText[1]);
-				if (currInstance == null){
-					throw new MemberDoesNotExistException
-					("searched for member called "+splittedText[1]+" and didnt find it");
-				}
-				//TODO: continue here
+				continue;
 			}
 
+			//end of block
+			else if (text.endsWith("}")){
+				methodInstanceListByBlock.remove(1);
+				return;
+			}
+
+			// must end with ";"
+			else{
+				
+//				//TODO if its a function
+//				if (true){
+//					Instance func = findInstance(methodInstanceListByBlock, splittedText[1]);
+//				}
+				
+				// if its a declaration of a new var
+				if (ValidateType.isValidInstanceType(splittedText[0])){
+					currInstance = InstanceFactory.createInstance(text);					
+					if (instanceExistInMethod(methodInstanceListByBlock,currInstance)){
+						throw new DuplicateInstaceException("Instance created twice in the same block");					
+					}
+				}
+				
+				// using an existing var (no declaration)
+				else{
+					currInstance = findInstance(methodInstanceListByBlock, splittedText[1]);
+					// case var doesnt exist at all
+					if (currInstance == null){
+						throw new MemberDoesNotExistException
+						("searched for member called "+splittedText[1]+" and didnt find it");
+					}
+					// case var exist
+					else{
+						
+						// case var exist in outer scope/main block, we want to clone it so it
+						// wont affect initiate status.
+						if (!instanceNameExistInBlock(currInstance, blockList)){
+							currInstance = currInstance.clone();							
+							blockList.add(currInstance);
+						}
+						//TODO check if HASAMA is legal
+					}
+				}
+			}
 		}
 	}
 
@@ -170,7 +203,7 @@ public class SomeMainParser {
 	 * @param instanceInBlock all instances already exist in current block
 	 * @return
 	 */
-	private boolean InstanceNameExistInBlock(Instance checkInstance, ArrayList<Instance> instanceInBlock){
+	private boolean instanceNameExistInBlock(Instance checkInstance, ArrayList<Instance> instanceInBlock){
 		for (Instance instance:instanceInBlock){
 			if (checkInstance.getName().equals(instance.getName())){
 				return true;
@@ -179,12 +212,39 @@ public class SomeMainParser {
 		return false;
 	}
 
+	/**
+	 * check if instance's name is already in use in current method
+	 * @param methodList
+	 * @param checkInstance
+	 * @return true if name is in use, false else
+	 */
+	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> methodList, Instance checkInstance){
+		for (ArrayList<Instance> subList: methodList){
+			if(instanceNameExistInBlock(checkInstance, subList)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * check if instance with a given name exist in code.
+	 * check in a given method list and in the main list
+	 * @param list
+	 * @param s
+	 * @return instance with the given name if exist, null else.
+	 */
 	private Instance findInstance(ArrayList<ArrayList<Instance>> list, String s){
 		for (ArrayList<Instance> subList: list){
 			for (Instance instance: subList){
 				if (instance.getName().equalsIgnoreCase(s)){
 					return instance;
 				}
+			}
+		}
+		for (Instance instance: mainBlockInstances){
+			if (instance.getName().equalsIgnoreCase(s)){
+				return instance;
 			}
 		}
 		return null;
