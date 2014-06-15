@@ -29,7 +29,6 @@ public class SomeMainParser {
 	 * @param path
 	 * @return 
 	 */
-
 	public SomeMainParser(){
 		methodInstanceListByBlock.add(mainBlockInstances);
 		factory = new InstanceFactory();
@@ -220,6 +219,9 @@ public class SomeMainParser {
 	 */
 	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> methodList, Instance checkInstance){
 		for (ArrayList<Instance> subList: methodList){
+			if (subList.equals(mainBlockInstances)){
+				continue;
+			}
 			if(instanceNameExistInBlock(checkInstance, subList)){
 				return true;
 			}
@@ -242,11 +244,15 @@ public class SomeMainParser {
 				}
 			}
 		}
-		for (Instance instance: mainBlockInstances){
-			if (instance.getName().equalsIgnoreCase(s)){
-				return instance;
-			}
-		}
 		return null;
 	}
+	
+	
+
+	
+
+
+
+
 }
+

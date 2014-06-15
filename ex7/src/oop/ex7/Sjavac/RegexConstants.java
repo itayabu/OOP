@@ -44,13 +44,13 @@ public class RegexConstants {
                 Pattern.DOTALL);
 
         public Pattern METHOD_ARGUMENTS = Pattern.compile(
-                "\\s*((final)\\s+)?(int|double|boolean|char|String)\\s+(_|[A-Za-z][A-Za-z0-9_]*)\\s*");
+                "\\s*(_|[A-Za-z][A-Za-z0-9_]*)\\s*");
 
         public Pattern METHOD_CALL = Pattern.compile(
                 "\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*");
 
-        public Pattern CONDITION_COMMAND = Pattern.compile(
-                "(if|while)\\s*\\(([^{]+)\\)\\s*\\{(.*)\\}", Pattern.DOTALL);
+        public static Pattern CONDITION_COMMAND = Pattern.compile(
+                "(if|while)\\s*\\(([^{]+)\\)\\s*\\{(.*)", Pattern.DOTALL);
 
         public Pattern RETURN_COMMAND = Pattern.compile(
                 "\\s*(return)(\\s+(.+))?;");
