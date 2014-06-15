@@ -21,6 +21,11 @@ public class FuncInstance extends Instance {
 		// TODO- all comparisons
 		return false;
 	}
+
+	@Override
+	public Instance clone() {
+		return new FuncInstance(this.getType(), this.getName(), funcArguments);
+	}
 	
 
 }

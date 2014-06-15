@@ -19,6 +19,11 @@ public abstract class Instance {
 		this.type =  type;
 		initialized = false;
 	}
+
+	/**
+	 * create a new deep copy of this instance
+	 */
+	public abstract Instance clone();
 	
 	/**
 	 * name getter

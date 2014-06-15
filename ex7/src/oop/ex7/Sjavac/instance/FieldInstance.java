@@ -13,4 +13,9 @@ public class FieldInstance extends Instance {
 	public boolean compareInstances(Instance otherInstance) {
 		return compareInstancesType(otherInstance);
 	}
+
+	@Override
+	public Instance clone() {
+		return new FieldInstance(getType(), getName(), isInitialized());
+	}
 }
