@@ -13,6 +13,8 @@ import oop.ex7.Sjavac.exception.BadStructureOfBlockLineException;
 import oop.ex7.Sjavac.exception.CompilerError;
 import oop.ex7.Sjavac.exception.DuplicateInstaceException;
 import oop.ex7.Sjavac.exception.IlegalCommentException;
+import oop.ex7.Sjavac.exception.IllegalParameterInput;
+import oop.ex7.Sjavac.exception.MemberDeclarationException;
 import oop.ex7.Sjavac.exception.MemberDoesNotExistException;
 import oop.ex7.Sjavac.exception.NoClosureToParenthesesException;
 import oop.ex7.Sjavac.instance.Instance;
@@ -56,7 +58,7 @@ public class SomeMainParser {
 				String text = reader.next();
 				if (text.endsWith(";")){
 					System.err.println(text);
-					Instance newInstance =factory.createInstance(methodInstanceListByBlock, text); 
+					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
 					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
@@ -66,7 +68,7 @@ public class SomeMainParser {
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
-					Instance newInstance =factory.createInstance(methodInstanceListByBlock, text); 
+					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
 					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
@@ -80,7 +82,14 @@ public class SomeMainParser {
 				}
 			}
 			return 0;
-		} catch(CompilerError e){
+		}catch (IlegalCommentException e) {
+			// TODO Auto-generated catch block
+			return 1;
+		} catch (MemberDeclarationException e) {
+			// TODO Auto-generated catch block
+			return 1;
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
 			return 2;
 		} catch (BadInputException e){
 			e.getMessage();
@@ -108,12 +117,18 @@ public class SomeMainParser {
 			return 1;
 		} catch (IlegalCommentException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return 1;
+		} catch (MemberDeclarationException e) {
+			// TODO Auto-generated catch block
+			return 1;
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			return 1;
 		} 
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, IlegalCommentException{
+	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, IlegalCommentException, IllegalParameterInput{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		methodInstanceListByBlock.add(1, blockList);
 		Matcher m;
