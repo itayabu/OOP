@@ -3,15 +3,22 @@ package oop.ex7.Sjavac.codeRead;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
 import java.util.zip.Adler32;
 
+import oop.ex7.Sjavac.RegexConstants;
 import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.exception.BadLineEndingException;
+import oop.ex7.Sjavac.exception.BadStructureOfBlockLineException;
+import oop.ex7.Sjavac.exception.CompilerError;
 import oop.ex7.Sjavac.exception.DuplicateInstaceException;
+import oop.ex7.Sjavac.exception.IlegalCommentException;
 import oop.ex7.Sjavac.exception.MemberDoesNotExistException;
 import oop.ex7.Sjavac.exception.NoClosureToParenthesesException;
 import oop.ex7.Sjavac.instance.Instance;
 import oop.ex7.Sjavac.instance.InstanceFactory;
+import oop.ex7.Sjavac.validations.InstanceArrayValidator;
+import oop.ex7.Sjavac.validations.ValidateBlocks;
 import oop.ex7.Sjavac.validations.ValidateType;
 
 /**
@@ -40,6 +47,7 @@ public class SomeMainParser {
 	 * skip any other block.
 	 * @param path
 	 * @return
+	 * @throws CompilerError 
 	 */
 	public int parseMainBlock(String path){
 		try{
@@ -48,8 +56,8 @@ public class SomeMainParser {
 				String text = reader.next();
 				if (text.endsWith(";")){
 					System.err.println(text);
-					Instance newInstance =factory.createInstance(text); 
-					if (instanceNameExistInBlock(newInstance, mainBlockInstances)){
+					Instance newInstance =factory.createInstance(methodInstanceListByBlock, text); 
+					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
 					}
@@ -58,8 +66,8 @@ public class SomeMainParser {
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
-					Instance newInstance =factory.createInstance(text); 
-					if (instanceNameExistInBlock(newInstance, mainBlockInstances)){
+					Instance newInstance =factory.createInstance(methodInstanceListByBlock, text); 
+					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
 					}
@@ -72,7 +80,7 @@ public class SomeMainParser {
 				}
 			}
 			return 0;
-		} catch(FileNotFoundException e){
+		} catch(CompilerError e){
 			return 2;
 		} catch (BadInputException e){
 			e.getMessage();
@@ -93,18 +101,22 @@ public class SomeMainParser {
 					parseBlock(reader);
 				}
 			}
-		} catch(FileNotFoundException e){
+		} /**catch(FileNotFoundException e){
 			return 2;
-		} catch (BadInputException e){
+		} **/catch (BadInputException e){
 			e.getMessage();
 			return 1;
+		} catch (IlegalCommentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException{
+	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, IlegalCommentException{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		methodInstanceListByBlock.add(1, blockList);
+		Matcher m;
 		while (reader.hasNext()){
 			String text = reader.next();
 			Instance currInstance;
@@ -112,7 +124,9 @@ public class SomeMainParser {
 
 			//new block
 			if (text.endsWith("{")){
-				//TODO: check if valid
+				if (!ValidateBlocks.validateIfOrWhileBlock(text)){
+					throw new BadStructureOfBlockLineException("block line doesnt have an if/ while structure"); 
+				}
 				parseBlock (reader);
 				continue;
 			}
@@ -125,23 +139,24 @@ public class SomeMainParser {
 
 			// must end with ";"
 			else{
-				
-//				//TODO if its a function
-//				if (true){
-//					Instance func = findInstance(methodInstanceListByBlock, splittedText[1]);
-//				}
-				
+
+				m = RegexConstants.RegexPatterns.METHOD_CALL.matcher(text);
+				if (m.matches()){
+					//TODO how to check if it is a func instance?
+					Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[1]);
+				}
+
 				// if its a declaration of a new var
 				if (ValidateType.isValidInstanceType(splittedText[0])){
-					currInstance = InstanceFactory.createInstance(text);					
+					currInstance = InstanceFactory.createInstance(methodInstanceListByBlock, text);					
 					if (instanceExistInMethod(methodInstanceListByBlock,currInstance)){
 						throw new DuplicateInstaceException("Instance created twice in the same block");					
 					}
 				}
-				
+
 				// using an existing var (no declaration)
 				else{
-					currInstance = findInstance(methodInstanceListByBlock, splittedText[1]);
+					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[1]);
 					// case var doesnt exist at all
 					if (currInstance == null){
 						throw new MemberDoesNotExistException
@@ -149,10 +164,10 @@ public class SomeMainParser {
 					}
 					// case var exist
 					else{
-						
+
 						// case var exist in outer scope/main block, we want to clone it so it
 						// wont affect initiate status.
-						if (!instanceNameExistInBlock(currInstance, blockList)){
+						if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
 							currInstance = currInstance.clone();							
 							blockList.add(currInstance);
 						}
@@ -169,9 +184,10 @@ public class SomeMainParser {
 	 * @param text
 	 * @return 
 	 * @throws BadInputException 
+	 * @throws IlegalCommentException 
 	 * @throws NoSuchElementException 
 	 */
-	private void methodCheckAndSkip(LineReader reader, String text) throws BadInputException{
+	private void methodCheckAndSkip(LineReader reader, String text) throws BadInputException, IlegalCommentException{
 		int openBlocks=0;
 		do{
 			System.out.println(text);
@@ -196,20 +212,8 @@ public class SomeMainParser {
 		while (openBlocks > 0);
 	}
 
-	/**
-	 * check if already exist instance in block
-	 * @param checkInstance the instance to check
-	 * @param instanceInBlock all instances already exist in current block
-	 * @return
-	 */
-	private boolean instanceNameExistInBlock(Instance checkInstance, ArrayList<Instance> instanceInBlock){
-		for (Instance instance:instanceInBlock){
-			if (checkInstance.getName().equals(instance.getName())){
-				return true;
-			}
-		}
-		return false;
-	}
+
+
 
 	/**
 	 * check if instance's name is already in use in current method
@@ -222,34 +226,18 @@ public class SomeMainParser {
 			if (subList.equals(mainBlockInstances)){
 				continue;
 			}
-			if(instanceNameExistInBlock(checkInstance, subList)){
+			if(InstanceArrayValidator.instanceNameExistInBlock(checkInstance, subList)){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	/**
-	 * check if instance with a given name exist in code.
-	 * check in a given method list and in the main list
-	 * @param list
-	 * @param s
-	 * @return instance with the given name if exist, null else.
-	 */
-	private Instance findInstance(ArrayList<ArrayList<Instance>> list, String s){
-		for (ArrayList<Instance> subList: list){
-			for (Instance instance: subList){
-				if (instance.getName().equalsIgnoreCase(s)){
-					return instance;
-				}
-			}
-		}
-		return null;
-	}
-	
-	
 
-	
+
+
+
+
 
 
 

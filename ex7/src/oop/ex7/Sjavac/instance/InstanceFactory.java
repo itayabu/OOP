@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import oop.ex7.Sjavac.RegexConstants;
 import oop.ex7.Sjavac.Type;
 import oop.ex7.Sjavac.exception.BadInputException;
+import oop.ex7.Sjavac.validations.ValidateInstanceValue;
 import oop.ex7.Sjavac.validations.ValidateType;
 import oop.ex7.Sjavac.validations.exception.BadTypeNameException;
 
@@ -27,9 +28,10 @@ public class InstanceFactory {
 	 * @return	a new instance
 	 * @throws BadInputException
 	 */
-	public static Instance createInstance(String line) throws BadInputException{
+	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException{
+		Instance newInstance;
 		String[] splittedLine = line.split(" ");
-		String name = deleteSuffix(splittedLine[NAME_PLACE]);
+		String name = getName(splittedLine[NAME_PLACE]);
 
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
@@ -45,7 +47,11 @@ public class InstanceFactory {
 
 		// if String is not a function, then it is a field
 		else{
-			return new FieldInstance (currentType, name, checkIfInit(line));
+			newInstance = new FieldInstance (currentType, name, checkIfInit(line));
+			if (checkIfInit(line)){
+				ValidateInstanceValue.validateValueOnInstace(list, newInstance, line);
+			}
+			return newInstance;
 		}	
 	}
 
@@ -63,23 +69,25 @@ public class InstanceFactory {
 		}
 	}
 
-		/**
-		 * receive all the String inside brackets and return arrayList of all types
-		 * @param list all String inside brackets
-		 * @return arraylist of all types
-		 */
-		private static ArrayList<Type> makeArgList(String list){
+	/**
+	 * receive all the String inside brackets and return arrayList of all types
+	 * @param list all String inside brackets
+	 * @return arraylist of all types
+	 */
+	private static ArrayList<Type> makeArgList(String list){
 
-			ArrayList<Type> argList = new ArrayList<Type>();
-			//TODO: split the String to types
-			return argList;
-		}
-
-		/**
-		 * will delete suffix of String
-		 */
-		private static String deleteSuffix(String s){
-			s = s.substring(0, s.length()-1);
-			return s.trim();
-		}
+		ArrayList<Type> argList = new ArrayList<Type>();
+		//TODO: split the String to types
+		return argList;
 	}
+
+	/**
+	 * will delete suffix of String
+	 */
+	private static String getName(String s){
+		if (s.endsWith(";")){
+			s = s.substring(0, s.length()-1);
+		}
+		return s.trim();
+	}
+}

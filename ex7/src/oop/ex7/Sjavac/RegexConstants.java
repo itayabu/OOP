@@ -30,7 +30,7 @@ public class RegexConstants {
         
         // value types
         public Pattern VALUE_BOOLEAN = Pattern.compile("\\s*(true|false)\\s*");
-        public Pattern VALUE_INT = Pattern.compile("\\s*-?\\d+\\s*");
+        public static Pattern VALUE_INT = Pattern.compile("\\s*-?\\d+\\s*");
         public Pattern VALUE_DOUBLE = Pattern.compile("\\s*-?\\d+(\\.\\d+)?\\s*");
         public Pattern VALUE_STRING = Pattern.compile("\\s*\\\".+?\\\"\\s*");
         public Pattern VALUE_CHAR = Pattern.compile("\\s*'.'\\s*");
@@ -46,7 +46,7 @@ public class RegexConstants {
         public Pattern METHOD_ARGUMENTS = Pattern.compile(
                 "\\s*(_|[A-Za-z][A-Za-z0-9_]*)\\s*");
 
-        public Pattern METHOD_CALL = Pattern.compile(
+        public static Pattern METHOD_CALL = Pattern.compile(
                 "\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*");
 
         public static Pattern CONDITION_COMMAND = Pattern.compile(
