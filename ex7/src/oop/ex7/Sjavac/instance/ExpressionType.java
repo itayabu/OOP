@@ -1,5 +1,4 @@
 package oop.ex7.Sjavac.instance;
-import oop.ex7.Sjavac.instance.*;
 /**
  * this enum has constants and method for parsing Sjava code and classifying it
  * @author Assaf M. Itay A.
@@ -15,64 +14,37 @@ public enum ExpressionType {
 	COMMAND,
 	UNKNOWN;//error
 
-	/**
-	 * this character appear each time a block is started
-	 */
-	private static final char _START='{';
-
-	/**
-	 * this character appear at the end of all the blocks
-	 */
-	public static final char _END='}';
-
-	/**
-	 * legal types that legal for methods types
-	 */
-	public static final String METHOD_TYPES="("+Types.TYPES+"|void)";
-
-	/**
-	 * legal method or members names
-	 */
-	public static final String NAME="_?[a-zA-Z][_\\w]*";//it might start with "_"
+	//this character appear each time a block is started
+	private static final char _START = '{';
 	
-	/**
-	 * list of legal block types
-	 */
-	public static final String BLOCKS_TYPES="(while|if)";
+	//this character appear each time a block ends
+	public static final char _END = '}';
 
-	/**
-	 * this string appears in the declaration of variables and means they are read-only.
-	 */
-	public static final String FINAL = "final";
+	//legal types that legal for methods types
+	public static final String METHOD_TYPES = "("+Types.TYPES+"|void)";
 
-	/**
-	 * member declaration format
-	 */
-	public static final String MEMBER_DECLARE="^("+FINAL+" )?"+Types.TYPES+" "+NAME+"( ?=.*)?;$";
+	//legal method or members names it might start with "_"
+	public static final String NAME = "_?[a-zA-Z][_\\w]*";
+	
+	//list of legal block types
+	public static final String BLOCKS_TYPES = "(while|if)";
 
-	/**
-	 * method declaration format
-	 */
+	//member declaration format
+	public static final String MEMBER_DECLARE = Types.TYPES+" "+NAME+"( ?=.*)?;$";
+
+	//method declaration format
 	public static final String METHOD_DECLARE = METHOD_TYPES+" [a-zA-Z][_\\w]* ?\\(.*\\) ?\\"+_START;
 
-	/**
-	 * match the return statement
-	 */
-	public static final String RETURN_STAT = "return.*;";
+	//match the return statement
+	public static final String RETURN_STAT = "return .*;";
 
-	/**
-	 * match block start statement
-	 */
+ 	//match block start statement
 	public static final String BLOCK=BLOCKS_TYPES+" ?\\(.*\\) ?\\"+_START;
 
-	/**
-	 * match method call statements
-	 */
+	//match method call statements
 	public static final String METHOD_CALL_FORMAT = NAME+"\\(.*\\);";
 
-	/**
-	 * the format of a command
-	 */
+	//the format of a command
 	public static final String COMMAND_FORMAT=NAME+" ?=.*;$";
 
 	/**
@@ -80,7 +52,7 @@ public enum ExpressionType {
 	 * @param line the line to test
 	 * @return an ExpressionType, representing the kind of the given String
 	 */
-	public static ExpressionType detect(String line) {
+	public static ExpressionType whatExpression(String line) {
 
 		//first check if line is even legal by checking if it ends with ";","{","}"
 		//these are the only legal line endings

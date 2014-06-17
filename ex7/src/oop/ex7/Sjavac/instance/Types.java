@@ -1,5 +1,9 @@
 package oop.ex7.Sjavac.instance;
 
+import java.util.Map;
+
+import oop.ex7.Sjavac.exception.CompilerError;
+
 /**
  * this is the enum which holds the basic types
  * @author Assaf H. Itay A.
@@ -47,7 +51,36 @@ public enum Types {
 
 		return VOID;//default return if none were matched
 	}
+	/**
+	 * return a Types object that represent the value of object
+	 * considering that all the variables and method in known do exist in the called scope
+	 * @param expression the String to process
+	 * @param variables all known variables and methods in the scope of the calling block
+	 * @return a "Types" object that represent the value of object
+	 * @throws SjavaError in case of an unknown error
+	 * @throws BracketException if there are unclosed brackets
+	 * or a closing unopened bracket
+	 * @throws MemberDontExistExcetion if that method does not exist or trying to use unknown member
+	 */
+	public static Types typeOf(String expression, Map<String, Member> variables) throws CompilerError {
+		//if the Type is not a VOID type
+		if(whatType(expression)!=VOID)
+			return whatType(expression);
 
+		if(variables.containsKey(expression))
+			return variables.get(expression).getType();
+
+		if(expression.length()==0)
+			return VOID;
+
+		expression=expression.replaceAll(" ", "");
+		if(expression.matches(ExpressionType.METHOD_CALL_FORMAT+"?"))
+			//#####################
+			//@TODO MethodCall method
+			//#####################
+			return VOID;
+		return VOID;
+	}
 	/**
 	 * this method returns true if the value of the expression is really of
 	 * that type

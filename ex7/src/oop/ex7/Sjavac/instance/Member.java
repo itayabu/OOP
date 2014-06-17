@@ -9,6 +9,7 @@ public class Member {
 
 	private boolean isInitialized;
 	private Types type;
+	private boolean readOnly;//if it has been declared  before
 	private String name;
 
 	/**
@@ -19,19 +20,28 @@ public class Member {
 	 */
 	public Member(String name,Types type,boolean readOnly) {
 		this.name=name;
+		this.readOnly=readOnly;
 		this.type=type;
 		isInitialized=false;
 	}
 
 	/**
-	 * @return the name of the Member
+	 * @return the name (the signature) of the Member
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * @return true if this Member is readonly
+	 */
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	/**
 	 * @return the type of this member
+	 * (the return type in methods)
 	 */
 	public Types getType() {
 		return type;
