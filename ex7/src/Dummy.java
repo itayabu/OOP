@@ -18,14 +18,13 @@ public class Dummy {
 	 */
 	public static void main(String[] args){
 		
-		SomeMainParser parser = new SomeMainParser();
 //		System.out.println(parser.cutBlockBrackets("abc (a()bad () aslkhfdbafdlkhbaesf)"));
 		
 		//TODO: change your path!
-//		SomeMainParser parser = new SomeMainParser();
-//		int a=parser.parseMainBlock("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
-//		int b=parser.parseMethods("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
-//		System.out.println(a+" "+b);
+		SomeMainParser parser = new SomeMainParser();
+		int a=parser.parseMainBlock("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
+		int b=parser.parseMethods("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
+		System.out.println(a+" "+b);
 		
 //		String[] check = {"int","bla","54","4","a","aa"};
 //		FuncInstance a = new FuncInstance(check);
