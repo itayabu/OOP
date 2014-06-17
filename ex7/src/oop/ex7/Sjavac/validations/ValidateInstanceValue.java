@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import oop.ex7.Sjavac.Type;
 import oop.ex7.Sjavac.instance.Instance;
 
 public class ValidateInstanceValue {
@@ -16,10 +17,11 @@ public class ValidateInstanceValue {
 	
 	public static void validateValueOnInstace (ArrayList<ArrayList<Instance>> list,
 			Instance instance, String line){
+		Type instanceType = instance.getType();
 		Matcher match = VAR_PATTERN.matcher(line);
 		if (match.matches()){
 			line = manageVar(line);
-			
+			instanceType.typesConsist(list, instance, line);
 		}
 		match = METHOD_PATTERN.matcher(line);
 		if (match.matches()){
