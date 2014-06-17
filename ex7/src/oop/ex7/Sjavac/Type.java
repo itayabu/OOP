@@ -33,7 +33,7 @@ public enum Type {
 	 * @param s managed text
 	 * @return true if values are OK
 	 */
-	public boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType, String s){
+	public boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType , String s){
 		Instance checkInstance = InstanceArrayValidator.findInstance(list, s);
 		switch (currType){
 		case INT:
