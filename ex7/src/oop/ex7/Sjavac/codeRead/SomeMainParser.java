@@ -171,7 +171,7 @@ public class SomeMainParser {
 
 				// using an existing var (no declaration)
 				else{
-					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[1]);
+					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
 					// case var doesnt exist at all
 					if (currInstance == null){
 						throw new MemberDoesNotExistException

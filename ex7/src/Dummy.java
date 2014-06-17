@@ -22,8 +22,8 @@ public class Dummy {
 		
 		//TODO: change your path!
 		SomeMainParser parser = new SomeMainParser();
-		int a=parser.parseMainBlock("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
-		int b=parser.parseMethods("C:/Users/Itay/git/OOP/ex7/mytest/test007.txt");
+		int a=parser.parseMainBlock("C:/Users/Itay/git/OOP/ex7/mytest/test008.txt");
+		int b=parser.parseMethods("C:/Users/Itay/git/OOP/ex7/mytest/test008.txt");
 		System.out.println(a+" "+b);
 		
 //		String[] check = {"int","bla","54","4","a","aa"};
