@@ -36,7 +36,7 @@ public class ValidateInstanceValue {
 	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
 		Matcher match = METHOD_PATTERN.matcher(line);
 		if (match.matches()){
-			String[] paramAsArray = manageMethod(line);
+			String[] paramAsArray = getMethodArgs(line);
 			for (String s:paramAsArray){
 				if (!instanceType.typesConsist(list, instanceType, line)){
 					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
@@ -48,8 +48,9 @@ public class ValidateInstanceValue {
 	public static void validateMethodArgs(
 			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError{
 		line = ValidateFunction.cutBlockBrackets(line);
-		String[] args = line.split(" ");
+		String[] args = line.split(",");
 		for (int i =0; i<args.length; i++){
+			args [i] = args[i].trim();
 			if (!instance.getType().typesConsist(list, instance.getType(), args[i])){
 				throw new CompilerError(args[i] + "had a problem");
 			}
@@ -57,19 +58,33 @@ public class ValidateInstanceValue {
 	}
 	
 
+	/**
+	 * this method get the arguments of var assignments
+	 * @param line
+	 * @return
+	 */
 	private static String manageVar(String line){
 		int place = line.indexOf("=");
 		line = line.substring(place+1, line.length()-1);
 		return line.trim();
 	}
-
-	public static String[] manageMethod(String line){
+/**
+ * this method split mwthod's string and return the arguments of it.
+ * @param line- method string
+ * @return method string arguments in an array.
+ */
+	public static String[] getMethodArgs(String line){
 		int start = line.indexOf("(");
 		int end = line.lastIndexOf(")");
 		line = line.substring(start+1, end);
 		return line.split(",");
 	}
 
+	/**
+	 * this method asserts the assignment is a simple assignment
+	 * @param line
+	 * @throws BadInputException
+	 */
 	public static void assetrtSimpleValue(String line) throws BadInputException{
 		if (line.contains("=")){
 			String subLine = manageVar(line);
@@ -78,6 +93,22 @@ public class ValidateInstanceValue {
 				throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
 			}
 		}
+	}
+	
+	/**
+	 * this method receive string contain method call and return its type.
+	 * @param list
+	 * @param string
+	 * @return the return type of method
+	 * @throws CompilerError
+	 */
+	public static Type getMethodTypeFtomFuncString(ArrayList<ArrayList<Instance>> list, 
+			String string) throws CompilerError{
+		int open = (string.indexOf("("));
+		String name = string.substring(0, open);
+		Instance func = InstanceArrayValidator.findInstance(list, name);
+		validateMethodArgs(list, func, string);
+		return func.getType();
 	}
 
 

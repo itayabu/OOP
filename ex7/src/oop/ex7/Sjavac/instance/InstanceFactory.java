@@ -85,9 +85,10 @@ public class InstanceFactory {
 	private static ArrayList<Type> makeArgList(String list) throws BadTypeNameException, IllegalParameterInput{
 
 		ArrayList<Type> argList = new ArrayList<Type>();
-		String[] args = ValidateInstanceValue.manageMethod(list);
+		String[] args = ValidateInstanceValue.getMethodArgs(list);
 		try{
 		for (String s: args){
+			s= s.trim();
 			argList.add((ValidateType.makeType(s.substring(0, s.indexOf(" ")))));
 		}
 		return argList;

@@ -110,7 +110,6 @@ public class SomeMainParser {
 			while (reader.hasNext()){
 				String text = reader.next();
 				if (text.endsWith(";")){
-					text= reader.next();
 					continue;
 				}
 				if (text.endsWith("{")){
