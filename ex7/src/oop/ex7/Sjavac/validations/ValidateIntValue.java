@@ -54,7 +54,7 @@ public class ValidateIntValue {
 				return(checkIfInList(list, str[0])&&checkIfInList(list, str[1]));
 		}
 		
-		return false;
+		throw IlegalIn
 	}
 	/**
 	 * check if list contains an instance with the same name
