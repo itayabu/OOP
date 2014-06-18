@@ -39,8 +39,6 @@ public class ValidateInstanceValue {
 		}
 	}
 
-
-
 	private static String manageVar(String line){
 		int place = line.indexOf("=");
 		line = line.substring(place+1, line.length()-1);
