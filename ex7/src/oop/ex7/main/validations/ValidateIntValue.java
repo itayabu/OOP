@@ -1,6 +1,7 @@
 package oop.ex7.main.validations;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.IllegaIntException;
@@ -21,6 +22,8 @@ public class ValidateIntValue {
 	 * @throws IllegaIntException
 	 */
 	public static boolean validateInt(ArrayList<ArrayList<Instance>> list, String s,Type type) throws IllegaIntException {
+		//Pattern pattern = Pattern.compile("(-?\\d*)([+-/*])(-?\\d*)");
+
 		//check if the type is really of an int Type
 		if (type.getType().equals("int")){
 			
@@ -29,7 +32,7 @@ public class ValidateIntValue {
 				return true;
 			
 			//if the string is an action between two integers
-			if (s.matches("-?\\d*[+-/*][^\\.]-?\\d*"))
+			if (s.matches("-?\\d*[*/+-]-?\\d*"))
 				return true;
 			
 			//if the string might be a name of an initialized member
