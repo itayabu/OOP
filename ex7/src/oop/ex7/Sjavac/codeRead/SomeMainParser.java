@@ -52,9 +52,11 @@ public class SomeMainParser {
 	 * @param path
 	 * @return
 	 * @throws CompilerError 
+	 * @throws CompilerError 
+	 * @throws BadInputException 
 	 */
-	public int parseMainBlock(String path){
-		try{
+	public int parseMainBlock(String path) throws CompilerError, BadInputException{
+
 			LineReader reader = new LineReader(path);
 			while (reader.hasNext()){
 				String text = reader.next();
@@ -86,26 +88,11 @@ public class SomeMainParser {
 				}
 			}
 			return 0;
-		}catch (IlegalCommentException e) {
-			// TODO Auto-generated catch block
-			return 1;
-		} catch (MemberDeclarationException e) {
-			// TODO Auto-generated catch block
-			return 1;
-		} catch (NoSuchElementException e) {
-			// TODO Auto-generated catch block
-			return 2;
-		} catch (BadInputException e){
-			e.getMessage();
-			return 1;
-		} catch (CompilerError e) {
-			e.getMessage();
-			return 1;
-		}
+		
 	}
 
-	public int parseMethods(String path){
-		try{
+	public int parseMethods(String path) throws CompilerError, NoSuchElementException, BadInputException{
+		
 			LineReader reader = new LineReader(path);
 			while (reader.hasNext()){
 				String text = reader.next();
@@ -116,24 +103,7 @@ public class SomeMainParser {
 					parseBlock(reader);
 				}
 			}
-		} /**catch(FileNotFoundException e){
-			return 2;
-		} **/catch (BadInputException e){
-			e.getMessage();
-			return 1;
-		} catch (IlegalCommentException e) {
-			// TODO Auto-generated catch block
-			return 1;
-		} catch (MemberDeclarationException e) {
-			// TODO Auto-generated catch block
-			return 1;
-		} catch (NoSuchElementException e) {
-			// TODO Auto-generated catch block
-			return 1;
-		} catch (CompilerError e) {
-			e.getMessage()
-;			return 1;
-		} 
+		
 		return 0;
 	}
 
