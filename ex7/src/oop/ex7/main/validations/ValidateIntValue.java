@@ -29,7 +29,7 @@ public class ValidateIntValue {
 				return true;
 			
 			//if the string is an action between two integers
-			if (s.matches("-?\\d*[+-/*]-?\\d*"))
+			if (s.matches("-?\\d*[+-/*][^\\.]-?\\d*"))
 				return true;
 			
 			//if the string might be a name of an initialized member
