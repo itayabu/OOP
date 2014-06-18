@@ -72,5 +72,9 @@ public abstract class Instance {
 	protected boolean compareInstancesType(Instance otherInstance){
 		return (this.type.equals(otherInstance.getType()));
 	}	
+	
+	public String getTypeName(){
+		return type.getType();
+	}
 
 }

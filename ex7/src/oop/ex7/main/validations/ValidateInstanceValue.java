@@ -19,6 +19,7 @@ public class ValidateInstanceValue {
 			"([A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
 			Pattern.DOTALL);
 	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
+	private static Pattern COMPLEX_PATTERN = Pattern.compile(".+[\\*\\-+/].*|.*\\(.*\\).*");
 
 
 	public static void validateValueOnInstaceCreation 
@@ -93,8 +94,9 @@ public class ValidateInstanceValue {
 	public static void assetrtSimpleValue(String line) throws BadInputException{
 		if (line.contains("=")){
 			String subLine = manageVar(line);
-			Matcher match = SIMPLE_VALUE.matcher(subLine);
-			if (!match.matches()){
+			subLine = subLine.trim();
+			Matcher match = COMPLEX_PATTERN.matcher(subLine);
+			if (match.matches()){
 				throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
 			}
 		}
