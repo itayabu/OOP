@@ -66,7 +66,7 @@ public enum Type {
 	public static boolean checkIfInList (ArrayList<ArrayList<Instance>> list ,String str,Type t){
 		for(ArrayList<Instance> instArray:list)
 			for(Instance inst:instArray)
-				if(inst.getType().equals(str))
+				if(inst.getName().equals(str))
 					return(inst.getType().equals(t));
 		return false;
 	}
