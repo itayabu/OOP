@@ -2,7 +2,6 @@ package oop.ex7.main.validations;
 
 import java.util.ArrayList;
 
-import oop.ex7.Sjavac.instance.*;
 import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.IllegaIntException;
 import oop.ex7.main.instance.Instance;
@@ -30,7 +29,7 @@ public class ValidateIntValue {
 				return true;
 			
 			//if the string is an action between two integers
-			if (s.matches(INT_VAL_FORM+"[+-/*]"+INT_VAL_FORM))
+			if (s.matches("-?\\d*[+-/*]-?\\d*"))
 				return true;
 			
 			//if the string might be a name of an initialized member
@@ -49,7 +48,7 @@ public class ValidateIntValue {
 					return Type.checkIfInList(list, str[1],Type.INT);
 						
 			}	
-			if (s.matches(INT_VAL_STR+"[+-/*]"+INT_VAL_STR))
+			if (s.matches("_?\\[a-zA-z]*\\w*?[+-/*]_?\\[a-zA-z]*\\w*?"))
 				str = s.split("[+-/*]");
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
 		}
