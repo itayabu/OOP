@@ -50,11 +50,11 @@ public class ValidateDoubleValue {
 					return Type.checkIfInList(list, str[1],Type.DOUBLE);
 						
 			}	
-			if (s.matches(DOUBLE_VAL_STR+DOUBLE_OPR+DOUBLE_VAL_STR))
+			if (s.matches(DOUBLE_VAL_STR+DOUBLE_OPR+DOUBLE_VAL_STR)){
 				str = s.split(DOUBLE_OPR);
 				return(Type.checkIfInList(list, str[0],Type.DOUBLE)&&Type.checkIfInList(list, str[1],Type.DOUBLE));
+			}
 		}
-		
-		throw new IllegaIntException("Not a legal double assingment");
+		return false;
 	}	
 }
