@@ -2,9 +2,15 @@ package oop.ex7.Sjavac;
 
 import java.util.ArrayList;
 
+import oop.ex7.Sjavac.exception.IllegaIntException;
+import oop.ex7.Sjavac.exception.TypeConversionException;
 import oop.ex7.Sjavac.instance.Instance;
 import oop.ex7.Sjavac.validations.InstanceArrayValidator;
+import oop.ex7.Sjavac.validations.ValidateBoolValue;
+import oop.ex7.Sjavac.validations.ValidateCharValue;
+import oop.ex7.Sjavac.validations.ValidateDoubleValue;
 import oop.ex7.Sjavac.validations.ValidateIntValue;
+import oop.ex7.Sjavac.validations.ValidateStringValue;
 
 public enum Type {
 	INT("int"), DOUBLE("double"), STRING("String"), BOOLEAN("boolean"), CHAR("char"), VOID("void");
@@ -32,12 +38,21 @@ public enum Type {
 	 * @param currInstance 
 	 * @param s managed text
 	 * @return true if values are OK
+	 * @throws TypeConversionException 
 	 */
-	public boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType , String s){
-		Instance checkInstance = InstanceArrayValidator.findInstance(list, s);
+	public boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType , String s) throws TypeConversionException{
+//		Instance checkInstance = InstanceArrayValidator.findInstance(list, s);
 		switch (currType){
 		case INT:
-			ValidateIntValue.validateInt(list, s);
+			return ValidateIntValue.validateInt(list, s, currType);
+		case STRING:
+			return ValidateStringValue.validateString(list, s, currType);
+		case DOUBLE:
+			return ValidateDoubleValue.validateDouble(list, s, currType);
+		case CHAR:
+			return ValidateCharValue.validateChar(list, s, currType);
+		case BOOLEAN: 
+			return ValidateBoolValue.validateBool(list, s, currType);
 		}
 		return false;
 	}

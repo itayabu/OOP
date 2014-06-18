@@ -5,7 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import oop.ex7.Sjavac.Type;
+import oop.ex7.Sjavac.exception.AssignmentTypesArntConsist;
 import oop.ex7.Sjavac.exception.BadInputException;
+import oop.ex7.Sjavac.exception.CompilerError;
+import oop.ex7.Sjavac.exception.TypeConversionException;
 import oop.ex7.Sjavac.exception.VariableNotSimpleInGlobalException;
 import oop.ex7.Sjavac.instance.Instance;
 
@@ -19,25 +22,40 @@ public class ValidateInstanceValue {
 
 
 	public static void validateValueOnInstaceCreation 
-	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line){
+	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
 		Matcher match = VAR_PATTERN.matcher(line);
 		if (match.matches()){
 			line = manageVar(line);
-			instanceType.typesConsist(list, instanceType, line);
+			if (!instanceType.typesConsist(list, instanceType, line)){
+				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+			}
 		}
-		//TODO throw error if not
 	}
 
 	public static void validateValueOnInstanceCall
-	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line){
+	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
 		Matcher match = METHOD_PATTERN.matcher(line);
 		if (match.matches()){
 			String[] paramAsArray = manageMethod(line);
 			for (String s:paramAsArray){
-				instanceType.typesConsist(list, instanceType, line);
+				if (!instanceType.typesConsist(list, instanceType, line)){
+					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+				}
 			}
 		}
 	}
+	
+	public static void validateMethodArgs(
+			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError{
+		line = ValidateFunction.cutBlockBrackets(line);
+		String[] args = line.split(" ");
+		for (int i =0; i<args.length; i++){
+			if (!instance.getType().typesConsist(list, instance.getType(), args[i])){
+				throw new CompilerError(args[i] + "had a problem");
+			}
+		}
+	}
+	
 
 	private static String manageVar(String line){
 		int place = line.indexOf("=");

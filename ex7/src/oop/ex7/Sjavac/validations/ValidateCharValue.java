@@ -22,7 +22,7 @@ public class ValidateCharValue {
 		 * @param type
 		 * @return
 		 */
-		public static boolean validateBool(ArrayList<ArrayList<Instance>> list, String s,Type type){
+		public static boolean validateChar(ArrayList<ArrayList<Instance>> list, String s,Type type){
 			if (s.matches(CHAR_VALUE)){
 				return true;
 			}

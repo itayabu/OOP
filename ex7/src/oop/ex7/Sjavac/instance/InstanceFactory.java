@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import oop.ex7.Sjavac.RegexConstants;
 import oop.ex7.Sjavac.Type;
 import oop.ex7.Sjavac.exception.BadInputException;
+import oop.ex7.Sjavac.exception.CompilerError;
 import oop.ex7.Sjavac.exception.IllegalParameterInput;
 import oop.ex7.Sjavac.validations.ValidateInstanceValue;
 import oop.ex7.Sjavac.validations.ValidateType;
@@ -28,9 +29,9 @@ public class InstanceFactory {
 	 * @param line - the params for a new instance
 	 * @return	a new instance
 	 * @throws BadInputException
-	 * @throws IllegalParameterInput 
+	 * @throws CompilerError 
 	 */
-	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, IllegalParameterInput{
+	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, CompilerError{
 		Instance newInstance;
 		String[] splittedLine = line.split(" ");
 		String name = getName(splittedLine[NAME_PLACE]);

@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.zip.Adler32;
 
 import oop.ex7.Sjavac.RegexConstants;
+import oop.ex7.Sjavac.Type;
 import oop.ex7.Sjavac.exception.BadInputException;
 import oop.ex7.Sjavac.exception.BadLineEndingException;
 import oop.ex7.Sjavac.exception.BadStructureOfBlockLineException;
@@ -64,7 +65,8 @@ public class SomeMainParser {
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
 					}
-					//TODO check legal regexes
+					ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, newInstance.getType(), text);
+					
 					ValidateInstanceValue.assetrtSimpleValue(text);
 					mainBlockInstances.add(newInstance);
 				}
@@ -94,6 +96,9 @@ public class SomeMainParser {
 			// TODO Auto-generated catch block
 			return 2;
 		} catch (BadInputException e){
+			e.getMessage();
+			return 1;
+		} catch (CompilerError e) {
 			e.getMessage();
 			return 1;
 		}
@@ -126,11 +131,14 @@ public class SomeMainParser {
 		} catch (NoSuchElementException e) {
 			// TODO Auto-generated catch block
 			return 1;
+		} catch (CompilerError e) {
+			e.getMessage()
+;			return 1;
 		} 
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, IlegalCommentException, IllegalParameterInput{
+	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, CompilerError{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		methodInstanceListByBlock.add(0, blockList);
 		Matcher m;
@@ -156,11 +164,14 @@ public class SomeMainParser {
 
 			// must end with ";"
 			else{
-
 				m = RegexConstants.RegexPatterns.METHOD_CALL.matcher(text);
 				if (m.matches()){
 					//TODO how to check if it is a func instance?
 					Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
+					if (func == null){
+						throw new CompilerError("DAMN THOSE ERRORS!!!!");
+					}
+					ValidateInstanceValue.validateMethodArgs(methodInstanceListByBlock, func, text);
 				}
 
 				// if its a declaration of a new var
@@ -188,7 +199,7 @@ public class SomeMainParser {
 							currInstance = currInstance.clone();							
 							blockList.add(currInstance);
 						}
-						//TODO check if HASAMA is legal
+						ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, currInstance.getType(), text);
 					}
 				}
 			}
@@ -238,7 +249,8 @@ public class SomeMainParser {
 	 * @param checkInstance
 	 * @return true if name is in use, false else
 	 */
-	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> methodList, Instance checkInstance){
+	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> 
+			methodList, Instance checkInstance){
 		for (ArrayList<Instance> subList: methodList){
 			if (subList.equals(mainBlockInstances)){
 				continue;
