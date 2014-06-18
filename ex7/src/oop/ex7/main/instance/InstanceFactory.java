@@ -34,17 +34,17 @@ public class InstanceFactory {
 	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, CompilerError{
 		Instance newInstance;
 		String[] splittedLine = line.split(" ");
-		String name = getName(splittedLine[NAME_PLACE]);
-
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
+		String name = getName(splittedLine[NAME_PLACE]);
+
 		//TODO this 1 is for space, magic number?
 		line = line.substring(currentType.getType().length()+1);
 
 		// check if String is a function
 		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
 		if (m.matches()){
-//			ValidateInstanceValue.validateValueOnInstaceCreation(list, currentType, line);
+			//			ValidateInstanceValue.validateValueOnInstaceCreation(list, currentType, line);
 			ArrayList <Type> argList = makeArgList(line);
 			return new FuncInstance (currentType, name, argList);
 		}
@@ -59,8 +59,8 @@ public class InstanceFactory {
 		}	
 	}
 
-	
-	
+
+
 	/**
 	 * check if variable is initialized
 	 * @param s
@@ -87,11 +87,11 @@ public class InstanceFactory {
 		ArrayList<Type> argList = new ArrayList<Type>();
 		String[] args = ValidateInstanceValue.getMethodArgs(list);
 		try{
-		for (String s: args){
-			s= s.trim();
-			argList.add((ValidateType.makeType(s.substring(0, s.indexOf(" ")))));
-		}
-		return argList;
+			for (String s: args){
+				s= s.trim();
+				argList.add((ValidateType.makeType(s.substring(0, s.indexOf(" ")))));
+			}
+			return argList;
 		}catch (StringIndexOutOfBoundsException e){
 			throw new IllegalParameterInput("method declaration doesnt contain type parameter");
 		}
