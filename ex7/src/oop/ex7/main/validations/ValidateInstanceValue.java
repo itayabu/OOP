@@ -14,7 +14,7 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateInstanceValue {
 
-	private static Pattern VAR_PATTERN = Pattern.compile("([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
+	private static Pattern VAR_PATTERN = Pattern.compile("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
 	private static Pattern METHOD_PATTERN = Pattern.compile(
 			"([A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
 			Pattern.DOTALL);
@@ -23,12 +23,17 @@ public class ValidateInstanceValue {
 
 	public static void validateValueOnInstaceCreation 
 	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
-		line = manageVar(line);
+		if (line.contains("="))
+		{		line = manageVar(line);
 		Matcher match = VAR_PATTERN.matcher(line);
 		if (match.matches()){
 			if (!instanceType.typesConsist(list, instanceType, line)){
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}
+		}
+		else{
+		throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+		}
 		}
 	}
 
@@ -44,7 +49,7 @@ public class ValidateInstanceValue {
 			}
 		}
 	}
-	
+
 	public static void validateMethodArgs(
 			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError{
 		line = ValidateFunction.cutBlockBrackets(line);
@@ -56,7 +61,7 @@ public class ValidateInstanceValue {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * this method get the arguments of var assignments
@@ -68,11 +73,11 @@ public class ValidateInstanceValue {
 		line = line.substring(place+1, line.length()-1);
 		return line.trim();
 	}
-/**
- * this method split mwthod's string and return the arguments of it.
- * @param line- method string
- * @return method string arguments in an array.
- */
+	/**
+	 * this method split mwthod's string and return the arguments of it.
+	 * @param line- method string
+	 * @return method string arguments in an array.
+	 */
 	public static String[] getMethodArgs(String line){
 		int start = line.indexOf("(");
 		int end = line.lastIndexOf(")");
@@ -94,7 +99,7 @@ public class ValidateInstanceValue {
 			}
 		}
 	}
-	
+
 	/**
 	 * this method receive string contain method call and return its type.
 	 * @param list
