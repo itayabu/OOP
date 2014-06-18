@@ -50,13 +50,10 @@ public class ValidateIntValue {
 				//if the second substring is a member
 				if(str[1].matches(INT_VAL_STR)&&str[0].matches("\\d*"))
 					return Type.checkIfInList(list, str[1],Type.INT);	
-			}try{
+			}
 			if (s.matches("_?[a-zA-Z]\\w+[*+-/]_?[a-zA-Z]\\w+")){
 				str = s.split("[+-/*]");
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
-			}
-			}catch (PatternSyntaxException e){
-				System.err.println("not good");
 			}
 		}
 		return false;
