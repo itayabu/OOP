@@ -46,8 +46,11 @@ public class LineReader {
 					replaceAll("(//.*$)", " ").//remove any comments in it
 					replaceAll("\\s+", " ").//make sure that spaces are not doubled
 					trim();//remove any trailing or leading spaces
-			trim();//remove trailing comments, useful for hasNext() method
+//			trim();//remove trailing comments, useful for hasNext() method
 		}while(result.length()<1); //ignore empty lines
+		if (!(result.endsWith("{")||result.endsWith("}")||result.endsWith(";"))){
+			throw new IlegalCommentException(result + "doesnt end properly");
+		}
 
 		return result;
 	}
