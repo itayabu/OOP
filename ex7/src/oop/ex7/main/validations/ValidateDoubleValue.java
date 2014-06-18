@@ -2,16 +2,17 @@ package oop.ex7.main.validations;
 
 import java.util.ArrayList;
 
-import oop.ex7.Sjavac.instance.*;
 import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.IllegaIntException;
 import oop.ex7.main.instance.Instance;
 
 public class ValidateDoubleValue {
 	//the form of a number assignment
-	private static final String DOUBLE_VAL_FORM = "-?\\d*\\.?\\d*?";
+	private static final String DOUBLE_VAL_FORM = "-?\\d*\\.?\\d*";
 	//the form of an preinitialized type
-	private static final String DOUBLE_VAL_STR = "_?\\[a-zA-z]*\\w*?";
+	private static final String DOUBLE_VAL_STR = "_?[a-zA-z]+\\w*?";
+	//the operation form
+	private static final String DOUBLE_OPR = "[*/+-]";
 	
 	/**
 	 * 
@@ -30,7 +31,7 @@ public class ValidateDoubleValue {
 				return true;
 			
 			//if the string is an action between two doubles
-			if (s.matches(DOUBLE_VAL_FORM+"[+-/*]"+DOUBLE_VAL_FORM))
+			if (s.matches(DOUBLE_VAL_FORM+DOUBLE_OPR+DOUBLE_VAL_FORM))
 				return true;
 			
 			//if the string might be a name of an initialized member
@@ -39,18 +40,18 @@ public class ValidateDoubleValue {
 			
 			String[] str = null;
 			//if the string might contain an double and an initialized member
-			if (s.matches(DOUBLE_VAL_FORM+"[+-/*]"+DOUBLE_VAL_STR)||s.matches(DOUBLE_VAL_STR+"[+-/*]"+DOUBLE_VAL_FORM)){
+			if (s.matches(DOUBLE_VAL_FORM+DOUBLE_OPR+DOUBLE_VAL_STR)||s.matches(DOUBLE_VAL_STR+DOUBLE_OPR+DOUBLE_VAL_FORM)){
 				str = s.split("[+-/*]");//split the string between the actions
 				//if the first substring is a member
-				if(str[0].matches(DOUBLE_VAL_STR)&&str[1].matches("\\d*"))
+				if(str[0].matches(DOUBLE_VAL_STR)&&str[1].matches(DOUBLE_VAL_FORM))
 					return Type.checkIfInList(list,str[0],Type.DOUBLE);
 				//if the second substring is a member
-				if(str[1].matches(DOUBLE_VAL_STR)&&str[0].matches("\\d*"))
+				if(str[1].matches(DOUBLE_VAL_STR)&&str[0].matches(DOUBLE_VAL_FORM))
 					return Type.checkIfInList(list, str[1],Type.DOUBLE);
 						
 			}	
-			if (s.matches(DOUBLE_VAL_STR+"[+-/*]"+DOUBLE_VAL_STR))
-				str = s.split("[+-/*]");
+			if (s.matches(DOUBLE_VAL_STR+DOUBLE_OPR+DOUBLE_VAL_STR))
+				str = s.split(DOUBLE_OPR);
 				return(Type.checkIfInList(list, str[0],Type.DOUBLE)&&Type.checkIfInList(list, str[1],Type.DOUBLE));
 		}
 		
