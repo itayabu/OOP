@@ -55,7 +55,6 @@ public class ValidateIntValue {
 				str = s.split("[+-/*]");
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
 		}
-		
-		throw new IllegaIntException("Not a legal int assingment");
+		return false;
 	}	
 }
