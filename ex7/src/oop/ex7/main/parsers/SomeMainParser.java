@@ -66,7 +66,7 @@ public class SomeMainParser {
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
 					}
-					ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, newInstance.getType(), text);
+//					ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, newInstance.getType(), text);
 					
 					ValidateInstanceValue.assetrtSimpleValue(text);
 					mainBlockInstances.add(newInstance);
