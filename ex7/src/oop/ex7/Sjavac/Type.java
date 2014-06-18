@@ -39,10 +39,20 @@ public enum Type {
 		case INT:
 			ValidateIntValue.validateInt(list, s);
 		}
-
-
-
-
+		return false;
+	}
+	
+	/**
+	 * check if list contains an instance with the same name
+	 * @param list the list to check if contains
+	 * @param str
+	 * @return
+	 */
+	public static boolean checkIfInList (ArrayList<ArrayList<Instance>> list ,String str,Type t){
+		for(ArrayList<Instance> instArray:list)
+			for(Instance inst:instArray)
+				if(inst.getType().equals(str))
+					return(inst.getType().equals(t));
 		return false;
 	}
 
