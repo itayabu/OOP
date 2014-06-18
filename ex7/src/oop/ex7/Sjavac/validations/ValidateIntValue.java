@@ -1,7 +1,6 @@
 package oop.ex7.Sjavac.validations;
 
 import java.util.ArrayList;
-
 import oop.ex7.Sjavac.Type;
 import oop.ex7.Sjavac.exception.IllegaIntException;
 import oop.ex7.Sjavac.instance.*;
@@ -38,7 +37,7 @@ public class ValidateIntValue {
 			if (s.matches(INT_VAL_STR))
 				return checkIfInList(list, s);
 			
-			String[] str;
+			String[] str = null;
 			//if the string might contain an int and an initialized member
 			if (s.matches(INT_VAL_FORM+"[+-/*]"+INT_VAL_STR)||s.matches(INT_VAL_STR+"[+-/*]"+INT_VAL_FORM)){
 				str = s.split("[+-/*]");//split the string between the actions
@@ -50,7 +49,9 @@ public class ValidateIntValue {
 					return checkIfInList(list, str[1]);
 						
 			}	
-			
+			if (s.matches(INT_VAL_STR+"[+-/*]"+INT_VAL_STR))
+				str = s.split("[+-/*]");
+				return(checkIfInList(list, str[0])&&checkIfInList(list, str[1]));
 		}
 		
 		return false;
@@ -64,7 +65,8 @@ public class ValidateIntValue {
 	private static boolean checkIfInList (ArrayList<ArrayList<Instance>> list ,String str){
 		for(ArrayList<Instance> instArray:list)
 			for(Instance inst:instArray)
-				return(inst.getType().equals(str));
+				if(inst.getType().equals(str))
+					return(inst.getType().equals(Type.INT));
 		return false;
 	}
 	
