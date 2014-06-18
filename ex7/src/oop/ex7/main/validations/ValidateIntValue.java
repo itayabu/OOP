@@ -51,9 +51,12 @@ public class ValidateIntValue {
 					return Type.checkIfInList(list, str[1],Type.INT);
 						
 			}	
-			if (s.matches("_?[a-zA-z]*?\\w+[\\*/-\\+]_?[a-zA-z]+\\w*?"))
+			if (s.matches("_?[a-zA-z]*?\\w+[\\*/-\\+]_?[a-zA-z]+\\w*?")){
 				str = s.split("[+-/*]");
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
+			}
+			else
+				return false;
 		}
 		return false;
 	}	
