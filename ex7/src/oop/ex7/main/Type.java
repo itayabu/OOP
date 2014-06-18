@@ -67,7 +67,9 @@ public enum Type {
 		for(ArrayList<Instance> instArray:list)
 			for(Instance inst:instArray)
 				if(inst.getName().equals(str))
-					return(inst.getType().equals(t));
+					if(inst.getType().equals(t)){
+						return inst.isInitialized();
+					}
 		return false;
 	}
 
