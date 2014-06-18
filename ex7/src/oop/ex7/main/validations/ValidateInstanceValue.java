@@ -14,11 +14,11 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateInstanceValue {
 
-	private static Pattern VAR_PATTERN = Pattern.compile("([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|.");
+	private static Pattern VAR_PATTERN = Pattern.compile("([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
 	private static Pattern METHOD_PATTERN = Pattern.compile(
 			"([A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
 			Pattern.DOTALL);
-	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false");
+	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
 
 
 	public static void validateValueOnInstaceCreation 
