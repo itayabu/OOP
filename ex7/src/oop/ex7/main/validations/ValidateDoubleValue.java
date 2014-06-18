@@ -23,7 +23,7 @@ public class ValidateDoubleValue {
 	 */
 	public static boolean validateDouble(ArrayList<ArrayList<Instance>> list, String s,Type type) throws IllegaIntException {
 		//check if the type is really of an double Type
-		if (type.getType().equals("int")){
+		if (type.getType().equals("double")){
 			
 			//if the the string is an double
 			if (s.matches(DOUBLE_VAL_FORM))

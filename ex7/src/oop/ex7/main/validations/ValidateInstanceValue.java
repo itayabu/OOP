@@ -14,18 +14,18 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateInstanceValue {
 
-	private static Pattern VAR_PATTERN = Pattern.compile("-?([A-Za-z0-9_]*)(\\s*=\\s*([^;]+))?");
+	private static Pattern VAR_PATTERN = Pattern.compile("([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|.");
 	private static Pattern METHOD_PATTERN = Pattern.compile(
 			"([A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
 			Pattern.DOTALL);
-	private static Pattern SIMPLE_VALUE = Pattern.compile("\\d.*|\".*\"|true|false");
+	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false");
 
 
 	public static void validateValueOnInstaceCreation 
 	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
+		line = manageVar(line);
 		Matcher match = VAR_PATTERN.matcher(line);
 		if (match.matches()){
-			line = manageVar(line);
 			if (!instanceType.typesConsist(list, instanceType, line)){
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}

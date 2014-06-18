@@ -61,7 +61,6 @@ public class SomeMainParser {
 			while (reader.hasNext()){
 				String text = reader.next();
 				if (text.endsWith(";")){
-					System.err.println(text);
 					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
 					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
@@ -73,7 +72,6 @@ public class SomeMainParser {
 					mainBlockInstances.add(newInstance);
 				}
 				else if(text.endsWith("{")){
-					System.out.println("func");
 					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
 					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
