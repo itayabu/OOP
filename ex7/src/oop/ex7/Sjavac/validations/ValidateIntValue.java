@@ -9,8 +9,6 @@ import oop.ex7.Sjavac.instance.*;
 public class ValidateIntValue {
 	//the form of a number assignment
 	private static final String INT_VAL_FORM = "-?\\d*";
-	//the form of digits action
-	private static final String INT_VAL_ACTION ="-?\\d*[+-/*]-?\\d*";
 	//the form of an preinitialized type
 	private static final String INT_VAL_STR = "_?\\[a-zA-z]*\\w*?";
 	
@@ -31,7 +29,7 @@ public class ValidateIntValue {
 				return true;
 			
 			//if the string is an action between two integers
-			if (s.matches(INT_VAL_ACTION))
+			if (s.matches(INT_VAL_FORM+"[+-/*]"+INT_VAL_FORM))
 				return true;
 			
 			//if the string might be a name of an initialized member
@@ -55,6 +53,6 @@ public class ValidateIntValue {
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
 		}
 		
-		throw new IllegaIntException("");
+		throw new IllegaIntException("Not a legal int assingment");
 	}	
 }
