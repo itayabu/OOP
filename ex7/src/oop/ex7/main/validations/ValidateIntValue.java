@@ -41,7 +41,7 @@ public class ValidateIntValue {
 			
 			String[] str = null;
 			//if the string might contain an int and an initialized member
-			if (s.matches(INT_VAL_FORM+"[+-/*]"+INT_VAL_STR)||s.matches(INT_VAL_STR+"[+-/*]"+INT_VAL_FORM)){
+			if (s.matches(INT_VAL_FORM+"[*/+-]"+INT_VAL_STR)||s.matches(INT_VAL_STR+"[+-/*]"+INT_VAL_FORM)){
 				str = s.split("[+-/*]");//split the string between the actions
 				//if the first substring is a member
 				if(str[0].matches(INT_VAL_STR)&&str[1].matches("\\d*"))
@@ -51,7 +51,7 @@ public class ValidateIntValue {
 					return Type.checkIfInList(list, str[1],Type.INT);
 						
 			}	
-			if (s.matches("_?\\[a-zA-z]*\\w*?[+-/*]_?\\[a-zA-z]*\\w*?"))
+			if (s.matches("_?[a-zA-z]+\\w*?[\\*/-\\+]_?[a-zA-z]+\\w*?"))
 				str = s.split("[+-/*]");
 				return(Type.checkIfInList(list, str[0],Type.INT)&&Type.checkIfInList(list, str[1],Type.INT));
 		}
