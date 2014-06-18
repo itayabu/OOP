@@ -21,6 +21,7 @@ import oop.ex7.Sjavac.instance.Instance;
 import oop.ex7.Sjavac.instance.InstanceFactory;
 import oop.ex7.Sjavac.validations.InstanceArrayValidator;
 import oop.ex7.Sjavac.validations.ValidateBlocks;
+import oop.ex7.Sjavac.validations.ValidateInstanceValue;
 import oop.ex7.Sjavac.validations.ValidateType;
 
 /**
@@ -63,8 +64,9 @@ public class SomeMainParser {
 						throw new DuplicateInstaceException("instance "+newInstance.getName()+
 								" is declared twice in main block");
 					}
-					mainBlockInstances.add(newInstance);
 					//TODO check legal regexes
+					ValidateInstanceValue.assetrtSimpleValue(text);
+					mainBlockInstances.add(newInstance);
 				}
 				else if(text.endsWith("{")){
 					System.out.println("func");
@@ -130,7 +132,7 @@ public class SomeMainParser {
 
 	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, IlegalCommentException, IllegalParameterInput{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
-		methodInstanceListByBlock.add(1, blockList);
+		methodInstanceListByBlock.add(0, blockList);
 		Matcher m;
 		while (reader.hasNext()){
 			String text = reader.next();
@@ -148,7 +150,7 @@ public class SomeMainParser {
 
 			//end of block
 			else if (text.endsWith("}")){
-				methodInstanceListByBlock.remove(1);
+				methodInstanceListByBlock.remove(0);
 				return;
 			}
 
@@ -158,7 +160,7 @@ public class SomeMainParser {
 				m = RegexConstants.RegexPatterns.METHOD_CALL.matcher(text);
 				if (m.matches()){
 					//TODO how to check if it is a func instance?
-					Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[1]);
+					Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
 				}
 
 				// if its a declaration of a new var

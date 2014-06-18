@@ -58,6 +58,8 @@ public class InstanceFactory {
 		}	
 	}
 
+	
+	
 	/**
 	 * check if variable is initialized
 	 * @param s
