@@ -8,6 +8,9 @@ import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.IllegalParameterInput;
+import oop.ex7.main.exceptions.MemberDeclarationException;
+import oop.ex7.main.exceptions.VoidVarException;
+import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
 import oop.ex7.main.validationsexceptions.BadTypeNameException;
@@ -32,10 +35,27 @@ public class InstanceFactory {
 	 * @throws CompilerError 
 	 */
 	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, CompilerError{
-		Instance newInstance;
+		// so, this is how we catch the array, as you can see it acts like a normal one
+		// but we need to make a special validate instance on creation for it on the ValidateArrayValue
+		if (line.matches(".*\\[\\d*\\].*")){
+			ArrayInstance newInstance = new ArrayInstance 
+					(buildInstance(ValidateArrayValue.disguiseArray(line)));
+			return newInstance;
+		}
+		Instance newInstance =buildInstance (line);
+		if (checkIfInit(line)){
+			ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance.getType(), line);			
+		}
+		return newInstance;
+	}
+	private static Instance buildInstance(String line) throws BadInputException, MemberDeclarationException{
 		String[] splittedLine = line.split(" ");
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
+		//variable cannot be void
+		if (currentType.equals(Type.VOID)){
+			throw new VoidVarException(line+" has variable as void");
+		}
 		String name = getName(splittedLine[NAME_PLACE]);
 
 		//TODO this 1 is for space, magic number?
@@ -44,22 +64,15 @@ public class InstanceFactory {
 		// check if String is a function
 		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
 		if (m.matches()){
-			//			ValidateInstanceValue.validateValueOnInstaceCreation(list, currentType, line);
 			ArrayList <Type> argList = makeArgList(line);
 			return new FuncInstance (currentType, name, argList);
 		}
 
 		// if String is not a function, then it is a field
 		else{
-			newInstance = new FieldInstance (currentType, name, checkIfInit(line));
-			if (checkIfInit(line)){
-				ValidateInstanceValue.validateValueOnInstaceCreation(list, currentType, line);
-			}
-			return newInstance;
-		}	
+			return new FieldInstance (currentType, name, checkIfInit(line));
+		}
 	}
-
-
 
 	/**
 	 * check if variable is initialized
