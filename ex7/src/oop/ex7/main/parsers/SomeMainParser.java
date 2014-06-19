@@ -169,7 +169,7 @@ public class SomeMainParser {
 					// case var exist
 					else{
 
-						// case var exist in outer scope/main block, we want to clone it so it
+						//vv case var exist in outer scope/main block, we want to clone it so it
 						// wont affect initiate status.
 						if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
 							currInstance = currInstance.clone();							
