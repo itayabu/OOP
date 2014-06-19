@@ -2,6 +2,7 @@ package oop.ex7.main.validations;
 
 import java.util.ArrayList;
 
+import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.instance.Instance;
@@ -35,6 +36,14 @@ public class ValidateArrayValue {
 		}
 	}
 	
+	public static void assertSimpleInstance(String sstr) throws BadInputException{
+		sstr = manageString(sstr);
+		String []splitLine = sstr.split(",");
+		for (String s:splitLine){
+			ValidateInstanceValue.assetrtSimpleValue(s);
+		}
+		
+	}
 	
 	private static String manageString(String s)throws IndexOutOfBoundsException{
 		int open = (s.indexOf("{"));

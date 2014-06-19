@@ -35,16 +35,16 @@ public class ValidateInstanceValue {
 		}
 	}
 	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
-			line = manageVar(line);
-			Matcher match = VAR_PATTERN.matcher(line);
-			if (match.matches()){
-				if (!Type.typesConsist(list, inst.getType(), line)){
-					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-				}
-			}
-			else{
+		line = manageVar(line);
+		Matcher match = VAR_PATTERN.matcher(line);
+		if (match.matches()){
+			if (!Type.typesConsist(list, inst.getType(), line)){
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}
+		}
+		else{
+			throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+		}
 	}
 
 	public static void validateValueOnInstanceCall
@@ -105,11 +105,16 @@ public class ValidateInstanceValue {
 	 */
 	public static void assetrtSimpleValue(String line) throws BadInputException{
 		if (line.contains("=")){
-			String subLine = manageVar(line);
-			subLine = subLine.trim();
-			Matcher match = COMPLEX_PATTERN.matcher(subLine);
-			if (match.matches()){
-				throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
+			if (line.contains("{")){
+				ValidateArrayValue.assertSimpleInstance(line);
+			}
+			else{
+				String subLine = manageVar(line);
+				subLine = subLine.trim();
+				Matcher match = COMPLEX_PATTERN.matcher(subLine);
+				if (match.matches()){
+					throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
+				}
 			}
 		}
 	}
