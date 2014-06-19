@@ -21,6 +21,7 @@ import oop.ex7.main.exceptions.NoClosureToParenthesesException;
 import oop.ex7.main.instance.Instance;
 import oop.ex7.main.instance.InstanceFactory;
 import oop.ex7.main.validations.InstanceArrayValidator;
+import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateBlocks;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
@@ -162,6 +163,8 @@ public class SomeMainParser {
 				// using an existing var (no declaration)
 				else{
 					if (splittedText[0].endsWith("]")){
+						if(ValidateArrayValue.checkIndexBounds(splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
+							throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
 						splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
 					}
 					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
