@@ -8,6 +8,7 @@ public abstract class Instance {
 	private String name;
 	private Type type;
 	private boolean initialized; 
+	private boolean isArray = false;
 	
 	/**
 	 * basic constructor.
@@ -75,6 +76,14 @@ public abstract class Instance {
 	
 	public String getTypeName(){
 		return type.getType();
+	}
+
+	public boolean isArray() {
+		return isArray;
+	}
+
+	public void setArray(boolean isArray) {
+		this.isArray = isArray;
 	}
 
 }

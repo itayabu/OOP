@@ -24,17 +24,18 @@ public class ValidateInstanceValue {
 
 	public static void validateValueOnInstaceCreation 
 	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
-		if (line.contains("="))
-		{		line = manageVar(line);
-		Matcher match = VAR_PATTERN.matcher(line);
-		if (match.matches()){
-			if (!instanceType.typesConsist(list, instanceType, line)){
+		if (line.contains("=")){
+			h
+			line = manageVar(line);
+			Matcher match = VAR_PATTERN.matcher(line);
+			if (match.matches()){
+				if (!instanceType.typesConsist(list, instanceType, line)){
+					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+				}
+			}
+			else{
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}
-		}
-		else{
-		throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-		}
 		}
 	}
 

@@ -38,8 +38,9 @@ public class InstanceFactory {
 		// so, this is how we catch the array, as you can see it acts like a normal one
 		// but we need to make a special validate instance on creation for it on the ValidateArrayValue
 		if (line.matches("[A-za-z]*\\[\\].*")){
-			ArrayInstance newInstance = new ArrayInstance 
+			Instance newInstance =
 					(buildInstance(ValidateArrayValue.disguiseArray(line)));
+				newInstance.setArray(true);
 			try{
 			ValidateArrayValue.validateArrayValueOnCreation(list, newInstance, line);
 			}catch (IndexOutOfBoundsException e){
