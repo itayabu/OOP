@@ -1,5 +1,6 @@
 package oop.ex7.main.instance;
 
+
 import java.util.Map;
 
 import oop.ex7.main.exceptions.CompilerError;

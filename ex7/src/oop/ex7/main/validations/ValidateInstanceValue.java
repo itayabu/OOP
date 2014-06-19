@@ -118,5 +118,4 @@ public class ValidateInstanceValue {
 		return func.getType();
 	}
 
-
 }

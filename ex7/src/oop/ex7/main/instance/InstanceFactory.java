@@ -37,9 +37,14 @@ public class InstanceFactory {
 	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, CompilerError{
 		// so, this is how we catch the array, as you can see it acts like a normal one
 		// but we need to make a special validate instance on creation for it on the ValidateArrayValue
-		if (line.matches(".*\\[\\d*\\].*")){
+		if (line.matches("[A-za-z]*\\[\\].*")){
 			ArrayInstance newInstance = new ArrayInstance 
 					(buildInstance(ValidateArrayValue.disguiseArray(line)));
+			try{
+			ValidateArrayValue.validateArrayValueOnCreation(list, newInstance, line);
+			}catch (IndexOutOfBoundsException e){
+				throw new CompilerError("array error on creation");
+			}
 			return newInstance;
 		}
 		Instance newInstance =buildInstance (line);
@@ -53,9 +58,7 @@ public class InstanceFactory {
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
 		//variable cannot be void
-		if (currentType.equals(Type.VOID)){
-			throw new VoidVarException(line+" has variable as void");
-		}
+		
 		String name = getName(splittedLine[NAME_PLACE]);
 
 		//TODO this 1 is for space, magic number?
@@ -70,6 +73,9 @@ public class InstanceFactory {
 
 		// if String is not a function, then it is a field
 		else{
+			if (currentType.equals(Type.VOID)){
+				throw new VoidVarException(line+" has variable as void");
+			}
 			return new FieldInstance (currentType, name, checkIfInit(line));
 		}
 	}
