@@ -49,6 +49,7 @@ public class ValidateArrayValue {
 		int open = (s.indexOf("{"));
 		int end = (s.lastIndexOf("}"));
 		s = s.substring(open+1, end);
+		s = s.replaceAll(","," , ");
 		return s;
 	}
 	
