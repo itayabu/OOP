@@ -23,20 +23,28 @@ public class ValidateInstanceValue {
 
 
 	public static void validateValueOnInstaceCreation 
-	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
-		if (line.contains("=")){
-			h
+	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
+		if (!line.contains("=")){
+			return;
+		}
+		if(inst.isArray()){
+			ValidateArrayValue.validateArrayValueOnCreation(list, inst, line);
+		}
+		else {
+			validateVarValue(list, inst, line);
+		}
+	}
+	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
 			line = manageVar(line);
 			Matcher match = VAR_PATTERN.matcher(line);
 			if (match.matches()){
-				if (!instanceType.typesConsist(list, instanceType, line)){
+				if (!Type.typesConsist(list, inst.getType(), line)){
 					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 				}
 			}
 			else{
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}
-		}
 	}
 
 	public static void validateValueOnInstanceCall

@@ -8,7 +8,7 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateDoubleValue {
 	//the form of a number assignment
-	private static final String DOUBLE_VAL_FORM = "-?\\d*\\.?\\d*";
+	private static final String DOUBLE_VAL_FORM = "-?\\d+\\.?\\d*|-?\\d*\\.\\d+";
 	//the form of an preinitialized type
 	private static final String DOUBLE_VAL_STR = "_?[a-zA-z]+\\w*?";
 	//the operation form

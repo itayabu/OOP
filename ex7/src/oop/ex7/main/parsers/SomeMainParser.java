@@ -175,7 +175,7 @@ public class SomeMainParser {
 							currInstance = currInstance.clone();							
 							blockList.add(currInstance);
 						}
-						ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, currInstance.getType(), text);
+//						ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, currInstance.getType(), text);
 					}
 				}
 			}

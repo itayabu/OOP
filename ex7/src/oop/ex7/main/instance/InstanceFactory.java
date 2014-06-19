@@ -42,7 +42,7 @@ public class InstanceFactory {
 					(buildInstance(ValidateArrayValue.disguiseArray(line)));
 				newInstance.setArray(true);
 			try{
-			ValidateArrayValue.validateArrayValueOnCreation(list, newInstance, line);
+				ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance, line);
 			}catch (IndexOutOfBoundsException e){
 				throw new CompilerError("array error on creation");
 			}
@@ -50,7 +50,7 @@ public class InstanceFactory {
 		}
 		Instance newInstance =buildInstance (line);
 		if (checkIfInit(line)){
-			ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance.getType(), line);			
+			ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance, line);			
 		}
 		return newInstance;
 	}

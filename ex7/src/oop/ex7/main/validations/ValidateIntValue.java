@@ -8,7 +8,7 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateIntValue {
 	//the form of a number assignment
-	private static final String INT_VAL_FORM = "-?\\d*";
+	private static final String INT_VAL_FORM = "-?\\d+";
 	//the form of an preinitialized type
 	private static final String INT_VAL_STR = "_?[a-zA-z]+\\w*?";
 	//the operations
