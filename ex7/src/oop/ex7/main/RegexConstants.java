@@ -40,7 +40,7 @@ public class RegexConstants {
                 "([A-Za-z0-9_]+);|([A-Za-z][A-Za-z0-9_]*)(\\s*=\\s*([^;]+))?;");
 
        static public Pattern METHOD_DECLARATION = Pattern.compile(
-                "([A-Za-z][A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
+                "[a-zA-Z][_\\w]* ?\\(.*\\) ?\\{",
                 Pattern.DOTALL);
 
         public Pattern METHOD_ARGUMENTS = Pattern.compile(

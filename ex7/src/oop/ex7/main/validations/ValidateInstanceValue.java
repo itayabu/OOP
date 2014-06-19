@@ -83,6 +83,9 @@ public class ValidateInstanceValue {
 		int start = line.indexOf("(");
 		int end = line.lastIndexOf(")");
 		line = line.substring(start+1, end);
+		String[] lineAsArray={};
+		if(end-start<2)
+			return lineAsArray;
 		return line.split(",");
 	}
 

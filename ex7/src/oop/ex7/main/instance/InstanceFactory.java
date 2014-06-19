@@ -120,7 +120,7 @@ public class InstanceFactory {
 	 * will delete suffix of String
 	 */
 	private static String getName(String s){
-		if (s.endsWith(";")){
+		if (s.endsWith(";|{")){
 			s = s.substring(0, s.length()-1);
 		}
 		return s.trim();
