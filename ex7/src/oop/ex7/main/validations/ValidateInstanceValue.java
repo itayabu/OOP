@@ -11,13 +11,13 @@ import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.exceptions.VariableNotSimpleInGlobalException;
 import oop.ex7.main.instance.Instance;
+import oop.ex7.main.instance.InstanceFactory;
 
 public class ValidateInstanceValue {
 
-	private static Pattern VAR_PATTERN = Pattern.compile("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
-	private static Pattern METHOD_PATTERN = Pattern.compile(
-			"([A-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)",
-			Pattern.DOTALL);
+	private static String VAR_PATTERN =("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
+	private static String METHOD_PATTERN =
+			"([\\sA-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)";
 	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
 	private static Pattern COMPLEX_PATTERN = Pattern.compile(".+[\\*\\-+/].*|.*\\(.*\\).*");
 
@@ -36,8 +36,7 @@ public class ValidateInstanceValue {
 	}
 	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
 		line = manageVar(line);
-		Matcher match = VAR_PATTERN.matcher(line);
-		if (match.matches()){
+		if (line.matches(VAR_PATTERN)){
 			if (!Type.typesConsist(list, inst.getType(), line)){
 				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 			}
@@ -49,8 +48,7 @@ public class ValidateInstanceValue {
 
 	public static void validateValueOnInstanceCall
 	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
-		Matcher match = METHOD_PATTERN.matcher(line);
-		if (match.matches()){
+		if (line.matches(METHOD_PATTERN)){
 			String[] paramAsArray = getMethodArgs(line);
 			for (String s:paramAsArray){
 				if (!instanceType.typesConsist(list, instanceType, line)){
@@ -133,6 +131,21 @@ public class ValidateInstanceValue {
 		Instance func = InstanceArrayValidator.findInstance(list, name);
 		validateMethodArgs(list, func, string);
 		return func.getType();
+	}
+	
+	public static ArrayList<Instance> fillList(ArrayList<ArrayList<Instance>> list, ArrayList<Instance> blockList, String text) throws BadInputException, CompilerError{
+		if (text.matches(METHOD_PATTERN)){
+			String[] args = getMethodArgs(text);
+			for (String s:args){
+				s=s.trim();
+			Instance inst = InstanceFactory.createInstance(list, s);
+			if (InstanceArrayValidator.instanceNameExistInBlock(inst, blockList)){
+				throw new BadInputException("bad input");
+			}
+			blockList.add(inst);
+			}
+		}
+		return blockList;
 	}
 	/**
 	 * a method to check special declartions

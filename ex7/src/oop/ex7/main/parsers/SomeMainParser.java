@@ -100,19 +100,20 @@ public class SomeMainParser {
 				if (text.endsWith("{")){
 					String[] splitLine = text.split(" ");
 					Type returnType = ValidateType.makeType(splitLine[0]);
-					parseBlock(reader,returnType);
+					parseBlock(reader,returnType,text);
 				}
 			}
 		
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader, Type returnType) throws NoSuchElementException, BadInputException, CompilerError{
+	private void parseBlock(LineReader reader, Type returnType, String text) throws NoSuchElementException, BadInputException, CompilerError{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
+		blockList = ValidateInstanceValue.fillList(methodInstanceListByBlock, blockList, text);
 		methodInstanceListByBlock.add(0, blockList);
 		Matcher m;
 		while (reader.hasNext()){
-			String text = reader.next();
+			text = reader.next();
 			Instance currInstance;
 			String[] splittedText = text.split(" ");
 
@@ -121,7 +122,7 @@ public class SomeMainParser {
 				if (!ValidateBlocks.validateIfOrWhileBlock(text)){
 					throw new BadStructureOfBlockLineException("block line doesnt have an if/ while structure"); 
 				}
-				parseBlock (reader, returnType);
+				parseBlock (reader, returnType, text);
 				continue;
 			}
 
