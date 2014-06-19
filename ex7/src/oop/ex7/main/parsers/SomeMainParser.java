@@ -98,14 +98,16 @@ public class SomeMainParser {
 					continue;
 				}
 				if (text.endsWith("{")){
-					parseBlock(reader);
+					String[] splitLine = text.split(" ");
+					Type returnType = ValidateType.makeType(splitLine[0]);
+					parseBlock(reader,returnType);
 				}
 			}
 		
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader) throws NoSuchElementException, BadInputException, CompilerError{
+	private void parseBlock(LineReader reader, Type returnType) throws NoSuchElementException, BadInputException, CompilerError{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		methodInstanceListByBlock.add(0, blockList);
 		Matcher m;
@@ -119,7 +121,7 @@ public class SomeMainParser {
 				if (!ValidateBlocks.validateIfOrWhileBlock(text)){
 					throw new BadStructureOfBlockLineException("block line doesnt have an if/ while structure"); 
 				}
-				parseBlock (reader);
+				parseBlock (reader, returnType);
 				continue;
 			}
 
@@ -130,7 +132,14 @@ public class SomeMainParser {
 			}
 
 			// must end with ";"
+			else if(text.matches("return.*")){
+				//TODO MAGIC NUMBER?!?!?!
+				text = text.substring(6, text.length()-1);
+				text = text.trim();
+				Type.typesConsist(methodInstanceListByBlock, returnType, text);
+			}
 			else{
+				
 				m = RegexConstants.RegexPatterns.METHOD_CALL.matcher(text);
 				if (m.matches()){
 					//TODO how to check if it is a func instance?
@@ -185,7 +194,6 @@ public class SomeMainParser {
 	private void methodCheckAndSkip(LineReader reader, String text) throws BadInputException, IlegalCommentException{
 		int openBlocks=0;
 		do{
-			System.out.println(text);
 			if (text.endsWith("{")){
 				openBlocks++;
 			}

@@ -40,7 +40,7 @@ public enum Type {
 	 * @return true if values are OK
 	 * @throws TypeConversionException 
 	 */
-	public boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType , String s) throws TypeConversionException{
+	public static boolean typesConsist(ArrayList<ArrayList<Instance>> list,Type currType , String s) throws TypeConversionException{
 //		Instance checkInstance = InstanceArrayValidator.findInstance(list, s);
 		switch (currType){
 		case INT:
@@ -53,6 +53,8 @@ public enum Type {
 			return ValidateCharValue.validateChar(list, s, currType);
 		case BOOLEAN: 
 			return ValidateBoolValue.validateBool(list, s, currType);
+		case VOID:
+			return (s.equals(""));
 		}
 		return false;
 	}
