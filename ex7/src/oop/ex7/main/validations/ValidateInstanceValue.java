@@ -120,5 +120,14 @@ public class ValidateInstanceValue {
 		validateMethodArgs(list, func, string);
 		return func.getType();
 	}
+	/**
+	 * a method to check special declartions
+	 * @param str
+	 * @return
+	 */
+	public static String checkSpecial(String str){
+		String start ="[";
+		return (String) (str.subSequence(0,str.indexOf(start)));
+	}
 
 }
