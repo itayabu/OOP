@@ -52,5 +52,13 @@ public class ValidateArrayValue {
 		s = s.replaceAll(","," , ");
 		return s;
 	}
+	/**
+	 * this method checks if the place of the value in the array is legal
+	 * @param substring the string that represents the place
+	 * @return true if the value is a non negative int
+	 */
+	public static boolean checkIndexBounds(String substring) {
+		return (Integer.parseInt(substring)>=0);
+	}
 	
 }
