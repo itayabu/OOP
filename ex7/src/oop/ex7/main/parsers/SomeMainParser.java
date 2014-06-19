@@ -160,6 +160,9 @@ public class SomeMainParser {
 
 				// using an existing var (no declaration)
 				else{
+					if (splittedText[0].endsWith("]")){
+						splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
+					}
 					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
 					// case var doesnt exist at all
 					if (currInstance == null){
