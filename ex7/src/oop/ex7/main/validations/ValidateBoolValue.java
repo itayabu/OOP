@@ -16,13 +16,14 @@ public class ValidateBoolValue {
 	private static final String BOOL_VALUE = "(true|false)";
 	
 	/**
-	 * 
-	 * @param list
-	 * @param s
-	 * @param type
-	 * @return
+	 * check if assignment is legal
+	 * @param list main Instance list
+	 * @param s string to check
+	 * @param type to be compared to
+	 * @return true if assignment is legal, else false
 	 */
-	public static boolean validateBool(ArrayList<ArrayList<Instance>> list, String s,Type type){
+	public static boolean validateBool(ArrayList<ArrayList<Instance>> list,
+			String s,Type type){
 		if (s.matches(BOOL_VALUE)){
 			return true;
 		}

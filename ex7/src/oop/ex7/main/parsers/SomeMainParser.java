@@ -31,6 +31,8 @@ import oop.ex7.main.validations.ValidateType;
  *
  */
 public class SomeMainParser {
+	private static final String METHOD_CALL =
+			"\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*";
 
 	ArrayList<ArrayList<Instance>> methodInstanceListByBlock = new ArrayList<ArrayList<Instance>>();
 	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
@@ -58,53 +60,50 @@ public class SomeMainParser {
 	 */
 	public int parseMainBlock(String path) throws CompilerError, BadInputException{
 
-			LineReader reader = new LineReader(path);
-			while (reader.hasNext()){
-				String text = reader.next();
-				if (text.endsWith(";")){
-					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
-					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
-						throw new DuplicateInstaceException("instance "+newInstance.getName()+
-								" is declared twice in main block");
-					}
-//					ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, newInstance.getType(), text);
-					
-					ValidateInstanceValue.assetrtSimpleValue(text);
-					mainBlockInstances.add(newInstance);
-				}
-				else if(text.endsWith("{")){
-					Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
-					if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
-						throw new DuplicateInstaceException("instance "+newInstance.getName()+
-								" is declared twice in main block");
-					}
-					mainBlockInstances.add(newInstance);
-					methodCheckAndSkip(reader,text);
-				} 
-				// no method or variable
-				else{
-					throw new BadLineEndingException("bad line exception in main block");
-				}
+		LineReader reader = new LineReader(path);
+		while (reader.hasNext()){
+			String text = reader.next();
+			if (text.endsWith(";")){
+				Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
+				if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
+					throw new DuplicateInstaceException("instance "+newInstance.getName()+
+							" is declared twice in main block");
+				}					
+				mainBlockInstances.add(newInstance);
 			}
-			return 0;
-		
+			else if(text.endsWith("{")){
+				Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
+				if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
+					throw new DuplicateInstaceException("instance "+newInstance.getName()+
+							" is declared twice in main block");
+				}
+				mainBlockInstances.add(newInstance);
+				methodCheckAndSkip(reader,text);
+			} 
+			// no method or variable
+			else{
+				throw new BadLineEndingException("bad line exception in main block");
+			}
+		}
+		return 0;
+
 	}
 
 	public int parseMethods(String path) throws CompilerError, NoSuchElementException, BadInputException{
-		
-			LineReader reader = new LineReader(path);
-			while (reader.hasNext()){
-				String text = reader.next();
-				if (text.endsWith(";")){
-					continue;
-				}
-				if (text.endsWith("{")){
-					String[] splitLine = text.split(" ");
-					Instance checkInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, getName(splitLine[1]).trim());
-					parseBlock(reader,checkInstance,text);
-				}
+
+		LineReader reader = new LineReader(path);
+		while (reader.hasNext()){
+			String text = reader.next();
+			if (text.endsWith(";")){
+				continue;
 			}
-		
+			if (text.endsWith("{")){
+				String[] splitLine = text.split(" ");
+				Instance checkInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, getName(splitLine[1]).trim());
+				parseBlock(reader,checkInstance,text);
+			}
+		}
+
 		return 0;
 	}
 
@@ -119,9 +118,8 @@ public class SomeMainParser {
 	 */
 	private void parseBlock(LineReader reader, Instance checkInstance, String text) throws NoSuchElementException, BadInputException, CompilerError{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
-		blockList = ValidateInstanceValue.fillList(methodInstanceListByBlock, blockList, text);
+		blockList = ValidateInstanceValue.updateList(methodInstanceListByBlock, blockList, text);
 		methodInstanceListByBlock.add(0, blockList);
-		Matcher m;
 		while (reader.hasNext()){
 			text = reader.next();
 			Instance currInstance;
@@ -130,7 +128,8 @@ public class SomeMainParser {
 			//new block
 			if (text.endsWith("{")){
 				if (!ValidateBlocks.validateIfOrWhileBlock(text)){
-					throw new BadStructureOfBlockLineException("block line doesnt have an if/ while structure"); 
+					throw new BadStructureOfBlockLineException
+					("block line doesnt have an if/ while structure"); 
 				}
 				parseBlock (reader, checkInstance, text);
 				continue;
@@ -147,54 +146,48 @@ public class SomeMainParser {
 				//TODO MAGIC NUMBER?!?!?!
 				text = text.substring(6, text.length()-1);
 				text = text.trim();
-				if (!Type.typesConsist(methodInstanceListByBlock, checkInstance, text)){
+				if (!Type.typesConsist
+						(methodInstanceListByBlock, checkInstance, text)){
 					throw new BadInputException(text+"bad input");
 				}
+				continue;
 			}
+
+			if (text.matches(METHOD_CALL)){
+				Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
+				if (func == null){
+					throw new CompilerError("DAMN THOSE ERRORS!!!!");
+				}
+				ValidateInstanceValue.validateMethodArgs(methodInstanceListByBlock, func, text);
+			}
+
+			// if its a declaration of a new var
+			if (ValidateType.isValidInstanceType(splittedText[0])){
+				currInstance = InstanceFactory.createInstance(methodInstanceListByBlock, text);					
+				if (instanceExistInMethod(methodInstanceListByBlock,currInstance)){
+					throw new DuplicateInstaceException("Instance created twice in the same block");					
+				}
+				blockList.add(currInstance);
+			}
+
+			// using an existing var (no declaration)
 			else{
-				
-				m = RegexConstants.RegexPatterns.METHOD_CALL.matcher(text);
-				if (m.matches()){
-					//TODO how to check if it is a func instance?
-					Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
-					if (func == null){
-						throw new CompilerError("DAMN THOSE ERRORS!!!!");
-					}
-					ValidateInstanceValue.validateMethodArgs(methodInstanceListByBlock, func, text);
+				if (splittedText[0].endsWith("]")){
+					if(ValidateArrayValue.checkIndexBounds(methodInstanceListByBlock, splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
+						throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
+					splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
 				}
-
-				// if its a declaration of a new var
-				if (ValidateType.isValidInstanceType(splittedText[0])){
-					currInstance = InstanceFactory.createInstance(methodInstanceListByBlock, text);					
-					if (instanceExistInMethod(methodInstanceListByBlock,currInstance)){
-						throw new DuplicateInstaceException("Instance created twice in the same block");					
-					}
-					blockList.add(currInstance);
+				currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
+				// case var doesnt exist at all
+				if (currInstance == null){
+					throw new MemberDoesNotExistException
+					("searched for member called "+splittedText[1]+" and didnt find it");
 				}
-
-				// using an existing var (no declaration)
+				// case var exist
 				else{
-					if (splittedText[0].endsWith("]")){
-						if(ValidateArrayValue.checkIndexBounds(methodInstanceListByBlock, splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
-							throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
-						splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
-					}
-					currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
-					// case var doesnt exist at all
-					if (currInstance == null){
-						throw new MemberDoesNotExistException
-						("searched for member called "+splittedText[1]+" and didnt find it");
-					}
-					// case var exist
-					else{
-
-						//vv case var exist in outer scope/main block, we want to clone it so it
-						// wont affect initiate status.
-						if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
-							currInstance = currInstance.clone();							
-							blockList.add(currInstance);
-						}
-//						ValidateInstanceValue.validateValueOnInstaceCreation(methodInstanceListByBlock, currInstance.getType(), text);
+					if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
+						currInstance = currInstance.clone();							
+						blockList.add(currInstance);
 					}
 				}
 			}
@@ -227,7 +220,8 @@ public class SomeMainParser {
 			}
 			else{
 				if (openBlocks > 0){
-					throw new NoClosureToParenthesesException("No closure to parenthesis");
+					throw new NoClosureToParenthesesException
+					("No closure to parenthesis");
 				}
 			}
 		}
@@ -244,7 +238,7 @@ public class SomeMainParser {
 	 * @return true if name is in use, false else
 	 */
 	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> 
-			methodList, Instance checkInstance){
+	methodList, Instance checkInstance){
 		for (ArrayList<Instance> subList: methodList){
 			if (subList.equals(mainBlockInstances)){
 				continue;
@@ -255,10 +249,10 @@ public class SomeMainParser {
 		}
 		return false;
 	}
-private String getName(String s){
-	int start =s.indexOf("(");
-	return s.substring(0, start);
-}
+	private String getName(String s){
+		int start =s.indexOf("(");
+		return s.substring(0, start);
+	}
 
 
 

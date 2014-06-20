@@ -17,8 +17,11 @@ import oop.ex7.main.validationsexceptions.BadTypeNameException;
 
 public class InstanceFactory {
 
-	static int TYPE_PLACE=0;
-	static int NAME_PLACE=1;
+	private final static int TYPE_PLACE=0;
+	private final static int NAME_PLACE=1;
+	private final static String METHOD_DECLERATION =
+			"[a-zA-Z][_\\w]* ?\\(.*\\) ?\\{";
+	
 
 	/**
 	 * basic constructor
@@ -34,45 +37,40 @@ public class InstanceFactory {
 	 * @throws BadInputException
 	 * @throws CompilerError 
 	 */
-	public static Instance createInstance(ArrayList<ArrayList<Instance>> list,String line) throws BadInputException, CompilerError{
-		// so, this is how we catch the array, as you can see it acts like a normal one
-		// but we need to make a special validate instance on creation for it on the ValidateArrayValue
-//		if (line.matches("[A-za-z]*\\[\\].*")){
-//			Instance newInstance =
-//					(buildInstance(ValidateArrayValue.disguiseArray(line)));
-//				newInstance.setArray(true);
-//			try{
-//				ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance, line);
-//			}catch (IndexOutOfBoundsException e){
-//				throw new CompilerError("array error on creation");
-//			}
-//			return newInstance;
-//		}
+	public static Instance createInstance(ArrayList
+			<ArrayList<Instance>> list,String line) throws CompilerError{
 		Instance newInstance =buildInstance (line);
-		if (checkIfInit(line)){
-			ValidateInstanceValue.validateValueOnInstaceCreation(list, newInstance, line);			
-		}
+		ValidateInstanceValue.validateValueOnInstaceCreation
+		(list, newInstance, line);
 		return newInstance;
 	}
-	private static Instance buildInstance(String line) throws BadInputException, MemberDeclarationException{
+
+	/**
+	 * build new instance
+	 * @param line to build the instance from
+	 * @return new instance
+	 * @throws BadInputException
+	 * @throws MemberDeclarationException
+	 */
+	private static Instance buildInstance(String line) 
+			throws BadInputException, MemberDeclarationException{
 		boolean rememberArray= false;
 		if (line.matches("[A-za-z]*\\[\\].*|[A-za-z]*\\s*\\[\\].*")){
-			line = ValidateArrayValue.disguiseArray(line);
+			line = ValidateArrayValue.hideArray(line);
 			rememberArray=true;
 		}
 		String[] splittedLine = line.split(" ");
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
 		//variable cannot be void
-		
+
 		String name = getName(splittedLine[NAME_PLACE]);
 
-		//TODO this 1 is for space, magic number?
 		line = line.substring(currentType.getType().length()+1);
 
 		// check if String is a function
-		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
-		if (m.matches()){
+//		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
+		if (line.matches(METHOD_DECLERATION)){
 			ArrayList <Instance> argList = makeArgList(line);
 			return new FuncInstance (currentType, name,rememberArray, argList);
 		}
@@ -107,8 +105,8 @@ public class InstanceFactory {
 	 * @throws BadInputException 
 	 * @throws MemberDeclarationException 
 	 */
-	private static ArrayList<Instance> makeArgList(String list) throws MemberDeclarationException, BadInputException{
-
+	private static ArrayList<Instance> makeArgList(String list) 
+			throws MemberDeclarationException, BadInputException{
 		ArrayList<Instance> argList = new ArrayList<Instance>();
 		String[] args = ValidateInstanceValue.getMethodArgs(list);
 		if (args[0].equals("")){
@@ -121,24 +119,24 @@ public class InstanceFactory {
 			}
 			return argList;
 		}catch (StringIndexOutOfBoundsException e){
-			throw new IllegalParameterInput("method declaration doesnt contain type parameter");
+			throw new IllegalParameterInput
+			("method declaration doesnt contain type parameter");
 		}
 	}
-	
-		
-	
 
 	/**
 	 * will delete suffix of String
+	 * @throws BadInputException 
 	 */
-	private static String getName(String s){
+	private static String getName(String s) throws BadInputException{
+		if (!(s.matches("_?[A-Za-z].*"))){
+			throw new BadInputException(s+"is illegal name");
+		}
 		int end = s.indexOf("(");
 		if (end<0){
 			return s;
 		}
-//		if (s.endsWith(";|{")){
-			s = s.substring(0, end);
-//		}
+		s = s.substring(0, end);
 		return s.trim();
 	}
 }

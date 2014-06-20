@@ -16,13 +16,14 @@ public class ValidateCharValue {
 		private static final String CHAR_VALUE = "\'.\'";
 		
 		/**
-		 * 
-		 * @param list
-		 * @param s
-		 * @param type
-		 * @return
+		 * check if assignment is legal
+		 * @param list main Instance list
+		 * @param s string to check
+		 * @param type to be compared to
+		 * @return true if assignment is legal, else false
 		 */
-		public static boolean validateChar(ArrayList<ArrayList<Instance>> list, String s,Type type){
+		public static boolean validateChar(ArrayList<ArrayList<Instance>> list, 
+				String s,Type type){
 			if (s.matches(CHAR_VALUE)){
 				return true;
 			}

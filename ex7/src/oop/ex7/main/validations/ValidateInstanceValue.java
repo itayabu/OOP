@@ -15,17 +15,26 @@ import oop.ex7.main.instance.InstanceFactory;
 
 public class ValidateInstanceValue {
 
-	private static String VAR_PATTERN =("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'|" +
-			"-?[A-Za-z0-9]*[*/+-]?-?[A-Za-z0-9]*");
-	private static String METHOD_PATTERN =
-			"([\\sA-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)";
-	private static String SIMPLE_PATTERN ="'.'|\".*\"|true|false|-?\\d*\\.?\\d*[/+\\*-]?-?\\d*\\.?\\d*|[A-Za-z0-9]*";
-	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
-	private static Pattern COMPLEX_PATTERN = Pattern.compile(".+[\\*\\-+/].*|.*\\(.*\\).*");
+	//	private static String VAR_PATTERN =("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'|" +
+	//			"-?[A-Za-z0-9]*[*/+-]?-?[A-Za-z0-9]*");
+	//	private static String METHOD_PATTERN =
+	//			"([\\sA-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)";
+	//	private static String SIMPLE_PATTERN ="'.'|\".*\"|true|false|-?\\d*\\.?\\d*[/+\\*-]?-?\\d*\\.?\\d*|[A-Za-z0-9]*";
+	//	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
+	//	private static Pattern COMPLEX_PATTERN = Pattern.compile(".+[\\*\\-+/].*|.*\\(.*\\).*");
 
 
+	/**
+	 * method assert asignment is legal
+	 * @param list main list
+	 * @param inst original instance
+	 * @param line line to take variable from
+	 * @throws CompilerError
+	 * @throws BadInputException
+	 */
 	public static void validateValueOnInstaceCreation 
-	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
+	(ArrayList<ArrayList<Instance>> list, Instance inst, String line)
+			throws CompilerError, BadInputException{
 		if (!line.contains("=")){
 			return;
 		}
@@ -36,42 +45,44 @@ public class ValidateInstanceValue {
 			validateVarValue(list, inst, line);
 		}
 	}
-	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
+
+	/**
+	 * validate value is legal variable
+	 * @param list main Instance list
+	 * @param inst instance assigned to
+	 * @param line to take the new assignment from
+	 * @throws CompilerError
+	 * @throws BadInputException
+	 */
+	private static void validateVarValue(ArrayList<ArrayList<Instance>> list,
+			Instance inst, String line) throws CompilerError, BadInputException{
 		line = manageVar(line);
-		//		if (line.matches(VAR_PATTERN)){
 		if (!Type.typesConsist(list, inst, line)){
-			throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-		}
-		//		}
-		//		else{
-		//			throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-		//		}
-	}
-
-	public static void validateValueOnInstanceCall
-	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
-		if (line.matches(METHOD_PATTERN)){
-			String[] paramAsArray = getMethodArgs(line);
-			for (String s:paramAsArray){
-				if (!Type.typesConsist(list, inst, line)){
-					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-				}
-			}
+			throw new AssignmentTypesArntConsist(
+					line+"has non-consist type problem");
 		}
 	}
 
+	/**
+	 * this method assert legal input for method arguments on call
+	 * @param list main list
+	 * @param instance 
+	 * @param line
+	 * @throws CompilerError
+	 * @throws BadInputException
+	 */
 	public static void validateMethodArgs(
-			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError, BadInputException{
+			ArrayList<ArrayList<Instance>> list, Instance instance, String line)
+					throws CompilerError, BadInputException{
 		line = ValidateFunction.cutBlockBrackets(line);
 		String[] args = line.split(",");
 		for (int i =0; i<args.length; i++){
 			args [i] = args[i].trim();
-			if (!instance.getType().typesConsist(list, instance, args[i])){
+			if (!Type.typesConsist(list, instance, args[i])){
 				throw new CompilerError(args[i] + "had a problem");
 			}
 		}
 	}
-
 
 	/**
 	 * this method get the arguments of var assignments
@@ -83,6 +94,7 @@ public class ValidateInstanceValue {
 		line = line.substring(place+1, line.length()-1);
 		return line.trim();
 	}
+
 	/**
 	 * this method split mwthod's string and return the arguments of it.
 	 * @param line- method string
@@ -92,34 +104,7 @@ public class ValidateInstanceValue {
 		int start = line.indexOf("(");
 		int end = line.lastIndexOf(")");
 		line = line.substring(start+1, end);
-		String[] lineAsArray=line.split(",");
-		//		if(end-start<2)
-		//			return lineAsArray;
 		return line.split(",");
-	}
-
-	/**
-	 * this method asserts the assignment is a simple assignment
-	 * @param line
-	 * @throws BadInputException
-	 */
-	public static void assetrtSimpleValue(String line) throws BadInputException{
-		return;
-		//		if (line.contains("=")){
-		//			if (line.contains("{")){
-		//				ValidateArrayValue.assertSimpleInstance(line);
-		//			}
-		//			else{
-		//				String subLine = manageVar(line);
-		//				subLine = subLine.trim();
-		////				Matcher match = COMPLEX_PATTERN.matcher(subLine);
-		////				if (match.matches()){
-		////				Matcher m= SIMPLE_PATTERN.matcher(input)
-		//				if (!subLine.matches(SIMPLE_PATTERN)){
-		//					throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
-		//				}
-		//			}
-		//		}
 	}
 
 	/**
@@ -130,8 +115,9 @@ public class ValidateInstanceValue {
 	 * @throws CompilerError
 	 * @throws BadInputException 
 	 */
-	public static Type getMethodTypeFtomFuncString(ArrayList<ArrayList<Instance>> list, 
-			String string) throws CompilerError, BadInputException{
+	public static Type getMethodTypeFtomFuncString(ArrayList<ArrayList
+			<Instance>> list, String string) 
+					throws CompilerError, BadInputException{
 		int open = (string.indexOf("("));
 		String name = string.substring(0, open);
 		Instance func = InstanceArrayValidator.findInstance(list, name);
@@ -139,7 +125,16 @@ public class ValidateInstanceValue {
 		return func.getType();
 	}
 
-	public static ArrayList<Instance> fillList(ArrayList<ArrayList<Instance>> list, ArrayList<Instance> blockList, String text) throws BadInputException, CompilerError{
+	/**
+	 * this method update new block and check if block is legal
+	 * @param list main list
+	 * @param blockList new list with params in block
+	 * @param text opening block line
+	 * @return blockList with filled instances
+	 * @throws BadInputException
+	 * @throws CompilerError
+	 */
+	public static ArrayList<Instance> updateList(ArrayList<ArrayList<Instance>> list, ArrayList<Instance> blockList, String text) throws BadInputException, CompilerError{
 		//		if (text.matches(METHOD_PATTERN)){
 		String[] args = getMethodArgs(text);
 		if (text.startsWith("if")|| text.startsWith("while")){
