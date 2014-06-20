@@ -1,12 +1,11 @@
 package oop.ex7.main.parsers;
 
-import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.zip.Adler32;
 
-import oop.ex7.main.RegexConstants;
+
+
 import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.BadLineEndingException;
@@ -14,8 +13,6 @@ import oop.ex7.main.exceptions.BadStructureOfBlockLineException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.DuplicateInstaceException;
 import oop.ex7.main.exceptions.IlegalCommentException;
-import oop.ex7.main.exceptions.IllegalParameterInput;
-import oop.ex7.main.exceptions.MemberDeclarationException;
 import oop.ex7.main.exceptions.MemberDoesNotExistException;
 import oop.ex7.main.exceptions.NoClosureToParenthesesException;
 import oop.ex7.main.instance.Instance;
@@ -31,8 +28,10 @@ import oop.ex7.main.validations.ValidateType;
  *
  */
 public class SomeMainParser {
+
 	private static final String METHOD_CALL =
 			"\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*";
+	private static final int RETURN=6;
 
 	ArrayList<ArrayList<Instance>> methodInstanceListByBlock = new ArrayList<ArrayList<Instance>>();
 	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
@@ -136,15 +135,14 @@ public class SomeMainParser {
 			}
 
 			//end of block
-			else if (text.endsWith("}")){
+			if (text.endsWith("}")){
 				methodInstanceListByBlock.remove(0);
 				return;
 			}
 
 			// must end with ";"
-			else if(text.matches("return.*")){
-				//TODO MAGIC NUMBER?!?!?!
-				text = text.substring(6, text.length()-1);
+			if(text.matches("return.*")){
+				text = text.substring(RETURN, text.length()-1);
 				text = text.trim();
 				if (!Type.typesConsist
 						(methodInstanceListByBlock, checkInstance, text)){
@@ -154,11 +152,13 @@ public class SomeMainParser {
 			}
 
 			if (text.matches(METHOD_CALL)){
-				Instance func = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
+				Instance func = InstanceArrayValidator.findInstance
+						(methodInstanceListByBlock, splittedText[0]);
 				if (func == null){
 					throw new CompilerError("DAMN THOSE ERRORS!!!!");
 				}
-				ValidateInstanceValue.validateMethodArgs(methodInstanceListByBlock, func, text);
+				ValidateInstanceValue.validateMethodArgs
+				(methodInstanceListByBlock, func, text);
 			}
 
 			// if its a declaration of a new var
@@ -168,27 +168,26 @@ public class SomeMainParser {
 					throw new DuplicateInstaceException("Instance created twice in the same block");					
 				}
 				blockList.add(currInstance);
+				continue;
 			}
 
 			// using an existing var (no declaration)
+			if (splittedText[0].endsWith("]")){
+				if(ValidateArrayValue.checkIndexBounds(methodInstanceListByBlock, splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
+					throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
+				splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
+			}
+			currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
+			// case var doesnt exist at all
+			if (currInstance == null){
+				throw new MemberDoesNotExistException
+				("searched for member called "+splittedText[1]+" and didnt find it");
+			}
+			// case var exist
 			else{
-				if (splittedText[0].endsWith("]")){
-					if(ValidateArrayValue.checkIndexBounds(methodInstanceListByBlock, splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
-						throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
-					splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
-				}
-				currInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, splittedText[0]);
-				// case var doesnt exist at all
-				if (currInstance == null){
-					throw new MemberDoesNotExistException
-					("searched for member called "+splittedText[1]+" and didnt find it");
-				}
-				// case var exist
-				else{
-					if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
-						currInstance = currInstance.clone();							
-						blockList.add(currInstance);
-					}
+				if (!InstanceArrayValidator.instanceNameExistInBlock(currInstance, blockList)){
+					currInstance = currInstance.clone();							
+					blockList.add(currInstance);
 				}
 			}
 		}
