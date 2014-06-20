@@ -36,7 +36,7 @@ public class ValidateDoubleValue {
 			
 			//if the string might be a name of an initialized member
 			if (s.matches(DOUBLE_VAL_STR))
-				return Type.checkIfInList(list, s,Type.DOUBLE);
+				return ((Type.checkIfInList(list, s,Type.DOUBLE))||(Type.checkIfInList(list, s,Type.INT))) ;
 			
 			String[] str = null;
 			//if the string might contain an double and an initialized member

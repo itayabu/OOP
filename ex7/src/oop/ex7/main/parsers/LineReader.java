@@ -43,7 +43,7 @@ public class LineReader {
 		do {
 			result=scanner.nextLine().//get the next line
 					replace("=", " = ").
-					replaceAll("(//.*$)", " ").//remove any comments in it
+					replaceAll("(///.*$)", " ").//remove any comments in it
 					replaceAll("\\s+", " ").//make sure that spaces are not doubled
 					trim();//remove any trailing or leading spaces
 //			trim();//remove trailing comments, useful for hasNext() method

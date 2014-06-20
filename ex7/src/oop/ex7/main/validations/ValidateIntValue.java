@@ -10,7 +10,7 @@ public class ValidateIntValue {
 	//the form of a number assignment
 	private static final String INT_VAL_FORM = "-?\\d+";
 	//the form of an preinitialized type
-	private static final String INT_VAL_STR = "_?[a-zA-z]+\\w*?";
+	private static final String INT_VAL_STR = "-?_?[a-zA-z]+\\w*?";
 	//the operations
 	private static final String INT_OPR = "[*/+-]";
 

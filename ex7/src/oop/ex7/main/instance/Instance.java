@@ -15,10 +15,11 @@ public abstract class Instance {
 	 * @param type the type or return type of instance
 	 * @param name the name of instance
 	 */
-	public Instance(Type type, String name){
+	public Instance(Type type, String name, boolean isArray){
 		this.name = name;
 		this.type =  type;
 		initialized = false;
+		this.isArray = isArray;
 	}
 
 	/**

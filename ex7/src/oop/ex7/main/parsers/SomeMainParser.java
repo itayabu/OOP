@@ -100,15 +100,24 @@ public class SomeMainParser {
 				}
 				if (text.endsWith("{")){
 					String[] splitLine = text.split(" ");
-					Type returnType = ValidateType.makeType(splitLine[0]);
-					parseBlock(reader,returnType,text);
+					Instance checkInstance = InstanceArrayValidator.findInstance(methodInstanceListByBlock, getName(splitLine[1]).trim());
+					parseBlock(reader,checkInstance,text);
 				}
 			}
 		
 		return 0;
 	}
 
-	private void parseBlock(LineReader reader, Type returnType, String text) throws NoSuchElementException, BadInputException, CompilerError{
+	/**
+	 * parse block
+	 * @param reader
+	 * @param checkInstance
+	 * @param text
+	 * @throws NoSuchElementException
+	 * @throws BadInputException
+	 * @throws CompilerError
+	 */
+	private void parseBlock(LineReader reader, Instance checkInstance, String text) throws NoSuchElementException, BadInputException, CompilerError{
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		blockList = ValidateInstanceValue.fillList(methodInstanceListByBlock, blockList, text);
 		methodInstanceListByBlock.add(0, blockList);
@@ -123,7 +132,7 @@ public class SomeMainParser {
 				if (!ValidateBlocks.validateIfOrWhileBlock(text)){
 					throw new BadStructureOfBlockLineException("block line doesnt have an if/ while structure"); 
 				}
-				parseBlock (reader, returnType, text);
+				parseBlock (reader, checkInstance, text);
 				continue;
 			}
 
@@ -138,7 +147,9 @@ public class SomeMainParser {
 				//TODO MAGIC NUMBER?!?!?!
 				text = text.substring(6, text.length()-1);
 				text = text.trim();
-				Type.typesConsist(methodInstanceListByBlock, returnType, text);
+				if (!Type.typesConsist(methodInstanceListByBlock, checkInstance, text)){
+					throw new BadInputException(text+"bad input");
+				}
 			}
 			else{
 				
@@ -158,12 +169,13 @@ public class SomeMainParser {
 					if (instanceExistInMethod(methodInstanceListByBlock,currInstance)){
 						throw new DuplicateInstaceException("Instance created twice in the same block");					
 					}
+					blockList.add(currInstance);
 				}
 
 				// using an existing var (no declaration)
 				else{
 					if (splittedText[0].endsWith("]")){
-						if(ValidateArrayValue.checkIndexBounds(splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
+						if(ValidateArrayValue.checkIndexBounds(methodInstanceListByBlock, splittedText[0].substring(splittedText[0].indexOf("[")+1, splittedText[0].indexOf("]")))==false)
 							throw new MemberDoesNotExistException("Index out of bounds at "+splittedText[0]);
 						splittedText[0]=(String) splittedText[0].subSequence(0, splittedText[0].indexOf("["));
 					}
@@ -243,12 +255,10 @@ public class SomeMainParser {
 		}
 		return false;
 	}
-
-
-
-
-
-
+private String getName(String s){
+	int start =s.indexOf("(");
+	return s.substring(0, start);
+}
 
 
 

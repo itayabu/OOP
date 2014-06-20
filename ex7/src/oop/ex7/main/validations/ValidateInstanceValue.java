@@ -15,15 +15,17 @@ import oop.ex7.main.instance.InstanceFactory;
 
 public class ValidateInstanceValue {
 
-	private static String VAR_PATTERN =("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'");
+	private static String VAR_PATTERN =("_?-?([A-Za-z0-9_]*\\.?[0-9]*?)(\\s*=\\s*([^;]+))?|\".*\"|'.'|" +
+			"-?[A-Za-z0-9]*[*/+-]?-?[A-Za-z0-9]*");
 	private static String METHOD_PATTERN =
 			"([\\sA-Za-z0-9_]*)\\s*\\((.*?)\\)\\s*\\{(.*)";
+	private static String SIMPLE_PATTERN ="'.'|\".*\"|true|false|-?\\d*\\.?\\d*[/+\\*-]?-?\\d*\\.?\\d*|[A-Za-z0-9]*";
 	private static Pattern SIMPLE_VALUE = Pattern.compile("-?\\d.*|\".*\"|true|false|'.'");
 	private static Pattern COMPLEX_PATTERN = Pattern.compile(".+[\\*\\-+/].*|.*\\(.*\\).*");
 
 
 	public static void validateValueOnInstaceCreation 
-	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
+	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
 		if (!line.contains("=")){
 			return;
 		}
@@ -34,24 +36,24 @@ public class ValidateInstanceValue {
 			validateVarValue(list, inst, line);
 		}
 	}
-	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError{
+	private static void validateVarValue(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
 		line = manageVar(line);
-		if (line.matches(VAR_PATTERN)){
-			if (!Type.typesConsist(list, inst.getType(), line)){
-				throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
-			}
-		}
-		else{
+		//		if (line.matches(VAR_PATTERN)){
+		if (!Type.typesConsist(list, inst, line)){
 			throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 		}
+		//		}
+		//		else{
+		//			throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
+		//		}
 	}
 
 	public static void validateValueOnInstanceCall
-	(ArrayList<ArrayList<Instance>> list, Type instanceType, String line) throws CompilerError{
+	(ArrayList<ArrayList<Instance>> list, Instance inst, String line) throws CompilerError, BadInputException{
 		if (line.matches(METHOD_PATTERN)){
 			String[] paramAsArray = getMethodArgs(line);
 			for (String s:paramAsArray){
-				if (!instanceType.typesConsist(list, instanceType, line)){
+				if (!Type.typesConsist(list, inst, line)){
 					throw new AssignmentTypesArntConsist(line+"has non-consist type problem");
 				}
 			}
@@ -59,12 +61,12 @@ public class ValidateInstanceValue {
 	}
 
 	public static void validateMethodArgs(
-			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError{
+			ArrayList<ArrayList<Instance>> list, Instance instance, String line) throws CompilerError, BadInputException{
 		line = ValidateFunction.cutBlockBrackets(line);
 		String[] args = line.split(",");
 		for (int i =0; i<args.length; i++){
 			args [i] = args[i].trim();
-			if (!instance.getType().typesConsist(list, instance.getType(), args[i])){
+			if (!instance.getType().typesConsist(list, instance, args[i])){
 				throw new CompilerError(args[i] + "had a problem");
 			}
 		}
@@ -90,9 +92,9 @@ public class ValidateInstanceValue {
 		int start = line.indexOf("(");
 		int end = line.lastIndexOf(")");
 		line = line.substring(start+1, end);
-		String[] lineAsArray={};
-		if(end-start<2)
-			return lineAsArray;
+		String[] lineAsArray=line.split(",");
+		//		if(end-start<2)
+		//			return lineAsArray;
 		return line.split(",");
 	}
 
@@ -102,19 +104,22 @@ public class ValidateInstanceValue {
 	 * @throws BadInputException
 	 */
 	public static void assetrtSimpleValue(String line) throws BadInputException{
-		if (line.contains("=")){
-			if (line.contains("{")){
-				ValidateArrayValue.assertSimpleInstance(line);
-			}
-			else{
-				String subLine = manageVar(line);
-				subLine = subLine.trim();
-				Matcher match = COMPLEX_PATTERN.matcher(subLine);
-				if (match.matches()){
-					throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
-				}
-			}
-		}
+		return;
+		//		if (line.contains("=")){
+		//			if (line.contains("{")){
+		//				ValidateArrayValue.assertSimpleInstance(line);
+		//			}
+		//			else{
+		//				String subLine = manageVar(line);
+		//				subLine = subLine.trim();
+		////				Matcher match = COMPLEX_PATTERN.matcher(subLine);
+		////				if (match.matches()){
+		////				Matcher m= SIMPLE_PATTERN.matcher(input)
+		//				if (!subLine.matches(SIMPLE_PATTERN)){
+		//					throw new VariableNotSimpleInGlobalException (line + "has a complex assignment in global");
+		//				}
+		//			}
+		//		}
 	}
 
 	/**
@@ -123,26 +128,38 @@ public class ValidateInstanceValue {
 	 * @param string
 	 * @return the return type of method
 	 * @throws CompilerError
+	 * @throws BadInputException 
 	 */
 	public static Type getMethodTypeFtomFuncString(ArrayList<ArrayList<Instance>> list, 
-			String string) throws CompilerError{
+			String string) throws CompilerError, BadInputException{
 		int open = (string.indexOf("("));
 		String name = string.substring(0, open);
 		Instance func = InstanceArrayValidator.findInstance(list, name);
 		validateMethodArgs(list, func, string);
 		return func.getType();
 	}
-	
+
 	public static ArrayList<Instance> fillList(ArrayList<ArrayList<Instance>> list, ArrayList<Instance> blockList, String text) throws BadInputException, CompilerError{
-		if (text.matches(METHOD_PATTERN)){
-			String[] args = getMethodArgs(text);
-			for (String s:args){
-				s=s.trim();
-			Instance inst = InstanceFactory.createInstance(list, s);
-			if (InstanceArrayValidator.instanceNameExistInBlock(inst, blockList)){
-				throw new BadInputException("bad input");
+		//		if (text.matches(METHOD_PATTERN)){
+		String[] args = getMethodArgs(text);
+		if (text.startsWith("if")|| text.startsWith("while")){
+			if (!ValidateBoolValue.validateBool(list, args[0], Type.BOOLEAN)){
+				throw new BadInputException(text+"has bad input");
 			}
-			blockList.add(inst);
+		}
+		else{
+			for (String s:args){
+				if (s.equals("")){
+					return blockList;
+				}
+				s=s.trim();
+				Instance inst = InstanceFactory.createInstance(list, s);
+				inst.setInitialized(true);
+				if (InstanceArrayValidator.instanceNameExistInBlock(inst, blockList)){
+					throw new BadInputException("bad input");
+				}
+				blockList.add(inst);
+				//			}
 			}
 		}
 		return blockList;

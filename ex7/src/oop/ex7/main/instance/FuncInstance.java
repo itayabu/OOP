@@ -6,13 +6,13 @@ import oop.ex7.main.Type;
 
 public class FuncInstance extends Instance {
 
-	ArrayList<Type> funcArguments;
-	public FuncInstance(Type type, String name, ArrayList<Type> args) {
-		super(type, name);
+	ArrayList<Instance> funcArguments;
+	public FuncInstance(Type type, String name,boolean isArray, ArrayList<Instance> args) {
+		super(type, name, isArray);
 		setInitialized(true);
 	}
 	
-	public ArrayList<Type> getArgs(){
+	public ArrayList<Instance> getArgs(){
 		return funcArguments;
 	}
 
@@ -24,7 +24,7 @@ public class FuncInstance extends Instance {
 
 	@Override
 	public Instance clone() {
-		return new FuncInstance(this.getType(), this.getName(), funcArguments);
+		return new FuncInstance(this.getType(), this.getName(),this.isArray(), funcArguments);
 	}
 	
 

@@ -4,8 +4,8 @@ import oop.ex7.main.Type;
 
 public class FieldInstance extends Instance {
 
-	public FieldInstance(Type type, String name, boolean init) {
-		super(type, name);
+	public FieldInstance(Type type, String name,boolean isArray, boolean init) {
+		super(type, name, isArray);
 		setInitialized(init);
 	}
 
@@ -16,6 +16,6 @@ public class FieldInstance extends Instance {
 
 	@Override
 	public Instance clone() {
-		return new FieldInstance(getType(), getName(), isInitialized());
+		return new FieldInstance(getType(), getName(),isArray(), isInitialized());
 	}
 }
