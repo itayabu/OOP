@@ -1,5 +1,9 @@
 package oop.ex7.main.validations;
 
+import java.util.ArrayList;
+
+import oop.ex7.main.instance.Instance;
+
 public class ValidateBlocks {
 	private static final String CONDITION_COMMAND =
 			"(if|while)\\s*\\(([^{]+)\\)\\s*\\{(.*)";
