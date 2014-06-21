@@ -23,18 +23,20 @@ import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
 
 /**
- * this class will change, just want to catch the line of CodeReader
- *
+ * Sjavac class. 
+ * class receive a file path as parameter and check if it compiles.
+ *@author Assaf M. Itay A.
  */
 public class Sjavac {
 
 	private static final String METHOD_CALL =
 			"\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*";
 	private static final int RETURN=6;
+	// large array of all instances
 	static ArrayList<ArrayList<Instance>> methodInstanceListByBlock = 
 			new ArrayList<ArrayList<Instance>>();
+	// list of all instance in main block
 	static ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
-	InstanceFactory factory;
 
 	/**
 	 * 
@@ -70,7 +72,6 @@ public class Sjavac {
 	 */
 	public int parseMainBlock(String path) throws CompilerError, BadInputException{
 
-
 		LineReader reader = new LineReader(path);
 		while (reader.hasNext()){
 			String text = reader.next();
@@ -85,9 +86,12 @@ public class Sjavac {
 				mainBlockInstances.add(newInstance);
 			}
 			else if(text.endsWith("{")){
-				Instance newInstance =InstanceFactory.createInstance(methodInstanceListByBlock, text); 
-				if (InstanceArrayValidator.instanceNameExistInBlock(newInstance, mainBlockInstances)){
-					throw new DuplicateInstaceException("instance "+newInstance.getName()+
+				Instance newInstance =InstanceFactory.createInstance
+						(methodInstanceListByBlock, text); 
+				if (InstanceArrayValidator.instanceNameExistInBlock
+						(newInstance, mainBlockInstances)){
+					throw new DuplicateInstaceException
+					("instance "+newInstance.getName()+
 							" is declared twice in main block");
 				}
 				mainBlockInstances.add(newInstance);
