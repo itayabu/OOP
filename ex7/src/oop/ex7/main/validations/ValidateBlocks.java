@@ -43,6 +43,7 @@ public class ValidateBlocks {
 	 * @return the method's name
 	 */
 	private static String getName(String s){
+		
 		int start =s.indexOf("(");
 		return s.substring(0, start);
 	}
