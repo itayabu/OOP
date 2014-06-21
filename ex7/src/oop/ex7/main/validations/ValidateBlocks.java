@@ -1,11 +1,5 @@
 package oop.ex7.main.validations;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-
-import oop.ex7.main.RegexConstants;
-import oop.ex7.main.instance.Instance;
-
 public class ValidateBlocks {
 	private static final String CONDITION_COMMAND =
 			"(if|while)\\s*\\(([^{]+)\\)\\s*\\{(.*)";
