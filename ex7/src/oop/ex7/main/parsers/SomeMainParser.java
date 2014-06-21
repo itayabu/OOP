@@ -58,6 +58,7 @@ public class SomeMainParser {
 	 */
 	public int parseMainBlock(String path) throws CompilerError, BadInputException{
 
+		
 		LineReader reader = new LineReader(path);
 		while (reader.hasNext()){
 			String text = reader.next();
