@@ -8,9 +8,10 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateIntValue {
 	//the form of a number assignment
-	private static final String INT_VAL_FORM = "-?\\d+";
+	private static final String INT_VAL_FORM = "-?\\d+\\s*";
 	//the form of an preinitialized type
-	private static final String INT_VAL_STR = "-?_?[a-zA-z]+\\w*?";
+	private static final String INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?";
+	private static final String NEG_INT_VAL ="-\\s*_?[a-zA-z]+\\w*\\s*";
 	//the operations
 	private static final String INT_OPR = "[*/+-]";
 
@@ -27,7 +28,7 @@ public class ValidateIntValue {
 	
 		//check if the type is really of an int Type
 		if (type.getTypeName().equals("int")){
-
+			s.replaceAll(" ", "");
 			//if the the string is an int
 			if (s.matches(INT_VAL_FORM))
 				return true;
@@ -41,17 +42,20 @@ public class ValidateIntValue {
 				return ValidateInstanceValue.checkIfInList(list, s,Type.INT);
 
 			String[] str = null;
+			int i = 0;
 			//if the string might contain an int and an initialized member
 			if (s.matches(INT_VAL_FORM+INT_OPR+INT_VAL_STR)||s.matches
 					(INT_VAL_STR+INT_OPR+INT_VAL_FORM)){
+				if(s.matches(NEG_INT_VAL+INT_OPR+INT_VAL_FORM))
+					i++;
 				str = s.split(INT_OPR);//split the string between the actions
 				//if the first substring is a member
-				if(str[0].matches(INT_VAL_STR)&&str[1].matches(INT_VAL_FORM))
-					return ValidateInstanceValue.checkIfInList(list,str[0],
+				if(str[i].matches(INT_VAL_STR)&&str[i+1].matches(INT_VAL_FORM))
+					return ValidateInstanceValue.checkIfInList(list,str[i],
 							Type.INT);
 				//if the second substring is a member
-				if(str[1].matches(INT_VAL_STR)&&str[0].matches(INT_VAL_FORM))
-					return ValidateInstanceValue.checkIfInList(list, str[1],
+				if(str[i+1].matches(INT_VAL_STR)&&str[i].matches(INT_VAL_FORM))
+					return ValidateInstanceValue.checkIfInList(list, str[i+1],
 							Type.INT);	
 			}
 			if (s.matches(INT_VAL_STR+INT_OPR+INT_VAL_STR)){
