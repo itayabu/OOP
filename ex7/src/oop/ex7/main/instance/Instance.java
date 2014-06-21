@@ -4,7 +4,6 @@ import oop.ex7.main.Type;
 
 public abstract class Instance {
 	
-	
 	private String name;
 	private Type type;
 	private boolean initialized; 
@@ -60,29 +59,24 @@ public abstract class Instance {
 	}
 	
 	/**
-	 * check Instance is the same as other instance
-	 * @param otherInstance
-	 * @return true if instances are the same, flase else
+	 * get name of type in this Instance
+	 * @return name of type
 	 */
-	public abstract boolean compareInstances(Instance otherInstance);
-	
-	/**
-	 * check if the type of instances are the same
-	 * @param otherInstance
-	 * @return
-	 */
-	protected boolean compareInstancesType(Instance otherInstance){
-		return (this.type.equals(otherInstance.getType()));
-	}	
-	
 	public String getTypeName(){
 		return type.getTypeName();
 	}
 
+	/**
+	 * check if this instance is array
+	 */
 	public boolean isArray() {
 		return isArray;
 	}
 
+	/**
+	 * set array parameter true or false
+	 * @param isArray
+	 */
 	public void setArray(boolean isArray) {
 		this.isArray = isArray;
 	}

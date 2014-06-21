@@ -4,22 +4,24 @@ import java.util.ArrayList;
 
 import oop.ex7.main.Type;
 
+/**
+ * this class represent a function instance
+ * @author Assaf M. Itay A.
+ */
 public class FuncInstance extends Instance {
 
 	ArrayList<Instance> funcArguments;
+	
+	/**
+	 * basic constructor
+	 * @param type Type of instance
+	 * @param name name of instance
+	 * @param isArray flag to check if an array
+	 * @param args the arguments function receive
+	 */
 	public FuncInstance(Type type, String name,boolean isArray, ArrayList<Instance> args) {
 		super(type, name, isArray);
 		setInitialized(true);
-	}
-	
-	public ArrayList<Instance> getArgs(){
-		return funcArguments;
-	}
-
-	@Override
-	public boolean compareInstances(Instance otherInstance) {
-		// TODO- all comparisons
-		return false;
 	}
 
 	@Override

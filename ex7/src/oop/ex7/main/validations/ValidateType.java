@@ -31,20 +31,6 @@ public class ValidateType {
 		}
 		throw new BadTypeNameException("type name doesnt match any Type");
 	}
-
-	/**
-	 * check if a name has instace with the same type.
-	 * @param instance original instance
-	 * @param list main list
-	 * @param s word with maybe another instance
-	 * @return
-	 */
-	public static boolean existInstanceWithValidType
-	(Instance instance, ArrayList<ArrayList<Instance>> list, String s){
-		Instance checkInstance = InstanceArrayValidator.findInstance(list, s);
-		return instance.compareInstances(checkInstance);
-	}
-	
 	
 	public static boolean typesConsist (ArrayList<ArrayList<Instance>> list
 			,Instance currInst , String s) 

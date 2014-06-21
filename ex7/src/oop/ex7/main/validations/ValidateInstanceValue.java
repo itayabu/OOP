@@ -79,7 +79,7 @@ public class ValidateInstanceValue {
 		for (int i =0; i<args.length; i++){
 			args [i] = args[i].trim();
 			if (!ValidateType.typesConsist(list, instance, args[i])){
-				throw new CompilerError(args[i] + "had a problem");
+				throw new CompilerError(args[i] + "is not valid argument");
 			}
 		}
 	}

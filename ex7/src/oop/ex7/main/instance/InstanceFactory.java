@@ -18,14 +18,6 @@ public class InstanceFactory {
 	private final static String METHOD_DECLERATION =
 			"[a-zA-Z][_\\w]* ?\\(.*\\) ?\\{";
 	
-
-	/**
-	 * basic constructor
-	 */
-	public InstanceFactory(){
-
-	}
-
 	/**
 	 * creating a new instance for a given instance line
 	 * @param line - the params for a new instance
@@ -35,7 +27,10 @@ public class InstanceFactory {
 	 */
 	public static Instance createInstance(ArrayList
 			<ArrayList<Instance>> list,String line) throws CompilerError{
+		//build a new Instance
 		Instance newInstance =buildInstance (line);
+		
+		//validate input to instance
 		ValidateInstanceValue.validateValueOnInstaceCreation
 		(list, newInstance, line);
 		return newInstance;
@@ -51,33 +46,31 @@ public class InstanceFactory {
 	private static Instance buildInstance(String line) 
 			throws BadInputException, MemberDeclarationException{
 		boolean rememberArray= false;
+		
+		//hide array signs from constructor
 		if (line.matches("[A-za-z]*\\[\\].*|[A-za-z]*\\s*\\[\\].*")){
 			line = ValidateArrayValue.hideArray(line);
 			rememberArray=true;
 		}
 		String[] splittedLine = line.split(" ");
+		
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
-		//variable cannot be void
-
+		line = line.substring(currentType.getTypeName().length()+1);
 		String name = getName(splittedLine[NAME_PLACE]);
 
-		line = line.substring(currentType.getTypeName().length()+1);
-
-		// check if String is a function
-//		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
+		// case string is a function
 		if (line.matches(METHOD_DECLERATION)){
 			ArrayList <Instance> argList = makeArgList(line);
 			return new FuncInstance (currentType, name,rememberArray, argList);
 		}
 
-		// if String is not a function, then it is a field
-		else{
+		// case string is a field 
 			if (currentType.equals(Type.VOID)){
 				throw new VoidVarException(line+" has variable as void");
 			}
-			return new FieldInstance (currentType, name,rememberArray, checkIfInit(line));
-		}
+			return new FieldInstance (currentType, name,rememberArray,
+					checkIfInit(line));
 	}
 
 	/**
@@ -86,6 +79,7 @@ public class InstanceFactory {
 	 * @return true if initialized, else false
 	 */
 	private static boolean checkIfInit(String s){
+		
 		if(s.contains("=")){
 			return true;
 		}
@@ -103,8 +97,11 @@ public class InstanceFactory {
 	 */
 	private static ArrayList<Instance> makeArgList(String list) 
 			throws MemberDeclarationException, BadInputException{
+		
 		ArrayList<Instance> argList = new ArrayList<Instance>();
 		String[] args = ValidateInstanceValue.getMethodArgs(list);
+		
+		// add all arguments to parameter list
 		if (args[0].equals("")){
 			return argList;
 		}
@@ -121,7 +118,7 @@ public class InstanceFactory {
 	}
 
 	/**
-	 * will delete suffix of String
+	 * will return only the name of instance
 	 * @throws BadInputException 
 	 */
 	private static String getName(String s) throws BadInputException{
