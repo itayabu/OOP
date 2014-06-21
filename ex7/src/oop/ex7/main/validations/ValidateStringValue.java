@@ -26,6 +26,6 @@ public class ValidateStringValue {
 		if (s.matches(STRING_VALUE)){
 			return true;
 		}
-		return Type.checkIfInList(list, s, type);
+		return ValidateInstanceValue.checkIfInList(list, s, type);
 	}
 }

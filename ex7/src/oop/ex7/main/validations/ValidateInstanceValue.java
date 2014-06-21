@@ -57,7 +57,7 @@ public class ValidateInstanceValue {
 	private static void validateVarValue(ArrayList<ArrayList<Instance>> list,
 			Instance inst, String line) throws CompilerError, BadInputException{
 		line = manageVar(line);
-		if (!Type.typesConsist(list, inst, line)){
+		if (!ValidateType.typesConsist(list, inst, line)){
 			throw new AssignmentTypesArntConsist(
 					line+"has non-consist type problem");
 		}
@@ -78,7 +78,7 @@ public class ValidateInstanceValue {
 		String[] args = line.split(",");
 		for (int i =0; i<args.length; i++){
 			args [i] = args[i].trim();
-			if (!Type.typesConsist(list, instance, args[i])){
+			if (!ValidateType.typesConsist(list, instance, args[i])){
 				throw new CompilerError(args[i] + "had a problem");
 			}
 		}
@@ -167,6 +167,23 @@ public class ValidateInstanceValue {
 	public static String checkSpecial(String str){
 		String start ="[";
 		return (String) (str.subSequence(0,str.indexOf(start)));
+	}
+	
+	/**
+	 * check if list contains an instance with the same name
+	 * @param list the list to check if contains
+	 * @param str
+	 * @return
+	 */
+	public static boolean checkIfInList (ArrayList<ArrayList<Instance>> list
+			,String str,Type t){
+		for(ArrayList<Instance> instArray:list)
+			for(Instance inst:instArray)
+				if(inst.getName().equals(str))
+					if(inst.getType().equals(t)){
+						return inst.isInitialized();
+					}
+		return false;
 	}
 
 }

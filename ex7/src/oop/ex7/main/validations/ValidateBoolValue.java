@@ -27,6 +27,6 @@ public class ValidateBoolValue {
 		if (s.matches(BOOL_VALUE)){
 			return true;
 		}
-		return Type.checkIfInList(list, s, type);
+		return ValidateInstanceValue.checkIfInList(list, s, type);
 	}
 }

@@ -25,7 +25,7 @@ public class ValidateDoubleValue {
 	public static boolean validateDouble(ArrayList<ArrayList<Instance>> list,
 			String s,Type type) throws IllegaIntException {
 		//check if the type is really of an double Type
-		if (type.getType().equals("double")){
+		if (type.getTypeName().equals("double")){
 			
 			//if the the string is an double
 			if (s.matches(DOUBLE_VAL_FORM))
@@ -37,7 +37,7 @@ public class ValidateDoubleValue {
 			
 			//if the string might be a name of an initialized member
 			if (s.matches(DOUBLE_VAL_STR))
-				return ((Type.checkIfInList(list, s,Type.DOUBLE))||(Type.checkIfInList(list, s,Type.INT))) ;
+				return ((ValidateInstanceValue.checkIfInList(list, s,Type.DOUBLE))||(ValidateInstanceValue.checkIfInList(list, s,Type.INT))) ;
 			
 			String[] str = null;
 			//if the string might contain an double and an initialized member
@@ -45,15 +45,16 @@ public class ValidateDoubleValue {
 				str = s.split("[+-/*]");//split the string between the actions
 				//if the first substring is a member
 				if(str[0].matches(DOUBLE_VAL_STR)&&str[1].matches(DOUBLE_VAL_FORM))
-					return Type.checkIfInList(list,str[0],Type.DOUBLE);
+					return ValidateInstanceValue.checkIfInList(list,str[0],Type.DOUBLE);
 				//if the second substring is a member
 				if(str[1].matches(DOUBLE_VAL_STR)&&str[0].matches(DOUBLE_VAL_FORM))
-					return Type.checkIfInList(list, str[1],Type.DOUBLE);
+					return ValidateInstanceValue.checkIfInList(list, str[1],Type.DOUBLE);
 						
 			}	
 			if (s.matches(DOUBLE_VAL_STR+DOUBLE_OPR+DOUBLE_VAL_STR)){
 				str = s.split(DOUBLE_OPR);
-				return(Type.checkIfInList(list, str[0],Type.DOUBLE)&&Type.checkIfInList(list, str[1],Type.DOUBLE));
+				return(ValidateInstanceValue.checkIfInList(list, str[0],Type.DOUBLE)&&
+						ValidateInstanceValue.checkIfInList(list, str[1],Type.DOUBLE));
 			}
 		}
 		return false;

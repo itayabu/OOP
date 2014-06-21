@@ -26,7 +26,7 @@ public class ValidateIntValue {
 			String s,Type type) throws IllegaIntException {
 	
 		//check if the type is really of an int Type
-		if (type.getType().equals("int")){
+		if (type.getTypeName().equals("int")){
 
 			//if the the string is an int
 			if (s.matches(INT_VAL_FORM))
@@ -38,7 +38,7 @@ public class ValidateIntValue {
 
 			//if the string might be a name of an initialized member
 			if (s.matches(INT_VAL_STR))
-				return Type.checkIfInList(list, s,Type.INT);
+				return ValidateInstanceValue.checkIfInList(list, s,Type.INT);
 
 			String[] str = null;
 			//if the string might contain an int and an initialized member
@@ -47,15 +47,15 @@ public class ValidateIntValue {
 				str = s.split(INT_OPR);//split the string between the actions
 				//if the first substring is a member
 				if(str[0].matches(INT_VAL_STR)&&str[1].matches(INT_VAL_FORM))
-					return Type.checkIfInList(list,str[0],Type.INT);
+					return ValidateInstanceValue.checkIfInList(list,str[0],Type.INT);
 				//if the second substring is a member
 				if(str[1].matches(INT_VAL_STR)&&str[0].matches(INT_VAL_FORM))
-					return Type.checkIfInList(list, str[1],Type.INT);	
+					return ValidateInstanceValue.checkIfInList(list, str[1],Type.INT);	
 			}
 			if (s.matches(INT_VAL_STR+INT_OPR+INT_VAL_STR)){
 				str = s.split(INT_OPR);
-				return(Type.checkIfInList(list, str[0],Type.INT) && 
-						Type.checkIfInList(list, str[1],Type.INT));
+				return(ValidateInstanceValue.checkIfInList(list, str[0],Type.INT) && 
+						ValidateInstanceValue.checkIfInList(list, str[1],Type.INT));
 			}
 		}
 		return false;

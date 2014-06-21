@@ -46,7 +46,7 @@ public class ValidateArrayValue {
 			s = s.trim();
 
 			inst.getType();
-			if (!Type.typesConsist(list, inst, s)){
+			if (!ValidateType.typesConsist(list, inst, s)){
 				throw new CompilerError("array assignmen val input illegal");
 			}
 		}

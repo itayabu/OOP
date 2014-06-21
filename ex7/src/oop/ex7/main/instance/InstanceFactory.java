@@ -66,7 +66,7 @@ public class InstanceFactory {
 
 		String name = getName(splittedLine[NAME_PLACE]);
 
-		line = line.substring(currentType.getType().length()+1);
+		line = line.substring(currentType.getTypeName().length()+1);
 
 		// check if String is a function
 //		Matcher m =RegexConstants.RegexPatterns.METHOD_DECLARATION.matcher(line);
@@ -86,8 +86,8 @@ public class InstanceFactory {
 
 	/**
 	 * check if variable is initialized
-	 * @param s
-	 * @return
+	 * @param s name of var
+	 * @return true if initialized, else false
 	 */
 	private static boolean checkIfInit(String s){
 		if(s.contains("=")){

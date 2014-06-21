@@ -76,7 +76,7 @@ public abstract class Instance {
 	}	
 	
 	public String getTypeName(){
-		return type.getType();
+		return type.getTypeName();
 	}
 
 	public boolean isArray() {
