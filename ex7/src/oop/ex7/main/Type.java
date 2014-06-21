@@ -1,42 +1,56 @@
 package oop.ex7.main;
 
 import java.util.ArrayList;
-
-import oop.ex7.main.exceptions.BadInputException;
-import oop.ex7.main.exceptions.IllegaIntException;
 import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.instance.Instance;
-import oop.ex7.main.validations.InstanceArrayValidator;
 import oop.ex7.main.validations.ValidateBoolValue;
 import oop.ex7.main.validations.ValidateCharValue;
 import oop.ex7.main.validations.ValidateDoubleValue;
 import oop.ex7.main.validations.ValidateIntValue;
 import oop.ex7.main.validations.ValidateStringValue;
 
+/**
+ * this class represents the primitive types available to use in this compiler
+ * @author Assaf M. Itay A.
+ *
+ */
 public enum Type {
-	INT("int"), DOUBLE("double"), STRING("String"), BOOLEAN("boolean"), CHAR("char"), VOID("void");
+	INT("int"), 
+	DOUBLE("double"), 
+	STRING("String"), 
+	BOOLEAN("boolean"), 
+	CHAR("char"), 
+	VOID("void");
 
 	private String typeName;
-
+	
+	/**
+	 * declare the types kind
+	 * @param kind
+	 */
 	Type (String kind){
 		typeName = kind;
 	}
-
+	
+	/**
+	 * return the types name
+	 * @return type name
+	 */
 	public String getTypeName(){
 		return typeName;
 	}
 
 	/**
 	 * check if values of assignment are consist with instance
-	 * @param list list of all instances
-	 * @param currInstance 
-	 * @param s managed text
+	 * @param list - list of all instances
+	 * @param currInstance - instance to check
+	 * @param s - managed text
 	 * @return true if values are OK
 	 * @throws TypeConversionException 
 	 */
 	public static boolean checkType(ArrayList<ArrayList<Instance>>
 	list,Type currType , String s) throws TypeConversionException{
-	
+
 		switch (currType){
 		case INT:
 			return ValidateIntValue.validateInt(list, s, currType);
@@ -53,11 +67,4 @@ public enum Type {
 		}
 		return false;
 	}
-
-	
-
-
-
-
-
 }
