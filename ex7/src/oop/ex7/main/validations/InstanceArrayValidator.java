@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import oop.ex7.main.instance.Instance;
 
+/**
+ * this class holds methods which in time check if a given instance exist in
+ * different lists.
+ * @author Assaf
+ *
+ */
 public class InstanceArrayValidator {
 
 	/**
@@ -33,7 +39,7 @@ public class InstanceArrayValidator {
 	public static Instance findInstance(ArrayList<ArrayList<Instance>> list, 
 			String s){
 		
-		//go through all the lists f instances
+		//go through all the lists of instances
 		for (ArrayList<Instance> subList: list){
 			for (Instance instance: subList){
 				if (instance.getName().equalsIgnoreCase(s)){

@@ -7,14 +7,20 @@ import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.instance.Instance;
 
+/**
+ * this class checks if values are legal in array
+ * @author Assaf
+ *
+ */
 public class ValidateArrayValue {
 
 	/**
 	 * this method hides the array marks from line
-	 * @param line orginal line
-	 * @return line with hidden array
+	 * @param line - original line
+	 * @return line - with hidden array
 	 */
 	public static String hideArray(String line){
+		
 		int start = (line.indexOf("["));
 		int end = (line.indexOf("]"));
 		if (start>0){
@@ -25,15 +31,16 @@ public class ValidateArrayValue {
 
 	/**
 	 * method assert assignment is legal on array instance
-	 * @param list main list
-	 * @param inst original instance
-	 * @param line line to take variable from
+	 * @param list - main list
+	 * @param inst - `original instance
+	 * @param line - line to take variable from
 	 * @throws CompilerError
 	 * @throws BadInputException
 	 */
 	public static void validateArrayValueOnCreation
 	(ArrayList<ArrayList<Instance>> list,Instance inst, String str) 
-			throws CompilerError, BadInputException{
+			throws CompilerError{
+		
 		if (!inst.isInitialized()){
 			return;
 		}
@@ -54,11 +61,12 @@ public class ValidateArrayValue {
 
 	/**
 	 * delete assignment brackets
-	 * @param s
-	 * @return
+	 * @param s - the string to manage
+	 * @return the string after alteration 
 	 * @throws BadInputException
 	 */
 	private static String manageString(String s)throws BadInputException{
+		
 		int open = (s.indexOf("{"));
 		int end = (s.lastIndexOf("}"));
 		if (open<1){
@@ -68,15 +76,17 @@ public class ValidateArrayValue {
 		s = s.replaceAll(","," , ");
 		return s;
 	}
+	
 	/**
 	 * this method checks if the place of the value in the array is legal
-	 * @param substring the string that represents the place
-	 * @return true if the value is a non negative int
+	 * @param substring - the string that represents the place
+	 * @return true if the value is a non negative integer
 	 * @throws BadInputException 
 	 * @throws CompilerError 
 	 */
 	public static boolean checkIndexBounds(ArrayList<ArrayList<Instance>> list, 
-			String substring) throws BadInputException, CompilerError {
+			String substring) throws CompilerError {
+		
 		if (substring.matches("-\\d*")){
 			return false;
 		}
