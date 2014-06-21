@@ -15,7 +15,7 @@ public class InstanceArrayValidator {
 	public static boolean instanceNameExistInBlock(Instance checkInstance, 
 			ArrayList<Instance> instanceInBlock){
 
-		for (Instance instance:instanceInBlock){
+		for (Instance instance:instanceInBlock){//run over the list
 			if (checkInstance.getName().equals(instance.getName())){
 				return true;
 			}
@@ -26,13 +26,14 @@ public class InstanceArrayValidator {
 	/**
 	 * check if instance with a given name exist in code.
 	 * check in a given method list and in the main list
-	 * @param list
-	 * @param s
-	 * @return instance with the given name if exist, null else.
+	 * @param list - list of instances
+	 * @param s - the name of the instance to check
+	 * @return instance with the given name (if exist), else null .
 	 */
 	public static Instance findInstance(ArrayList<ArrayList<Instance>> list, 
 			String s){
 		
+		//go through all the lists f instances
 		for (ArrayList<Instance> subList: list){
 			for (Instance instance: subList){
 				if (instance.getName().equalsIgnoreCase(s)){
