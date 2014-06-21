@@ -20,13 +20,8 @@ public class FieldInstance extends Instance {
 		setInitialized(init);
 	}
 
-//	@Override
-//	public boolean compareInstances(Instance otherInstance) {
-//		return compareInstancesType(otherInstance);
-//	}
-
 	@Override
 	public Instance clone() {
-		return new FieldInstance(getType(), getName(),isArray(), isInitialized());
+		return new FieldInstance(getType(),getName(),isArray(),isInitialized());
 	}
 }

@@ -2,11 +2,17 @@ package oop.ex7.main.instance;
 
 import oop.ex7.main.Type;
 
+/**
+ * this class represents an instance 
+ * @author Assaf M. Itay A.
+ *
+ */
 public abstract class Instance {
 	
-	private String name;
-	private Type type;
-	private boolean initialized; 
+	//instance constants
+	private String name;//name
+	private Type type;//type: int/double/char/string/void.
+	private boolean initialized;
 	private boolean isArray = false;
 	
 	/**
@@ -15,6 +21,7 @@ public abstract class Instance {
 	 * @param name the name of instance
 	 */
 	public Instance(Type type, String name, boolean isArray){
+		
 		this.name = name;
 		this.type =  type;
 		initialized = false;

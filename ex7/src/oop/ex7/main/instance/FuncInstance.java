@@ -11,7 +11,7 @@ import oop.ex7.main.Type;
 public class FuncInstance extends Instance {
 
 	ArrayList<Instance> funcArguments;
-	
+
 	/**
 	 * basic constructor
 	 * @param type Type of instance
@@ -19,15 +19,18 @@ public class FuncInstance extends Instance {
 	 * @param isArray flag to check if an array
 	 * @param args the arguments function receive
 	 */
-	public FuncInstance(Type type, String name,boolean isArray, ArrayList<Instance> args) {
+	public FuncInstance(Type type, String name,boolean isArray, 
+			ArrayList<Instance> args) {
+
 		super(type, name, isArray);
 		setInitialized(true);
 	}
 
 	@Override
 	public Instance clone() {
-		return new FuncInstance(this.getType(), this.getName(),this.isArray(), funcArguments);
+		return new FuncInstance(this.getType(), this.getName(),
+				this.isArray(), funcArguments);
 	}
-	
+
 
 }

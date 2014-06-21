@@ -11,6 +11,11 @@ import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
 
+/**
+ * this class creates the instance
+ * @author Assaf M Itay A.
+ *
+ */
 public class InstanceFactory {
 
 	private final static int TYPE_PLACE=0;
@@ -27,6 +32,7 @@ public class InstanceFactory {
 	 */
 	public static Instance createInstance(ArrayList
 			<ArrayList<Instance>> list,String line) throws CompilerError{
+		
 		//build a new Instance
 		Instance newInstance =buildInstance (line);
 		
@@ -38,13 +44,14 @@ public class InstanceFactory {
 
 	/**
 	 * build new instance
-	 * @param line to build the instance from
+	 * @param line - to build the instance from
 	 * @return new instance
 	 * @throws BadInputException
 	 * @throws MemberDeclarationException
 	 */
 	private static Instance buildInstance(String line) 
 			throws BadInputException, MemberDeclarationException{
+		
 		boolean rememberArray= false;
 		
 		//hide array signs from constructor
@@ -75,7 +82,7 @@ public class InstanceFactory {
 
 	/**
 	 * check if variable is initialized
-	 * @param s name of var
+	 * @param s - name of variable
 	 * @return true if initialized, else false
 	 */
 	private static boolean checkIfInit(String s){
@@ -90,7 +97,7 @@ public class InstanceFactory {
 
 	/**
 	 * receive all the String inside brackets and return arrayList of all types
-	 * @param list all String inside brackets
+	 * @param list - all String inside brackets
 	 * @return arraylist of all types
 	 * @throws BadInputException 
 	 * @throws MemberDeclarationException 
@@ -119,7 +126,9 @@ public class InstanceFactory {
 
 	/**
 	 * will return only the name of instance
-	 * @throws BadInputException 
+	 * @param s - the string representing the signature
+	 * @return the instance name
+	 * @throws BadInputException
 	 */
 	private static String getName(String s) throws BadInputException{
 		if (!(s.matches("_?[A-Za-z].*"))){
