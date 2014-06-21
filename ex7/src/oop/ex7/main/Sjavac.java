@@ -3,9 +3,6 @@ package oop.ex7.main;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-
-
-
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.BadLineEndingException;
 import oop.ex7.main.exceptions.BadStructureOfBlockLineException;
@@ -39,7 +36,8 @@ public class Sjavac {
 	static ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
 
 	/**
-	 * 
+	 * this method is the main method in which the program gets parameters of
+	 * files to compile
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -65,88 +63,98 @@ public class Sjavac {
 	 * parse the main block.
 	 * make an Instance of every field and method in main block.
 	 * skip any other block.
-	 * @param path
-	 * @return
+	 * @param path - the string which represents the whole code
+	 * @return 0 - if everything is OK
 	 * @throws CompilerError 
 	 *  
 	 */
-	public int parseMainBlock(String path) throws CompilerError, BadInputException{
+	public int parseMainBlock(String path) throws CompilerError, 
+	BadInputException{
 
 		LineReader reader = new LineReader(path);
-		while (reader.hasNext()){
-			String text = reader.next();
+		while (reader.hasNext()){//
+			String text = reader.next();//the next line to check
+			//if line ends with ";"
 			if (text.endsWith(";")){
 				Instance newInstance =InstanceFactory.createInstance
 						(methodInstanceListByBlock, text); 
+				//if the instance already exist throw exception
 				if (InstanceArrayValidator.instanceNameExistInBlock
 						(newInstance, mainBlockInstances)){
 					throw new DuplicateInstaceException("instance "+newInstance.
 							getName()+" is declared twice in main block");
-				}					
+				}		
+				//add this member to the main block array of instances
 				mainBlockInstances.add(newInstance);
 			}
+			//if line ends with "{"
 			else if(text.endsWith("{")){
 				Instance newInstance =InstanceFactory.createInstance
 						(methodInstanceListByBlock, text); 
+				//if this instance already exist throw exception
 				if (InstanceArrayValidator.instanceNameExistInBlock
 						(newInstance, mainBlockInstances)){
 					throw new DuplicateInstaceException
 					("instance "+newInstance.getName()+
 							" is declared twice in main block");
 				}
+				//add this instance
 				mainBlockInstances.add(newInstance);
 				methodCheckAndSkip(reader,text);
 			} 
 			// no method or variable
 			else{
-				throw new BadLineEndingException("bad line exception in main block");
+				throw new BadLineEndingException("bad line end in main block");
 			}
 		}
 		return 0;
-
 	}
 
 	/**
 	 * this function read the methods. ignores every instance in main block
-	 * @param path
-	 * @return
+	 * @param path - the string which represents the file	
+	 * @return 0 - if everything is OK
 	 * @throws CompilerError
 	 * @throws NoSuchElementException
 	 */
 	public int parseMethods(String path) throws CompilerError,
 	NoSuchElementException{
 
-		LineReader reader = new LineReader(path);
+		LineReader reader = new LineReader(path);//read a new line
 		while (reader.hasNext()){
 			String text = reader.next();
+			//continue until the end of the block
 			if (text.endsWith(";")){
 				continue;
 			}
+			//if reached the end of block
 			if (text.endsWith("{")){
+				//check if this call is legal
 				Instance checkInstace = ValidateBlocks.validateMethodCall(
 						methodInstanceListByBlock,text);
 				parseBlock(reader,checkInstace,text);
-				}
+			}
 		}
-
 		return 0;
 	}
 
 	/**
 	 * parse blocks recursively 
-	 * @param reader
-	 * @param checkInstance- the return type should be returning
-	 * @param text
+	 * @param reader - the file to compile
+	 * @param checkInstance - the return type should be returning
+	 * @param text - the next line to read
 	 * @throws NoSuchElementException
 	 * @throws BadInputException
 	 * @throws CompilerError
 	 */
 	private void parseBlock(LineReader reader, Instance checkInstance,
 			String text) throws NoSuchElementException, CompilerError{
+		
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
 		blockList = ValidateInstanceValue.updateList(methodInstanceListByBlock,
 				blockList, text);
 		methodInstanceListByBlock.add(0, blockList);
+		//as long as there is a next line to read in the block
 		while (reader.hasNext()){
 			text = reader.next();
 			Instance currInstance;
@@ -168,7 +176,7 @@ public class Sjavac {
 				return;
 			}
 
-			// must end with ";"
+			//if its a return statement it must end with ";"
 			if(text.matches("return.*")){
 				text = text.substring(RETURN, text.length()-1);
 				text = text.trim();
@@ -235,17 +243,20 @@ public class Sjavac {
 
 	/**
 	 * will skip every method but check if blocks are legal
-	 * @param reader
-	 * @param text
+	 * @param reader - the whole code
+	 * @param text the next line
 	 * @throws compileError 
 	 */
 	private void methodCheckAndSkip(LineReader reader, String text) throws
 	CompilerError{
+		
 		int openBlocks=0;
 		do{
+			//if the block begins with "{" continue 
 			if (text.endsWith("{")){
 				openBlocks++;
 			}
+			//if the block ends with "}" return
 			if (text.endsWith("}")){
 				openBlocks--;
 				if (openBlocks == 0){
@@ -267,12 +278,13 @@ public class Sjavac {
 
 	/**
 	 * check if instance's name is already in use in current method
-	 * @param methodList
-	 * @param checkInstance
+	 * @param methodList - the list of method names
+	 * @param checkInstance - the instance to compare
 	 * @return true if name is in use, false else
 	 */
 	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> 
 	methodList, Instance checkInstance){
+		
 		for (ArrayList<Instance> subList: methodList){
 			if (subList.equals(mainBlockInstances)){
 				continue;
@@ -284,5 +296,6 @@ public class Sjavac {
 		}
 		return false;
 	}
+	
 }
 
