@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import oop.ex7.main.Sjavac;
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.instance.FieldInstance;
 import oop.ex7.main.instance.FuncInstance;
-import oop.ex7.main.parsers.SomeMainParser;
 
 
 public class Dummy {
