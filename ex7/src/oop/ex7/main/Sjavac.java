@@ -16,6 +16,7 @@ import oop.ex7.main.parsers.LineReader;
 import oop.ex7.main.validations.InstanceArrayValidator;
 import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateBlocks;
+import oop.ex7.main.validations.ValidateFunction;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
 
@@ -193,7 +194,7 @@ public class Sjavac {
 				if (func == null){
 					throw new CompilerError("DAMN THOSE ERRORS!!!!");
 				}
-				ValidateInstanceValue.validateMethodArgs
+				ValidateFunction.validateMethodArgs
 				(methodInstanceListByBlock, func, text);
 			}
 

@@ -47,15 +47,19 @@ public class ValidateIntValue {
 				str = s.split(INT_OPR);//split the string between the actions
 				//if the first substring is a member
 				if(str[0].matches(INT_VAL_STR)&&str[1].matches(INT_VAL_FORM))
-					return ValidateInstanceValue.checkIfInList(list,str[0],Type.INT);
+					return ValidateInstanceValue.checkIfInList(list,str[0],
+							Type.INT);
 				//if the second substring is a member
 				if(str[1].matches(INT_VAL_STR)&&str[0].matches(INT_VAL_FORM))
-					return ValidateInstanceValue.checkIfInList(list, str[1],Type.INT);	
+					return ValidateInstanceValue.checkIfInList(list, str[1],
+							Type.INT);	
 			}
 			if (s.matches(INT_VAL_STR+INT_OPR+INT_VAL_STR)){
 				str = s.split(INT_OPR);
-				return(ValidateInstanceValue.checkIfInList(list, str[0],Type.INT) && 
-						ValidateInstanceValue.checkIfInList(list, str[1],Type.INT));
+				return(ValidateInstanceValue.checkIfInList(list, 
+						str[0],Type.INT) && 
+						ValidateInstanceValue.checkIfInList(list, 
+								str[1],Type.INT));
 			}
 		}
 		return false;

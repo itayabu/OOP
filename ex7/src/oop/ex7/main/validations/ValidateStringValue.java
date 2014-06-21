@@ -11,7 +11,7 @@ import oop.ex7.main.instance.Instance;
  *
  */
 public class ValidateStringValue {
-	// boolean values
+	
 	private static final String STRING_VALUE = "\".*\"";
 
 	/**
