@@ -1,9 +1,6 @@
 package oop.ex7.main.instance;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-
-import oop.ex7.main.RegexConstants;
 import oop.ex7.main.Type;
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
@@ -13,7 +10,6 @@ import oop.ex7.main.exceptions.VoidVarException;
 import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
-import oop.ex7.main.validationsexceptions.BadTypeNameException;
 
 public class InstanceFactory {
 
