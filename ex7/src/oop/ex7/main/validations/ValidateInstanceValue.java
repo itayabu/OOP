@@ -72,24 +72,7 @@ public class ValidateInstanceValue {
 		return line.split(",");
 	}
 
-//	/**
-//	 * this method receive string contain method call and return its type.
-//	 * @param list
-//	 * @param string
-//	 * @return the return type of method
-//	 * @throws CompilerError
-//	 * @throws BadInputException 
-//	 */
-//	public static Type getMethodTypeFtomFuncString(ArrayList<ArrayList
-//			<Instance>> list, String string) 
-//					throws CompilerError, BadInputException{
-//		
-//		int open = (string.indexOf("("));
-//		String name = string.substring(0, open);
-//		Instance func = InstanceArrayValidator.findInstance(list, name);
-//		validateMethodArgs(list, func, string);
-//		return func.getType();
-//	}
+
 
 	/**
 	 * this method update new block and check if block is legal

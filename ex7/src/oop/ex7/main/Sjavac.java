@@ -75,7 +75,6 @@ public class Sjavac {
 		LineReader reader = new LineReader(path);
 		while (reader.hasNext()){//
 			String text = reader.next();//the next line to check
-			//if line ends with ";"
 			if (text.endsWith(";")){
 				Instance newInstance =InstanceFactory.createInstance
 						(methodInstanceListByBlock, text); 
@@ -192,7 +191,7 @@ public class Sjavac {
 				Instance func = InstanceArrayValidator.findInstance
 						(methodInstanceListByBlock, splittedText[0]);
 				if (func == null){
-					throw new CompilerError("DAMN THOSE ERRORS!!!!");
+					throw new CompilerError(text+"didnt match any method");
 				}
 				ValidateFunction.validateMethodArgs
 				(methodInstanceListByBlock, func, text);

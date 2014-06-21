@@ -55,15 +55,16 @@ public class InstanceFactory {
 		boolean rememberArray= false;
 		
 		//hide array signs from constructor
-		if (line.matches("[A-za-z]*\\[\\].*|[A-za-z]*\\s*\\[\\].*")){
+		if (line.matches("[A-za-z]*\\s?\\[\\s?\\].*|[A-za-z]*\\s*\\[\\].*")){
 			line = ValidateArrayValue.hideArray(line);
+			line = line.trim();
 			rememberArray=true;
 		}
 		String[] splittedLine = line.split(" ");
 		
 		// get type and delete it from string
 		Type currentType = ValidateType.makeType(splittedLine[TYPE_PLACE]);
-		line = line.substring(currentType.getTypeName().length()+1);
+		line = line.substring(currentType.getTypeName().length()).trim();
 		String name = getName(splittedLine[NAME_PLACE]);
 
 		// case string is a function
