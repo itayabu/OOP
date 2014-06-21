@@ -13,20 +13,21 @@ import oop.ex7.main.instance.Instance;
 public class ValidateCharValue {
 
 	// boolean values
-		private static final String CHAR_VALUE = "\'.\'";
-		
-		/**
-		 * check if assignment is legal
-		 * @param list main Instance list
-		 * @param s string to check
-		 * @param type to be compared to
-		 * @return true if assignment is legal, else false
-		 */
-		public static boolean validateChar(ArrayList<ArrayList<Instance>> list, 
-				String s,Type type){
-			if (s.matches(CHAR_VALUE)){
-				return true;
-			}
-			return ValidateInstanceValue.checkIfInList(list, s, type);
+	private static final String CHAR_VALUE = "\'.\'";
+
+	/**
+	 * check if assignment is legal
+	 * @param list - main Instance list
+	 * @param s - string to check
+	 * @param type - to be compared to
+	 * @return true if assignment is legal, else false
+	 */
+	public static boolean validateChar(ArrayList<ArrayList<Instance>> list, 
+			String s,Type type){
+
+		if (s.matches(CHAR_VALUE)){
+			return true;
 		}
+		return ValidateInstanceValue.checkIfInList(list, s, type);
+	}
 }
