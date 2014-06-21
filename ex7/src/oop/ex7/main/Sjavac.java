@@ -11,8 +11,6 @@ import oop.ex7.main.exceptions.BadLineEndingException;
 import oop.ex7.main.exceptions.BadStructureOfBlockLineException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.DuplicateInstaceException;
-import oop.ex7.main.exceptions.IlegalCommentException;
-import oop.ex7.main.exceptions.MemberDeclarationException;
 import oop.ex7.main.exceptions.MemberDoesNotExistException;
 import oop.ex7.main.exceptions.NoClosureToParenthesesException;
 import oop.ex7.main.instance.Instance;
@@ -29,40 +27,36 @@ import oop.ex7.main.validations.ValidateType;
  *
  */
 public class Sjavac {
-	
-	public static void main(String[] args) {
-		try{
-		Sjavac parser = new Sjavac();
-		parser.parseMainBlock(args[0]);
-		parser.parseMethods(args[0]);
-		System.out.println("0");
-	
-	} catch (NoSuchElementException e) {
-		System.err.println(e.getMessage());
-		System.err.println("2");
-	} catch (CompilerError e) {
-		System.out.println("1");
-		System.out.println(e.getMessage());
-	}
-	}
 
 	private static final String METHOD_CALL =
 			"\\s*([A-Za-z][A-Za-z0-9_]*)\\s*\\(([^\\n]*)\\)\\s*;?\\s*";
 	private static final int RETURN=6;
-
-	ArrayList<ArrayList<Instance>> methodInstanceListByBlock = 
+	static ArrayList<ArrayList<Instance>> methodInstanceListByBlock = 
 			new ArrayList<ArrayList<Instance>>();
-	ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
+	static ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
 	InstanceFactory factory;
 
 	/**
-	 * read from file with LineReader and manage kind of lines
-	 * @param path
-	 * @return 
+	 * 
+	 * @param args
 	 */
-	public Sjavac(){
-		methodInstanceListByBlock.add(mainBlockInstances);
-		factory = new InstanceFactory();
+	public static void main(String[] args) {
+		try{
+			methodInstanceListByBlock.clear();
+			mainBlockInstances.clear();
+			methodInstanceListByBlock.add(mainBlockInstances);
+			Sjavac parser = new Sjavac();
+			parser.parseMainBlock(args[0]);
+			parser.parseMethods(args[0]);
+			System.out.println("0");
+
+		} catch (NoSuchElementException e) {
+			System.err.println(e.getMessage());
+			System.err.println("2");
+		} catch (CompilerError e) {
+			System.out.println("1");
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
@@ -76,7 +70,7 @@ public class Sjavac {
 	 */
 	public int parseMainBlock(String path) throws CompilerError, BadInputException{
 
-		
+
 		LineReader reader = new LineReader(path);
 		while (reader.hasNext()){
 			String text = reader.next();
@@ -125,12 +119,10 @@ public class Sjavac {
 				continue;
 			}
 			if (text.endsWith("{")){
-				String[] splitLine = text.split(" ");
-				Instance checkInstance = InstanceArrayValidator.findInstance
-						(methodInstanceListByBlock, getName(splitLine[1]).
-								trim());
-				parseBlock(reader,checkInstance,text);
-			}
+				Instance checkInstace = ValidateBlocks.validateMethodCall(
+						methodInstanceListByBlock,text);
+				parseBlock(reader,checkInstace,text);
+				}
 		}
 
 		return 0;
@@ -219,12 +211,12 @@ public class Sjavac {
 			}
 			currInstance = InstanceArrayValidator.
 					findInstance(methodInstanceListByBlock, splittedText[0]);
-			
+
 			// case var doesnt exist at all
 			if (currInstance == null){
 				throw new MemberDoesNotExistException
 				("searched for member called "+
-				splittedText[1]+" and didnt find it");
+						splittedText[1]+" and didnt find it");
 			}
 			// case var exist
 			else{
@@ -269,9 +261,6 @@ public class Sjavac {
 		while (openBlocks > 0);
 	}
 
-
-
-
 	/**
 	 * check if instance's name is already in use in current method
 	 * @param methodList
@@ -291,13 +280,5 @@ public class Sjavac {
 		}
 		return false;
 	}
-	private String getName(String s){
-		int start =s.indexOf("(");
-		return s.substring(0, start);
-	}
-
-
-
-
 }
 

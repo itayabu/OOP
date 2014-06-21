@@ -11,4 +11,18 @@ public class ValidateBlocks {
 	public static boolean validateIfOrWhileBlock(String s){
 		return s.matches(CONDITION_COMMAND);
 	}
+	
+	public static Instance validateMethodCall(ArrayList<ArrayList<Instance>> 
+	list, String line){
+		String[] splitLine = line.split(" ");
+		return InstanceArrayValidator.findInstance
+				(list, getName(splitLine[1]).trim());
+		
+
+	}
+	
+	private static String getName(String s){
+		int start =s.indexOf("(");
+		return s.substring(0, start);
+	}
 }
