@@ -49,7 +49,7 @@ public enum Type {
 	 * @throws TypeConversionException 
 	 */
 	public static boolean checkType(ArrayList<ArrayList<Instance>>
-	list,Type currType , String s) throws TypeConversionException{
+	list,Type currType , String s) throws TypeConversionException {
 
 		switch (currType){
 		case INT:

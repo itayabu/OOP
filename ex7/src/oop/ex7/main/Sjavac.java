@@ -35,6 +35,7 @@ public class Sjavac {
 			new ArrayList<ArrayList<Instance>>();
 	// list of all instance in main block
 	static ArrayList<Instance> mainBlockInstances = new ArrayList<Instance>();
+	static ArrayList<Instance> secondBlock = new ArrayList<Instance>();
 
 	/**
 	 * this method is the main method in which the program gets parameters of
@@ -43,12 +44,9 @@ public class Sjavac {
 	 */
 	public static void main(String[] args) {
 		try{
-			methodInstanceListByBlock.clear();
-			mainBlockInstances.clear();
-			methodInstanceListByBlock.add(mainBlockInstances);
-			Sjavac parser = new Sjavac();
-			parser.parseMainBlock(args[0]);
-			parser.parseMethods(args[0]);
+			parseMainBlock(args[0]);
+			parseInitialize(args[0]);
+			parseMethods(args[0]);
 			System.out.println("0");
 
 		} catch (NoSuchElementException e) {
@@ -69,15 +67,21 @@ public class Sjavac {
 	 * @throws CompilerError 
 	 *  
 	 */
-	public int parseMainBlock(String path) throws CompilerError, 
+	public static int parseMainBlock(String path) throws CompilerError, 
 	BadInputException{
 
+		methodInstanceListByBlock.clear();
+		mainBlockInstances.clear();
+		methodInstanceListByBlock.add(mainBlockInstances);
+		
 		LineReader reader = new LineReader(path);
-		while (reader.hasNext()){//
+		while (reader.hasNext()){
 			String text = reader.next();//the next line to check
 			if (text.endsWith(";")){
-				Instance newInstance =InstanceFactory.createInstance
-						(methodInstanceListByBlock, text); 
+				Instance newInstance =InstanceFactory.buildInstance(text);
+				newInstance.setInitialized(false);
+//				Instance newInstance =InstanceFactory.createInstance
+//						(methodInstanceListByBlock, text); 
 				//if the instance already exist throw exception
 				if (InstanceArrayValidator.instanceNameExistInBlock
 						(newInstance, mainBlockInstances)){
@@ -109,6 +113,49 @@ public class Sjavac {
 		}
 		return 0;
 	}
+	
+	public static int parseInitialize(String path) throws CompilerError, 
+	BadInputException{
+
+		LineReader reader = new LineReader(path);
+//		ArrayList <Instance> blockList = new ArrayList <Instance>();
+		secondBlock.clear();
+		methodInstanceListByBlock.add(secondBlock);
+		while (reader.hasNext()){
+			String text = reader.next();
+			//continue until the end of the block
+			if (text.endsWith(";")){
+//				Instance instance = InstanceFactory.createInstance
+//				(methodInstanceListByBlock, text);
+//				InstanceFactory.checkLegalInstance(methodInstanceListByBlock, text);
+//				instance.setInitialized(true);
+				Instance instance = InstanceFactory.createInstance(methodInstanceListByBlock, text);
+				secondBlock.add(instance);
+			}
+			else if(text.endsWith("{")){
+				Instance newInstance =InstanceFactory.createInstance
+						(methodInstanceListByBlock, text); 
+				//if this instance already exist throw exception
+				if (InstanceArrayValidator.instanceNameExistInBlock
+						(newInstance, secondBlock)){
+					throw new DuplicateInstaceException
+					("instance "+newInstance.getName()+
+							" is declared twice in main block");
+				}
+				//add this instance
+				secondBlock.add(newInstance);
+				methodCheckAndSkip(reader,text);
+			} 
+			// no method or variable
+			else{
+				throw new BadLineEndingException("bad line end in main block");
+			}
+			
+		}
+		methodInstanceListByBlock.remove(secondBlock);
+		mainBlockInstances = secondBlock;
+		return 0;
+	}
 
 	/**
 	 * this function read the methods. ignores every instance in main block
@@ -117,14 +164,22 @@ public class Sjavac {
 	 * @throws CompilerError
 	 * @throws NoSuchElementException
 	 */
-	public int parseMethods(String path) throws CompilerError,
+	public static int parseMethods(String path) throws CompilerError,
 	NoSuchElementException{
 
 		LineReader reader = new LineReader(path);//read a new line
+//		ArrayList <Instance> blockList = new ArrayList <Instance>();
+//		methodInstanceListByBlock.add(blockList);
 		while (reader.hasNext()){
 			String text = reader.next();
 			//continue until the end of the block
 			if (text.endsWith(";")){
+//				Instance instance = InstanceFactory.createInstance
+//				(methodInstanceListByBlock, text);
+//				InstanceFactory.checkLegalInstance(methodInstanceListByBlock, text);
+//				instance.setInitialized(true);
+//				Instance instance = InstanceFactory.createInstance(methodInstanceListByBlock, text);
+//				blockList.add(instance);
 				continue;
 			}
 			//if reached the end of block
@@ -147,7 +202,7 @@ public class Sjavac {
 	 * @throws BadInputException
 	 * @throws CompilerError
 	 */
-	private void parseBlock(LineReader reader, Instance checkInstance,
+	private static void parseBlock(LineReader reader, Instance checkInstance,
 			String text) throws NoSuchElementException, CompilerError{
 		
 		ArrayList <Instance> blockList = new ArrayList <Instance>();
@@ -247,7 +302,7 @@ public class Sjavac {
 	 * @param text the next line
 	 * @throws compileError 
 	 */
-	private void methodCheckAndSkip(LineReader reader, String text) throws
+	private static void methodCheckAndSkip(LineReader reader, String text) throws
 	CompilerError{
 		
 		int openBlocks=0;
@@ -282,7 +337,7 @@ public class Sjavac {
 	 * @param checkInstance - the instance to compare
 	 * @return true if name is in use, false else
 	 */
-	private boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> 
+	private static boolean instanceExistInMethod(ArrayList<ArrayList<Instance>> 
 	methodList, Instance checkInstance){
 		
 		for (ArrayList<Instance> subList: methodList){

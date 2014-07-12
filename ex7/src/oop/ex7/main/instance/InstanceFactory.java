@@ -7,6 +7,7 @@ import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.IllegalParameterInput;
 import oop.ex7.main.exceptions.MemberDeclarationException;
 import oop.ex7.main.exceptions.VoidVarException;
+import oop.ex7.main.validations.InstanceArrayValidator;
 import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateInstanceValue;
 import oop.ex7.main.validations.ValidateType;
@@ -38,7 +39,7 @@ public class InstanceFactory {
 		
 		//validate input to instance
 		ValidateInstanceValue.validateValueOnInstaceCreation
-		(list, newInstance, line);
+ 		(list, newInstance, line);
 		return newInstance;
 	}
 
@@ -49,7 +50,7 @@ public class InstanceFactory {
 	 * @throws BadInputException
 	 * @throws MemberDeclarationException
 	 */
-	private static Instance buildInstance(String line) 
+	public static Instance buildInstance(String line) 
 			throws BadInputException, MemberDeclarationException{
 		
 		boolean rememberArray= false;
@@ -132,14 +133,32 @@ public class InstanceFactory {
 	 * @throws BadInputException
 	 */
 	private static String getName(String s) throws BadInputException{
-		if (!(s.matches("_?[A-Za-z].*"))){
+		int end = s.indexOf("(");
+		if (end>0){
+			s = s.substring(0, end);
+		}
+		end = s.indexOf(';');
+		if (end>0){
+			s = s.substring(0, end);
+		}
+		if (!(s.matches("_?[A-Za-z]\\w*\\s*|_?[A-Za-z]\\w*\\s+.*"))){
 			throw new BadInputException(s+"is illegal name");
 		}
-		int end = s.indexOf("(");
-		if (end<0){
-			return s;
-		}
-		s = s.substring(0, end);
 		return s.trim();
+	}
+	
+	public static void checkLegalInstance(ArrayList
+			<ArrayList<Instance>> list,String line) throws CompilerError{
+		if (line.matches("[A-za-z]*\\s?\\[\\s?\\].*|[A-za-z]*\\s*\\[\\].*")){
+			line = ValidateArrayValue.hideArray(line);
+			line = line.trim();
+		}
+		String[] splittedLine = line.split(" ");
+		String name = getName (splittedLine[NAME_PLACE]);
+		Instance inst = InstanceArrayValidator.findInstance(list, name);
+		ValidateInstanceValue.validateValueOnInstaceCreation
+		(list, inst, line);
+		
+	
 	}
 }

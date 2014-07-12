@@ -10,7 +10,7 @@ public class ValidateIntValue {
 	//the form of a number assignment
 	private static final String INT_VAL_FORM = "-?\\d+\\s*";
 	//the form of an preinitialized type
-	private static final String INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?";
+	private static final String INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?\\s*";
 	private static final String NEG_INT_VAL ="-\\s*_?[a-zA-z]+\\w*\\s*";
 	//the operations
 	private static final String INT_OPR = "[*/+-]";
@@ -29,8 +29,11 @@ public class ValidateIntValue {
 		//check if the type is really of an int Type
 		if (type.getTypeName().equals("int")){
 			s.replaceAll(" ", "");
+			if (s.startsWith("-")){
+				s= s.substring(s.indexOf('-')+1);
+			}
 			//if the the string is an int
-			if (s.matches(INT_VAL_FORM))
+			if (s.matches(INT_VAL_FORM)) 
 				return true;
 
 			//if the string is an action between two integers

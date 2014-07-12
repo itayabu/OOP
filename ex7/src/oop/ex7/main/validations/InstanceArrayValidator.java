@@ -20,7 +20,7 @@ public class InstanceArrayValidator {
 	 */
 	public static boolean instanceNameExistInBlock(Instance checkInstance, 
 			ArrayList<Instance> instanceInBlock){
-
+		
 		for (Instance instance:instanceInBlock){//run over the list
 			if (checkInstance.getName().equals(instance.getName())){
 				return true;
@@ -39,14 +39,22 @@ public class InstanceArrayValidator {
 	public static Instance findInstance(ArrayList<ArrayList<Instance>> list, 
 			String s){
 		
+		s= cleanWord(s);
 		//go through all the lists of instances
 		for (ArrayList<Instance> subList: list){
 			for (Instance instance: subList){
-				if (instance.getName().equalsIgnoreCase(s)){
+				if (instance.getName().equalsIgnoreCase(s) ){
 					return instance;
 				}
 			}
 		}
 		return null;
+	}
+	
+	private static String cleanWord(String str) {
+		if (str.contains("(")){
+			str = str.substring(0, str.indexOf("("));
+		}
+		return str;
 	}
 }

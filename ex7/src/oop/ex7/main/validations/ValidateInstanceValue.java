@@ -30,6 +30,10 @@ public class ValidateInstanceValue {
 		
 		//case no assignment
 		if (!line.contains("=")){
+			if (! line.matches("\\w*(\\s*\\[.*\\])?\\s*\\w*\\s?;?|" +
+					"\\w*(\\s*\\[.*\\])?\\s*\\w*(\\(.*\\))?\\s*\\{\\s?")){
+				throw new CompilerError("bad line");
+			}
 			return;
 		}
 		
@@ -57,6 +61,9 @@ public class ValidateInstanceValue {
 	private static String manageVar(String line){
 		int place = line.indexOf("=");
 		line = line.substring(place+1, line.length()-1);
+		if (line.contains("(")){
+			line = line.substring(0,line.indexOf("("));
+		}
 		return line.trim();
 	}
 
@@ -117,13 +124,32 @@ public class ValidateInstanceValue {
 	 */
 	public static boolean checkIfInList (ArrayList<ArrayList<Instance>> list
 			,String str,Type t){
-		for(ArrayList<Instance> instArray:list)
+//		boolean isArray=false;
+//		if (str.contains("[")){
+//			isArray = true;
+//		}
+		str = cleanWord(str);
+		for(int i = list.size()-1; i>= 0; i--){
+			ArrayList<Instance> instArray= list.get(i);
 			for(Instance inst:instArray)
-				if(inst.getName().equals(str))
+				if(inst.getName().equals(str.trim()) )
 					if(inst.getType().equals(t)){
-						return inst.isInitialized();
+						return (inst.isInitialized()/*&& (isArray==inst.isArray())*/) ;
 					}
+		}
 		return false;
+	}
+
+
+
+	private static String cleanWord(String str) {
+		if (str.contains("(")){
+			str = str.substring(0, str.indexOf("("));
+		}
+		if (str.contains("[")){
+			str = str.substring(0, str.indexOf("["));
+		}
+		return str;
 	}
 
 }
