@@ -26,6 +26,7 @@ public class ValidateArrayValue {
 		if (start>0){
 			line = line.substring(0, start) + line.substring(end+1);
 		}
+		line = line.replaceAll("  +", " ");
 		return line;
 	}
 
@@ -40,12 +41,11 @@ public class ValidateArrayValue {
 	public static void validateArrayValueOnCreation
 	(ArrayList<ArrayList<Instance>> list,Instance inst, String str) 
 			throws CompilerError{
-		
-		if (!inst.isInitialized()){
+			if (!inst.isInitialized()){
 			return;
 		}
-		str = manageString(str);
-		if (str.equals("")){
+		str = manageString(str );
+		if (str.matches("\\s*")){
 			return;
 		}
 		String[] splitLine= str.split(",");

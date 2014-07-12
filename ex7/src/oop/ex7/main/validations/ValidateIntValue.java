@@ -31,6 +31,7 @@ public class ValidateIntValue {
 			s.replaceAll(" ", "");
 			if (s.startsWith("-")){
 				s= s.substring(s.indexOf('-')+1);
+				s= s.trim();
 			}
 			//if the the string is an int
 			if (s.matches(INT_VAL_FORM)) 

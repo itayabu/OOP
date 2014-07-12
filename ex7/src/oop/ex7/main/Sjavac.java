@@ -10,6 +10,7 @@ import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.DuplicateInstaceException;
 import oop.ex7.main.exceptions.MemberDoesNotExistException;
 import oop.ex7.main.exceptions.NoClosureToParenthesesException;
+import oop.ex7.main.instance.FuncInstance;
 import oop.ex7.main.instance.Instance;
 import oop.ex7.main.instance.InstanceFactory;
 import oop.ex7.main.parsers.LineReader;
@@ -50,8 +51,8 @@ public class Sjavac {
 			System.out.println("0");
 
 		} catch (NoSuchElementException e) {
-			System.err.println(e.getMessage());
-			System.err.println("2");
+			System.out.println("2");
+			System.out.println(e.getMessage());
 		} catch (CompilerError e) {
 			System.out.println("1");
 			System.out.println(e.getMessage());
@@ -249,11 +250,11 @@ public class Sjavac {
 					throw new CompilerError(text+"didnt match any method");
 				}
 				ValidateFunction.validateMethodArgs
-				(methodInstanceListByBlock, func, text);
+				(methodInstanceListByBlock, (FuncInstance)func, text);
 			}
 
 			// if its a declaration of a new var
-			if (ValidateType.isValidInstanceType(splittedText[0])){
+			if (ValidateType.isValidInstanceType(ValidateInstanceValue.cleanWord(splittedText[0]))){
 				currInstance = InstanceFactory.createInstance
 						(methodInstanceListByBlock, text);					
 				if (instanceExistInMethod
@@ -289,8 +290,9 @@ public class Sjavac {
 			else{
 				if (!InstanceArrayValidator.
 						instanceNameExistInBlock(currInstance, blockList)){
-					currInstance = currInstance.clone();							
+					currInstance = currInstance.clone();
 					blockList.add(currInstance);
+					InstanceFactory.checkLegalInstance(methodInstanceListByBlock, text);
 				}
 			}
 		}

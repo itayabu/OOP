@@ -13,7 +13,7 @@ import oop.ex7.main.instance.Instance;
 public class ValidateBoolValue {
 
 	// boolean values
-	private static final String BOOL_VALUE = "(true|false)";
+	private static final String BOOL_VALUE = "\\s*(true|false)\\s*";
 
 	/**
 	 * check if assignment is legal

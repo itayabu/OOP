@@ -12,7 +12,7 @@ import oop.ex7.main.instance.Instance;
 public class ValidateBlocks {
 	
 	private static final String CONDITION_COMMAND =
-			"(if|while)\\s*\\(.*\\)\\s*\\{.*";
+			"(if|while)\\s*(.*)\\s*\\{.*";
 	
 	/**
 	 * check if outer structure of new block line is legal

@@ -31,7 +31,7 @@ public class ValidateInstanceValue {
 		//case no assignment
 		if (!line.contains("=")){
 			if (! line.matches("\\w*(\\s*\\[.*\\])?\\s*\\w*\\s?;?|" +
-					"\\w*(\\s*\\[.*\\])?\\s*\\w*(\\(.*\\))?\\s*\\{\\s?")){
+					"\\w*(\\s*\\[.*\\])?\\s*\\w*(\\(.*\\))?\\s*[{;]\\s?")){
 				throw new CompilerError("bad line");
 			}
 			return;
@@ -142,7 +142,7 @@ public class ValidateInstanceValue {
 
 
 
-	private static String cleanWord(String str) {
+	public static String cleanWord(String str) {
 		if (str.contains("(")){
 			str = str.substring(0, str.indexOf("("));
 		}

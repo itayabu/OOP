@@ -24,6 +24,7 @@ public class FuncInstance extends Instance {
 
 		super(type, name, isArray);
 		setInitialized(true);
+		funcArguments = args;
 	}
 
 	@Override
@@ -31,6 +32,11 @@ public class FuncInstance extends Instance {
 		return new FuncInstance(this.getType(), this.getName(),
 				this.isArray(), funcArguments);
 	}
-
+public Instance getArgument(int i){
+	if (funcArguments.isEmpty()){
+		return null;
+	}
+	return funcArguments.get(i);
+}
 
 }

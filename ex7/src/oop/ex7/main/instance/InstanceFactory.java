@@ -149,16 +149,28 @@ public class InstanceFactory {
 	
 	public static void checkLegalInstance(ArrayList
 			<ArrayList<Instance>> list,String line) throws CompilerError{
+		boolean remmemerArray=false;
 		if (line.matches("[A-za-z]*\\s?\\[\\s?\\].*|[A-za-z]*\\s*\\[\\].*")){
 			line = ValidateArrayValue.hideArray(line);
 			line = line.trim();
 		}
+		else if (line.matches("[A-za-z]*\\s?\\[.*].*")){
+			line = line.substring(0, line.indexOf("["))+
+				line.substring(line.indexOf("]")+1);
+			remmemerArray = true;
+		}
+		
 		String[] splittedLine = line.split(" ");
-		String name = getName (splittedLine[NAME_PLACE]);
+		String name = getName (splittedLine[0]);
 		Instance inst = InstanceArrayValidator.findInstance(list, name);
+		if (remmemerArray){
+			inst.setArray(false);
+		}
 		ValidateInstanceValue.validateValueOnInstaceCreation
 		(list, inst, line);
-		
+		if (remmemerArray){
+			inst.setArray(true);
+		}
 	
 	}
 }

@@ -3,6 +3,7 @@ package oop.ex7.main.validations;
 import java.util.ArrayList;
 
 import oop.ex7.main.exceptions.CompilerError;
+import oop.ex7.main.instance.FuncInstance;
 import oop.ex7.main.instance.Instance;
 
 public class ValidateFunction {
@@ -26,16 +27,22 @@ public class ValidateFunction {
 	 * @throws CompilerError
 	 */
 	public static void validateMethodArgs(ArrayList<ArrayList<Instance>> list,
-			Instance instance, String line) throws CompilerError{
+			FuncInstance func, String line) throws CompilerError{
 		
 		line = ValidateFunction.cutBlockBrackets(line);
 		String[] args = line.split(",");
 		
 		//check validity of every parameter
+		
 		for (int i =0; i<args.length; i++){
 			args [i] = args[i].trim();
-			if (!ValidateType.typesConsist(list, instance, args[i])){
+			if (args[i].isEmpty()){
+				if (!(func.getArgument(i)==null))
 				throw new CompilerError(args[i] + "is not valid argument");
+			}
+			else if (!ValidateType.typesConsist(list, func.getArgument(i), 
+					args[i])){
+ 				throw new CompilerError(args[i] + "is not valid argument");
 			}
 		}
 	}
