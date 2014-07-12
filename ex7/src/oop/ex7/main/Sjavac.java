@@ -45,6 +45,9 @@ public class Sjavac {
 	 */
 	public static void main(String[] args) {
 		try{
+			methodInstanceListByBlock.clear();
+			mainBlockInstances.clear();
+			methodInstanceListByBlock.add(mainBlockInstances);
 			parseMainBlock(args[0]);
 			parseInitialize(args[0]);
 			parseMethods(args[0]);
@@ -56,6 +59,11 @@ public class Sjavac {
 		} catch (CompilerError e) {
 			System.out.println("1");
 			System.out.println(e.getMessage());
+		}
+		finally{
+			methodInstanceListByBlock.clear();
+			mainBlockInstances.clear();
+			secondBlock.clear();
 		}
 	}
 
@@ -71,9 +79,6 @@ public class Sjavac {
 	public static int parseMainBlock(String path) throws CompilerError, 
 	BadInputException{
 
-		methodInstanceListByBlock.clear();
-		mainBlockInstances.clear();
-		methodInstanceListByBlock.add(mainBlockInstances);
 		
 		LineReader reader = new LineReader(path);
 		while (reader.hasNext()){
@@ -97,12 +102,12 @@ public class Sjavac {
 				Instance newInstance =InstanceFactory.createInstance
 						(methodInstanceListByBlock, text); 
 				//if this instance already exist throw exception
-				if (InstanceArrayValidator.instanceNameExistInBlock
-						(newInstance, mainBlockInstances)){
-					throw new DuplicateInstaceException
-					("instance "+newInstance.getName()+
-							" is declared twice in main block");
-				}
+//				if (InstanceArrayValidator.instanceNameExistInBlock
+//						(newInstance, mainBlockInstances)){
+//					throw new DuplicateInstaceException
+//					("instance "+newInstance.getName()+
+//							" is declared twice in main block");
+//				}
 				//add this instance
 				mainBlockInstances.add(newInstance);
 				methodCheckAndSkip(reader,text);
@@ -126,23 +131,13 @@ public class Sjavac {
 			String text = reader.next();
 			//continue until the end of the block
 			if (text.endsWith(";")){
-//				Instance instance = InstanceFactory.createInstance
-//				(methodInstanceListByBlock, text);
-//				InstanceFactory.checkLegalInstance(methodInstanceListByBlock, text);
-//				instance.setInitialized(true);
-				Instance instance = InstanceFactory.createInstance(methodInstanceListByBlock, text);
+				Instance instance = InstanceFactory.createInstance
+						(methodInstanceListByBlock, text);
 				secondBlock.add(instance);
 			}
 			else if(text.endsWith("{")){
 				Instance newInstance =InstanceFactory.createInstance
 						(methodInstanceListByBlock, text); 
-				//if this instance already exist throw exception
-				if (InstanceArrayValidator.instanceNameExistInBlock
-						(newInstance, secondBlock)){
-					throw new DuplicateInstaceException
-					("instance "+newInstance.getName()+
-							" is declared twice in main block");
-				}
 				//add this instance
 				secondBlock.add(newInstance);
 				methodCheckAndSkip(reader,text);
@@ -153,8 +148,9 @@ public class Sjavac {
 			}
 			
 		}
-		methodInstanceListByBlock.remove(secondBlock);
-		mainBlockInstances = secondBlock;
+		methodInstanceListByBlock.clear();
+		mainBlockInstances = (ArrayList<Instance>) secondBlock.clone();
+		methodInstanceListByBlock.add(mainBlockInstances);
 		return 0;
 	}
 
@@ -169,18 +165,11 @@ public class Sjavac {
 	NoSuchElementException{
 
 		LineReader reader = new LineReader(path);//read a new line
-//		ArrayList <Instance> blockList = new ArrayList <Instance>();
-//		methodInstanceListByBlock.add(blockList);
 		while (reader.hasNext()){
 			String text = reader.next();
 			//continue until the end of the block
 			if (text.endsWith(";")){
-//				Instance instance = InstanceFactory.createInstance
-//				(methodInstanceListByBlock, text);
-//				InstanceFactory.checkLegalInstance(methodInstanceListByBlock, text);
-//				instance.setInitialized(true);
-//				Instance instance = InstanceFactory.createInstance(methodInstanceListByBlock, text);
-//				blockList.add(instance);
+//				
 				continue;
 			}
 			//if reached the end of block

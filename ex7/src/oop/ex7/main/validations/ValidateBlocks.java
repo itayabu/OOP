@@ -45,6 +45,9 @@ public class ValidateBlocks {
 	private static String getName(String s){
 		
 		int start =s.indexOf("(");
-		return s.substring(0, start);
+		if (start>0){
+			return s.substring(0, start);			
+		}
+		return s;
 	}
 }

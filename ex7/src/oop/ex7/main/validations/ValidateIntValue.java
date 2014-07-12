@@ -8,7 +8,7 @@ import oop.ex7.main.instance.Instance;
 
 public class ValidateIntValue {
 	//the form of a number assignment
-	private static final String INT_VAL_FORM = "-?\\d+\\s*";
+	private static final String INT_VAL_FORM = "\\s*-?\\d+\\s*";
 	//the form of an preinitialized type
 	private static final String INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?\\s*";
 	private static final String NEG_INT_VAL ="-\\s*_?[a-zA-z]+\\w*\\s*";
@@ -50,7 +50,7 @@ public class ValidateIntValue {
 			//if the string might contain an int and an initialized member
 			if (s.matches(INT_VAL_FORM+INT_OPR+INT_VAL_STR)||s.matches
 					(INT_VAL_STR+INT_OPR+INT_VAL_FORM)){
-				if(s.matches(NEG_INT_VAL+INT_OPR+INT_VAL_FORM))
+				if(s.matches(NEG_INT_VAL+INT_OPR+INT_VAL_FORM ))
 					i++;
 				str = s.split(INT_OPR);//split the string between the actions
 				//if the first substring is a member

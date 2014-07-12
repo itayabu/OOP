@@ -31,7 +31,7 @@ public class ValidateInstanceValue {
 		//case no assignment
 		if (!line.contains("=")){
 			if (! line.matches("\\w*(\\s*\\[.*\\])?\\s*\\w*\\s?;?|" +
-					"\\w*(\\s*\\[.*\\])?\\s*\\w*(\\(.*\\))?\\s*[{;]\\s?")){
+					"\\w+(\\s*\\[.*\\]\\s*)?\\s*\\w+\\s*(\\(.*\\))?\\s*[\\{;]")){
 				throw new CompilerError("bad line");
 			}
 			return;
@@ -45,7 +45,7 @@ public class ValidateInstanceValue {
 		
 		//case is variable
 		line = manageVar(line);
-		if (!ValidateType.typesConsist(list, inst, line)){
+		if (!ValidateType.typesConsist(list, inst, line )){
 			throw new AssignmentTypesArntConsist(
 					line+"has non-consist type problem");
 		}
@@ -63,6 +63,9 @@ public class ValidateInstanceValue {
 		line = line.substring(place+1, line.length()-1);
 		if (line.contains("(")){
 			line = line.substring(0,line.indexOf("("));
+		}
+		if (line.contains("[")){
+			line = line.substring(0,line.indexOf("["));
 		}
 		return line.trim();
 	}
@@ -99,6 +102,7 @@ public class ValidateInstanceValue {
 			}
 		}
 		else{
+			InstanceFactory.buildInstance(text);
 			for (String s:args){
 				if (s.equals("")){
 					return blockList;

@@ -41,7 +41,8 @@ public class LineReader {
 		String result;
 
 		do {
-			result=scanner.nextLine();//get the next line
+			result=scanner.nextLine().//get the next line
+					trim();//remove any trailing or leading spaces
 			if (! result.startsWith("//") && result.contains("//")){
 				throw new IlegalCommentException("bad comment");
 			}
@@ -49,11 +50,7 @@ public class LineReader {
 					replaceAll("(//.*)", " ").//remove any comments in it
 					replaceAll("\\s+", " ").//make sure that spaces are not doubled
 					trim();//remove any trailing or leading spaces
-			
 		}while(result.length()<1); //ignore empty lines
-//		if (! scanner.hasNext()){
-//			throw new IlegalCommentException("no lines to print");
-//		}
 		if (!(result.endsWith("{")||result.endsWith("}")||result.endsWith(";"))){
 			throw new IlegalCommentException(result + "doesnt end properly");
 		}
@@ -79,20 +76,6 @@ public class LineReader {
 		return scanner.hasNext();
 	}
 
-	//run to the next line of code 
-	private void trim() throws IlegalCommentException {
-		while(scanner.hasNext("/.*")) {
-
-			if(scanner.hasNext("/[^/\\*]"))
-				throw new IlegalCommentException("illigal expression at line\n"+scanner.nextLine());
-
-			if(scanner.hasNext("/\\*.*"))//long comment
-				scanner.findWithinHorizon("\\*/", 0);
-
-			scanner.nextLine();
-		}
-	}
-
 	/**
 	 * take this FileRead back to the start of the file
 	 * @throws IlegalCommentException if the file was changed and now is starting with illegal comment
@@ -101,8 +84,7 @@ public class LineReader {
 		try {
 			this.scanner=new Scanner(new File(filename));
 		} catch (FileNotFoundException e) {
-		}
-		trim();		
+		}	
 	}
 
 }

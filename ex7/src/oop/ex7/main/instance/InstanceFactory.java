@@ -108,6 +108,7 @@ public class InstanceFactory {
 			throws MemberDeclarationException, BadInputException{
 		
 		ArrayList<Instance> argList = new ArrayList<Instance>();
+		argList.clear();
 		String[] args = ValidateInstanceValue.getMethodArgs(list);
 		
 		// add all arguments to parameter list
