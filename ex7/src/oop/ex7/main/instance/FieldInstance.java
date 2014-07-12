@@ -1,6 +1,6 @@
 package oop.ex7.main.instance;
 
-import oop.ex7.main.Type;
+import oop.ex7.main.type.Type;
 /**
  * this class represent a variable instance
  * @author Assaf M. Itay A.

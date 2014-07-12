@@ -13,13 +13,12 @@ import oop.ex7.main.exceptions.NoClosureToParenthesesException;
 import oop.ex7.main.instance.FuncInstance;
 import oop.ex7.main.instance.Instance;
 import oop.ex7.main.instance.InstanceFactory;
+import oop.ex7.main.instance.ValidateFunction;
+import oop.ex7.main.instance.ValidateInstanceValue;
 import oop.ex7.main.parsers.LineReader;
+import oop.ex7.main.type.ValidateType;
 import oop.ex7.main.validations.InstanceArrayValidator;
-import oop.ex7.main.validations.ValidateArrayValue;
 import oop.ex7.main.validations.ValidateBlocks;
-import oop.ex7.main.validations.ValidateFunction;
-import oop.ex7.main.validations.ValidateInstanceValue;
-import oop.ex7.main.validations.ValidateType;
 
 /**
  * Sjavac class. 
@@ -257,7 +256,7 @@ public class Sjavac {
 
 			// using an existing var (no declaration)
 			if (splittedText[0].endsWith("]")){
-				if(ValidateArrayValue.checkIndexBounds
+				if(ValidateInstanceValue.checkIndexBounds
 						(methodInstanceListByBlock, splittedText[0].substring
 								(splittedText[0].indexOf("[")+1, 
 										splittedText[0].indexOf("]")))==false)

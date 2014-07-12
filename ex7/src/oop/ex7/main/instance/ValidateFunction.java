@@ -1,10 +1,9 @@
-package oop.ex7.main.validations;
+package oop.ex7.main.instance;
 
 import java.util.ArrayList;
 
 import oop.ex7.main.exceptions.CompilerError;
-import oop.ex7.main.instance.FuncInstance;
-import oop.ex7.main.instance.Instance;
+import oop.ex7.main.type.ValidateType;
 
 public class ValidateFunction {
 

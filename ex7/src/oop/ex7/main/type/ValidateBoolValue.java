@@ -1,9 +1,9 @@
-package oop.ex7.main.validations;
+package oop.ex7.main.type;
 
 import java.util.ArrayList;
 
-import oop.ex7.main.Type;
 import oop.ex7.main.instance.Instance;
+import oop.ex7.main.instance.ValidateInstanceValue;
 
 /**
  * this class is validator for boolean assignments

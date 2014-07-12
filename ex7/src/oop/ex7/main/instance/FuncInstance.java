@@ -2,7 +2,8 @@ package oop.ex7.main.instance;
 
 import java.util.ArrayList;
 
-import oop.ex7.main.Type;
+import oop.ex7.main.type.Type;
+
 
 /**
  * this class represent a function instance

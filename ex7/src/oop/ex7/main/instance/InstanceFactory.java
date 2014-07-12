@@ -1,16 +1,15 @@
 package oop.ex7.main.instance;
 
 import java.util.ArrayList;
-import oop.ex7.main.Type;
+
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.exceptions.IllegalParameterInput;
 import oop.ex7.main.exceptions.MemberDeclarationException;
 import oop.ex7.main.exceptions.VoidVarException;
+import oop.ex7.main.type.Type;
+import oop.ex7.main.type.ValidateType;
 import oop.ex7.main.validations.InstanceArrayValidator;
-import oop.ex7.main.validations.ValidateArrayValue;
-import oop.ex7.main.validations.ValidateInstanceValue;
-import oop.ex7.main.validations.ValidateType;
 
 /**
  * this class creates the instance
@@ -57,7 +56,7 @@ public class InstanceFactory {
 		
 		//hide array signs from constructor
 		if (line.matches("[A-za-z]*\\s?\\[\\s?\\].*|[A-za-z]*\\s*\\[\\].*")){
-			line = ValidateArrayValue.hideArray(line);
+			line = ValidateInstanceValue.hideArray(line);
 			line = line.trim();
 			rememberArray=true;
 		}
@@ -152,7 +151,7 @@ public class InstanceFactory {
 			<ArrayList<Instance>> list,String line) throws CompilerError{
 		boolean remmemerArray=false;
 		if (line.matches("[A-za-z]*\\s?\\[\\s?\\].*|[A-za-z]*\\s*\\[\\].*")){
-			line = ValidateArrayValue.hideArray(line);
+			line = ValidateInstanceValue.hideArray(line);
 			line = line.trim();
 		}
 		else if (line.matches("[A-za-z]*\\s?\\[.*].*")){

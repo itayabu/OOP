@@ -1,13 +1,8 @@
-package oop.ex7.main;
+package oop.ex7.main.type;
 
 import java.util.ArrayList;
 import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.instance.Instance;
-import oop.ex7.main.validations.ValidateBoolValue;
-import oop.ex7.main.validations.ValidateCharValue;
-import oop.ex7.main.validations.ValidateDoubleValue;
-import oop.ex7.main.validations.ValidateIntValue;
-import oop.ex7.main.validations.ValidateStringValue;
 
 /**
  * this class represents the primitive types available to use in this compiler

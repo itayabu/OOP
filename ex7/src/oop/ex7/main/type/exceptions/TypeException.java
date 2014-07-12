@@ -1,4 +1,4 @@
-package oop.ex7.main.validationsexceptions;
+package oop.ex7.main.type.exceptions;
 
 import oop.ex7.main.exceptions.BadInputException;
 
