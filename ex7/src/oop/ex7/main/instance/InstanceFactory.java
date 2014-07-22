@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
-import oop.ex7.main.exceptions.IllegalParameterInput;
-import oop.ex7.main.exceptions.MemberDeclarationException;
-import oop.ex7.main.exceptions.VoidVarException;
+import oop.ex7.main.instance.exceptions.IllegalParameterInput;
+import oop.ex7.main.instance.exceptions.MemberDeclarationException;
+import oop.ex7.main.instance.exceptions.VoidVarException;
 import oop.ex7.main.type.Type;
 import oop.ex7.main.type.ValidateType;
 import oop.ex7.main.validations.InstanceArrayValidator;

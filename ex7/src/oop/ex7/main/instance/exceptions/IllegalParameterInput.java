@@ -1,4 +1,6 @@
-package oop.ex7.main.exceptions;
+package oop.ex7.main.instance.exceptions;
+
+import oop.ex7.main.type.exceptions.IlegalNameException;
 
 /**
  * this exception is thrown when parameter is illegal

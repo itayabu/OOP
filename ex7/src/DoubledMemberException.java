@@ -1,6 +1,6 @@
 
 
-import oop.ex7.main.exceptions.IlegalNameException;
+import oop.ex7.main.type.exceptions.IlegalNameException;
 
 
 /**

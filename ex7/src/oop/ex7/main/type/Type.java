@@ -1,8 +1,8 @@
 package oop.ex7.main.type;
 
 import java.util.ArrayList;
-import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.instance.Instance;
+import oop.ex7.main.type.exceptions.TypeConversionException;
 
 /**
  * this class represents the primitive types available to use in this compiler

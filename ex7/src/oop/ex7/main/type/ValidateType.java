@@ -3,9 +3,9 @@ package oop.ex7.main.type;
 import java.util.ArrayList;
 
 import oop.ex7.main.exceptions.BadInputException;
-import oop.ex7.main.exceptions.TypeConversionException;
 import oop.ex7.main.instance.Instance;
 import oop.ex7.main.type.exceptions.BadTypeNameException;
+import oop.ex7.main.type.exceptions.TypeConversionException;
 public class ValidateType {
 
 	/**

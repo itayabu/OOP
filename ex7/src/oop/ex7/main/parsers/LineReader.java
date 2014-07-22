@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import oop.ex7.main.exceptions.IlegalCommentException;
+import oop.ex7.main.parsers.exceptions.IlegalCommentException;
 
 /**
  * This class reads files.

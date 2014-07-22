@@ -1,4 +1,6 @@
-package oop.ex7.main.exceptions;
+package oop.ex7.main.parsers.exceptions;
+
+import oop.ex7.main.exceptions.CompilerError;
 
 /**
  * this exception is thrown when a comment not closed properly 

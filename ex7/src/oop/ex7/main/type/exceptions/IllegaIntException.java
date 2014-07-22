@@ -1,4 +1,5 @@
-package oop.ex7.main.exceptions;
+package oop.ex7.main.type.exceptions;
+
 
 public class IllegaIntException extends TypeConversionException {
 

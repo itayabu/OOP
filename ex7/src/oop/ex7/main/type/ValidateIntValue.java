@@ -2,9 +2,9 @@ package oop.ex7.main.type;
 
 import java.util.ArrayList;
 
-import oop.ex7.main.exceptions.IllegaIntException;
 import oop.ex7.main.instance.Instance;
 import oop.ex7.main.instance.ValidateInstanceValue;
+import oop.ex7.main.type.exceptions.IllegaIntException;
 
 public class ValidateIntValue {
 	//the form of a number assignment

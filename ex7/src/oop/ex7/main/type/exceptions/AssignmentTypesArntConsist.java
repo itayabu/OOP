@@ -1,4 +1,6 @@
-package oop.ex7.main.exceptions;
+package oop.ex7.main.type.exceptions;
+
+import oop.ex7.main.instance.exceptions.MemberDeclarationException;
 
 /**
  * this exception is thrown when assignment type doesnt consist with var type

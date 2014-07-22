@@ -1,6 +1,6 @@
 
 
-import oop.ex7.main.exceptions.MemberDeclarationException;
+import oop.ex7.main.instance.exceptions.MemberDeclarationException;
 
 
 /**

@@ -2,13 +2,13 @@ package oop.ex7.main.instance;
 
 import java.util.ArrayList;
 
-import oop.ex7.main.exceptions.AssignmentTypesArntConsist;
 import oop.ex7.main.exceptions.BadInputException;
 import oop.ex7.main.exceptions.CompilerError;
 import oop.ex7.main.type.Type;
 import oop.ex7.main.type.ValidateBoolValue;
 import oop.ex7.main.type.ValidateIntValue;
 import oop.ex7.main.type.ValidateType;
+import oop.ex7.main.type.exceptions.AssignmentTypesArntConsist;
 import oop.ex7.main.validations.InstanceArrayValidator;
 
 /**
