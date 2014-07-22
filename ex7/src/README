@@ -1,0 +1,108 @@
+itay....
+assafm04
+
+
+Files included:
+
+1:	main
+	1.1 Sjavac.java 
+	
+	
+2:	instance
+	2.1 FieldInstance.java
+	2.2 FuncInstance.java
+	2.3 Instance.java
+	2.4 InstanceFactory.java
+	2.5 ValidateFunction.java
+	2.6 ValidateInstanceValue.java
+	
+	
+3:	type
+	3.1 Type.java
+	3.2 ValidateBoolValue.java
+	3.3 ValidateCharValue.java
+	3.4 ValidateDoubleValue.java
+	3.5 ValidateIntValue.java
+	3.6 ValidateStringValue.java
+	3.7 ValidateType.java
+
+	type.exceptions
+	3.8.1 BadTypeNameException.java
+	3.8.2 TypeException.java
+	
+	
+4:	parser
+	4.1 LineReader.java
+	
+	
+5.	exceptions
+	5.1		AssignmentTypesArntConsist.java
+	5.2		BadInputException.java
+	5.3		BadLineEndingException.java
+	5.4		BadStructureOfBlockLineException.java
+	5.5		CompilerError.java
+	5.6		DuplicateInstaceException.java
+	5.7		IlegalCommentException.java
+	5.8		IlegalNameException.java
+	5.9		IlegaMemberUseException.java
+	5.10 	IllegaIntException.java
+	5.11	IllegalLineException.java
+	5.12	IllegalParameterInput.java
+	5.13	MemberDeclarationException.java
+	5.14	MemberDoesNotExistException.java
+	5.15	NoClosureToParenthesesException.java
+	5.16	TypeConversionException.java
+	5.17	VariableNotSimpleInGlobalException.java
+	5.18	VoidVarException.java
+
+
+6.	validations
+	6.1 InstanceArrayValidator.java
+	6.2 ValidateBlocks.java
+	
+File description:
+
+
+
+Design: 
+	i
+	
+	
+
+answers to questions:
+
+	question 6.1 - it's true that some methods are boolean, and that it's better
+	to handle errors on your own, and so we did, we tried to handle as much 
+	errors as we could, never the less most of the methods that did throw 
+	exceptions, were required to deal with specific input, sometimes an input 
+	that was'nt good, therefore it is easier to handle fatal errors 
+	with exceptions than trying to build a new mechanism for that.
+	we tried to surface the exceptions as much as possible so the method which
+	catches these exceptions is higher in the hirarchy 
+	
+	question 6.2.1 - our code was'nt Open-Closed because in order to add a new
+	variable we need to change the code, manipulate the existing one BUT the
+	on the bright side we need to do it in a small part of the code, in the 
+	"factory", add a "validate" and exceptions and modify the code only in a 
+	small portion of it, this way we keep the OO principles as much as we can
+	
+	question 6.2.2 - if we would like to add the "if-else" we need to add:
+	a class which holds the validation of this segment regex wise, add methods
+	that check if the statement in the brackets is legal regex wise and if
+	the variables exist and modify the instance so it can hold those segments
+	
+	question 6.3 - there were no two main regex we can say were most used and 
+	we can't hold greater value for some upon others but we did strugle 
+	the most with these:
+	METHOD_DECLERATION = "[a-zA-Z][_\\w]* ?\\(.*\\) ?\\{" , this regex was one
+	of those regex we used the most, that's because it's a main regex in which 
+	we check for method declaration its not only essential to check the
+	structure of the code but it also allow us to create a good data base for
+	the rest of the code (inside those blocks).
+	
+	the other ONES were:
+	the validation of values input for example:
+	INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?\\s*" , this one
+	tells you if the input value of an int is legal
+	
+	 
