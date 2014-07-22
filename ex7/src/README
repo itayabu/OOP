@@ -1,4 +1,4 @@
-itay....
+itayabul
 assafm04
 
 
@@ -60,37 +60,44 @@ Files included:
 	6.1 InstanceArrayValidator.java
 	6.2 ValidateBlocks.java
 	
-File description:
 
+Design:
+	when we started this project we argued about the purpose of this code,
+	we came to realize that this is meant to be a tool box in a library, thus 
+	the conclusion was to make this tool does not depend on input and therefore
+	we saw it fit to make it static. 
+	for modularity we divided the code to a few main components, we tried not 
+	to divide the code into too many segments so it will remain readable and 
+	understandable.
+	of course we used the "factory" to implement the single-choice design.
+	we did try to maintain open-close principle mainly on the "type" section,
+	though it was very hard to implement it on the rest of the code.
+	we used a lot of String methods to manage the input mainly with "contains",
+	"split","replace" etc... in those case we did'nt see a reason to build a new 
+	regex when Java offers us those built-in methods.
+	we had a dispute weather to use a Hash-map data structure or the Linked-list
+	and finally we decided to use the linked list so every block will hold it's
+	own linked list.  
 
-
-Design: 
-	i
-	
-	
 
 answers to questions:
 
 	question 6.1 - it's true that some methods are boolean, and that it's better
-	to handle errors on your own, and so we did, we tried to handle as much 
-	errors as we could, never the less most of the methods that did throw 
-	exceptions, were required to deal with specific input, sometimes an input 
-	that was'nt good, therefore it is easier to handle fatal errors 
-	with exceptions than trying to build a new mechanism for that.
-	we tried to surface the exceptions as much as possible so the method which
-	catches these exceptions is higher in the hirarchy 
+	to handle errors on your own, and so we did, in place we saw it right, in 
+	other places both for readability and for better error management 
+	we used exceptions. moreover in this prject's case there was no need to 
+	handle the errors locally, so we threw the exceptions all the way up the 
+	hierarchy. 
 	
-	question 6.2.1 - our code was'nt Open-Closed because in order to add a new
-	variable we need to change the code, manipulate the existing one BUT the
-	on the bright side we need to do it in a small part of the code, in the 
-	"factory", add a "validate" and exceptions and modify the code only in a 
-	small portion of it, this way we keep the OO principles as much as we can
-	
+	question 6.2.1 - this code is open-closed type wise, all we must do is add
+	the new type to the "Type" class, add a validation method and to add
+	its name as a case inside the "Type" class. 
+		
 	question 6.2.2 - if we would like to add the "if-else" we need to add:
-	a class which holds the validation of this segment regex wise, add methods
-	that check if the statement in the brackets is legal regex wise and if
-	the variables exist and modify the instance so it can hold those segments
-	
+	inside "parseMethod" the line of "if" remains to the end of its block
+	so we can ask before the reading of the new line if it is an "if" call and 
+	if it is then its legal to have an else call afterwards.
+		
 	question 6.3 - there were no two main regex we can say were most used and 
 	we can't hold greater value for some upon others but we did strugle 
 	the most with these:
