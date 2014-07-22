@@ -112,4 +112,9 @@ answers to questions:
 	INT_VAL_STR = "-?\\s*_?[a-zA-z]+\\w*\\s*\\(?\\.*?\\)?\\s*" , this one
 	tells you if the input value of an int is legal
 	
-	 
+	
+comments:
+	this exercise was difficult because of its timing, at the first week we 
+	started together and split responsibilities but then assaf had to go to 
+	"miluim" on the second week of this exercise, and then then final exams came
+	and neither of us had time to work on it PLEASE HAVE MERCY! 
